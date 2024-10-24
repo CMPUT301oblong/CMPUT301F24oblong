@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Oblong"
         tools:targetApi="31">
         <activity
-            android:name=".RoleSelector"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,10 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".organizer_profile"
-            android:exported="true" />
-        <!-- will change exported to false and set an intent-filter -->
     </application>
 
 </manifest>
