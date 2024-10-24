@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".organizer_profile">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:adjustViewBounds="true"
+        android:maxWidth="200dp"
+        android:maxHeight="200dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/user_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/entrant_view_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Entrant View"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/facility_linearLayout" />
+
+    <LinearLayout
+        android:id="@+id/profile_linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView">
+
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/profile_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/profile_phoneno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="780-xxx-xxxx"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/profile_edit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Profile Edit Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/profile_linearLayout"
+        app:layout_constraintTop_toTopOf="@+id/profile_linearLayout"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <LinearLayout
+        android:id="@+id/facility_linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_linearLayout">
+
+        <TextView
+            android:id="@+id/facility_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Facility Name"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/facility_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Facility Email"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/facility_phoneno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Facility Ph. #"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/facility_edit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Facility Edit Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/facility_linearLayout"
+        app:layout_constraintTop_toTopOf="@+id/facility_linearLayout"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
