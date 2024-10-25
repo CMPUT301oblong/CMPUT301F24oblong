@@ -85,7 +85,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/join_event_imageView"
+                    android:id="@+id/activity_organizer_viewevent_event_description_poster"
+                    android:contentDescription="The poster for the event will be displayed here"
                     android:layout_width="98dp"
                     android:layout_height="100dp"
                     app:srcCompat="@android:drawable/ic_menu_gallery" />
@@ -97,7 +98,8 @@
                 android:layout_weight="1" />
 
             <ImageView
-                android:id="@+id/r20nhu2044xw"
+                android:id="@+id/activity_organizer_viewevent_event_description_upload_icon"
+                android:contentDescription="Allows users to upload poster when clicked"
                 android:layout_width="56dp"
                 android:layout_height="52dp"
                 android:layout_gravity="center_vertical"
@@ -130,7 +132,7 @@
             android:textSize="16sp" />
 
         <LinearLayout
-            android:id="@+id/rc0dpn2s8s3w"
+            android:id="@+id/activity_organizer_viewevent_event_description_max_capacity_layout"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginHorizontal="41dp"
@@ -150,7 +152,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/r0gubn6krau3l"
+            android:id="@+id/activity_organizer_viewevent_event_description_qr_code_layout"
             android:layout_width="match_parent"
             android:layout_height="95dp"
             android:layout_marginHorizontal="20dp"
@@ -159,7 +161,8 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/activity_organizer_viewevent_event_description_qr_code_download_button"
+                android:id="@+id/activity_organizer_viewevent_event_description_qr_code_display"
+                android:contentDescription="Displays the generated QR code"
                 android:layout_width="126dp"
                 android:layout_height="95dp"
                 android:layout_marginEnd="3dp"
@@ -169,7 +172,8 @@
 
             <ImageView
                 android:id="@+id/activity_organizer_viewevent_event_description_download_icon"
-                android:layout_width="93dp"
+                android:contentDescription="Downloads the QR code"
+                android:layout_width="0dp"
                 android:layout_height="46dp"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/download_icon" />
