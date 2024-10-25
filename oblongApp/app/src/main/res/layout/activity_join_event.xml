@@ -37,7 +37,7 @@
                     android:textSize="45sp" />
 
                 <LinearLayout
-                    android:id="@+id/rl6jvaa17azf"
+                    android:id="@+id/join_event_imageView_layout"
                     android:layout_width="match_parent"
                     android:layout_height="134dp"
                     android:background=""
@@ -46,7 +46,7 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/imageView2"
+                        android:id="@+id/join_event_imageView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         app:srcCompat="@android:drawable/ic_menu_gallery" />
@@ -90,7 +90,7 @@
                     android:paddingBottom="240dp">
 
                     <TextView
-                        android:id="@+id/rb8cyefktfao"
+                        android:id="@+id/activity_join_event_event_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Sample Text."
