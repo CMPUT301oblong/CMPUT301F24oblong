@@ -1,2 +1,4 @@
-package com.example.oblong;public class organizer_map {
+package com.example.oblong;
+
+public class organizer_map {
 }
