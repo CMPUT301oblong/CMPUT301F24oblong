@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Oblong"
         tools:targetApi="31">
+        <activity
+            android:name=".organizer_profile_edit"
+            android:exported="false" />
         <activity
             android:name=".RoleSelector"
             android:exported="true">
@@ -26,6 +32,6 @@
         <activity
             android:name=".organizer_profile"
             android:exported="true" />
-        <!-- will change exported to false and set an intent-filter -->
     </application>
+
 </manifest>
