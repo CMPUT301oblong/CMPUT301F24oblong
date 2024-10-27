@@ -20,7 +20,7 @@
         android:layout_width="250dp"
         android:layout_height="136dp"
         android:layout_weight="1"
-        app:srcCompat="@drawable/Image_placeholder" />
+        app:srcCompat="@drawable/image_placeholder" />
 
     <ImageView
         android:id="@+id/delete_image"
