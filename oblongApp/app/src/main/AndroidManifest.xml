@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Oblong"
         tools:targetApi="31">
         <activity
+            android:name=".organizer_entrant_waitlist"
+            android:exported="false" />
+        <activity
             android:name=".organizer_create_event_screen"
             android:exported="false" />
         <activity
