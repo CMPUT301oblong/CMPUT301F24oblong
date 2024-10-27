@@ -40,7 +40,7 @@
                     android:id="@+id/join_event_imageView_layout"
                     android:layout_width="match_parent"
                     android:layout_height="134dp"
-                    android:background=""
+                    android:background="#FFFFFF"
                     android:layout_marginBottom="20dp"
                     android:layout_marginHorizontal="110dp"
                     android:orientation="vertical">
