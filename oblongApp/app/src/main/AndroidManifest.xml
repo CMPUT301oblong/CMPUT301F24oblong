@@ -27,7 +27,22 @@
             android:name=".organizer_profile_edit"
             android:exported="false" />
         <activity
-            android:name=".RoleSelector"
+            android:name=".RoleSelector"/>
+
+        <activity
+            android:name=".EntrantProfileEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EntrantEventDescriptionWaitlistActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EntrantProfileScreenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EntrantEventDescriptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
