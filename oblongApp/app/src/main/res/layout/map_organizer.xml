@@ -41,5 +41,7 @@
         app:layout_constraintEnd_toStartOf="@+id/textView"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/arrow_back"
-        tools:layout_editor_absoluteY="25dp" />
+        tools:layout_editor_absoluteY="25dp"
+        app:menu="@menu/organizer_bottom_nav_menu" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,7 +18,31 @@
         android:theme="@style/Theme.Oblong"
         tools:targetApi="31">
         <activity
-            android:name=".RoleSelector"
+            android:name=".organizer_entrant_waitlist"
+            android:exported="false" />
+        <activity
+            android:name=".organizer_create_event_screen"
+            android:exported="false" />
+        <activity
+            android:name=".organizer_profile_edit"
+            android:exported="false" />
+        <activity
+            android:name=".RoleSelector"/>
+
+        <activity
+            android:name=".EntrantProfileEditActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EntrantEventDescriptionWaitlistActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EntrantProfileScreenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EntrantEventDescriptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +53,6 @@
         <activity
             android:name=".organizer_profile"
             android:exported="true" />
-        <!-- will change exported to false and set an intent-filter -->
     </application>
+
 </manifest>
