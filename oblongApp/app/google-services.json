@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "615040732138",
+    "project_id": "oblong-proceedings",
+    "storage_bucket": "oblong-proceedings.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615040732138:android:d694e0ed7c82f7336e8093",
+        "android_client_info": {
+          "package_name": "com.example.oblong"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpGFwK_UhbA-nuf8DKCadMXo7Gyx6qIZ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
