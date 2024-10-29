@@ -64,17 +64,6 @@
 
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/profile_edit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="Profile Edit Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/profile_linearLayout"
-        app:layout_constraintTop_toTopOf="@+id/profile_linearLayout"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
-
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="0dp"
