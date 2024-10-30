@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import org.json.JSONObject;
+
 public class qr_scanner extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CAMERA = 1;
     @Override
@@ -45,9 +47,27 @@ public class qr_scanner extends AppCompatActivity {
                 Toast.makeText(this, "Scan cancelled", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                handleScannedData(result.getContents());
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void handleScannedData(String qrData){
+        try {
+//            If the Qr code is valid all of the information gets filled into the joinEventActivity
+//            and the activity is opened.
+            JSONObject eventDetails = new JSONObject(qrData);
+            Intent intent = new Intent(this, EntrantJoinEventActivity.class);
+            intent.putExtra("eventName", eventDetails.getString("eventName"));
+            intent.putExtra("eventDescription", eventDetails.getString("eventDescription"));
+            intent.putExtra("drawDate", eventDetails.getString("drawDate"));
+            intent.putExtra("uniqueId", eventDetails.getString("uniqueId"));
+            startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(this,"Invalid QR code data", Toast.LENGTH_SHORT).show();
+
         }
     }
 
