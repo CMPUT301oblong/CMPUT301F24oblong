@@ -42,4 +42,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+//    The dependencies below allow for QR code generation
+    implementation (libs.zxing.android.embedded)
+    implementation (libs.core)
 }
