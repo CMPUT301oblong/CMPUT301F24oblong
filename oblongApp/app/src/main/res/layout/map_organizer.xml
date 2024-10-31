@@ -38,10 +38,11 @@
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
         app:layout_constraintEnd_toStartOf="@+id/textView"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/arrow_back"
-        tools:layout_editor_absoluteY="25dp"
-        app:menu="@menu/organizer_bottom_nav_menu" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/organizer_bottom_nav_menu"
+        app:srcCompat="@drawable/arrow_back" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
