@@ -9,6 +9,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.FirebaseApp;
+// TODO: Make an entrant/current user class which holds all of the users data
+// TODO: Add entrants to database if they join the event
+// TODO: Make Events class that holds all data from an event
 public class EntrantJoinEventActivity extends AppCompatActivity {
     private TextView eventNameTextView;
     private TextView eventDescriptionTextView;
@@ -17,8 +21,11 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FirebaseApp.initializeApp(this);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_join_event);
+
 
         eventNameTextView = findViewById(R.id.activity_join_event_banner_2);
         eventDescriptionTextView = findViewById(R.id.activity_join_event_event_description);
