@@ -18,6 +18,21 @@
         android:theme="@style/Theme.Oblong"
         tools:targetApi="31">
         <activity
+            android:name=".AdminProfileBrowserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminEventBrowserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdminProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".organizer_view_entrant_profile"
+            android:exported="false" />
+        <activity
+            android:name=".organizer_create_notification_activity"
+            android:exported="false" />
+        <activity
             android:name=".organizer_entrant_waitlist"
             android:exported="false" />
         <activity
@@ -26,9 +41,7 @@
         <activity
             android:name=".organizer_profile_edit"
             android:exported="false" />
-        <activity
-            android:name=".RoleSelector"/>
-
+        <activity android:name=".RoleSelector" />
         <activity
             android:name=".EntrantProfileEditActivity"
             android:exported="false" />
