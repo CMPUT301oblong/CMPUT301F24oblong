@@ -26,9 +26,7 @@
         <activity
             android:name=".organizer_profile_edit"
             android:exported="false" />
-        <activity
-            android:name=".RoleSelector"/>
-
+        <activity android:name=".RoleSelector" />
         <activity
             android:name=".EntrantProfileEditActivity"
             android:exported="false" />
@@ -42,7 +40,7 @@
             android:name=".EntrantEventDescriptionActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".EntrantUpcomingEventActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
