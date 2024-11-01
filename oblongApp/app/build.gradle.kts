@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.android.application)
-//    id("com.android.application")
+    // alias(libs.plugins.android.application)
+    id("com.android.application")
     id("com.google.gms.google-services") version "4.4.2" apply false
 }
 
@@ -43,6 +43,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.play.services.maps)
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
