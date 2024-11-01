@@ -35,6 +35,7 @@ public class organizer_create_notification_activity extends AppCompatActivity {
                         organizer_view_event_screen.class);
                 startActivity(intent);
             }
+            // trying to fix .gitignore
         });
     }
 }
