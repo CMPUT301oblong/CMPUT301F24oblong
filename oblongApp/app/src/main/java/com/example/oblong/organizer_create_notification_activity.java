@@ -1,6 +1,8 @@
 package com.example.oblong;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -25,5 +27,14 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         Button sendNotificationButton = findViewById(R.id.organizer_send_notification_button);
         Button cancelButton = findViewById(R.id.organizer_notification_cancel_button);
 
+        //Clicking Cancel button moves back to organizer view event screen currently
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(organizer_create_notification_activity.this,
+                        organizer_view_event_screen.class);
+                startActivity(intent);
+            }
+        });
     }
 }
