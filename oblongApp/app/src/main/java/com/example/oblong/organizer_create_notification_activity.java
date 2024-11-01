@@ -1,6 +1,9 @@
 package com.example.oblong;
 
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,5 +18,12 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.organizer_create_notification);
+
+        EditText newLabelText = findViewById(R.id.organizer_new_notification_label_inputText);
+        EditText newContentText = findViewById(R.id.organizer_new_notification_body_inputText);
+        Spinner notificationTargetSpinner = findViewById(R.id.notification_spinner);
+        Button sendNotificationButton = findViewById(R.id.organizer_send_notification_button);
+        Button cancelButton = findViewById(R.id.organizer_notification_cancel_button);
+
     }
 }
