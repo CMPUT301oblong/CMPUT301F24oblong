@@ -12,6 +12,7 @@ zxingAndroidEmbedded = "4.1.0"
 playServicesMaps = "19.0.0"
 
 [libraries]
+firebase-firestore = "com.google.firebase:firebase-firestore:25.1.1"
 core = { module = "com.google.zxing:core", version.ref = "core" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
