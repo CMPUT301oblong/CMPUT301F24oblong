@@ -43,11 +43,11 @@ public class qr_generator {
         try {
             // Create JSON object with event data
             JSONObject eventData = new JSONObject();
-            eventData.put("eventName", eventName);
-            eventData.put("eventDescription", eventDescription);
-            eventData.put("drawDate", drawDate);
+//            eventData.put("eventName", eventName);
+//            eventData.put("eventDescription", eventDescription);
+//            eventData.put("drawDate", drawDate);
             eventData.put("uniqueID", uniqueID);
-            eventData.put("imageUrl", imageUrl);
+//            eventData.put("imageUrl", imageUrl);
 
             // Convert JSON to string and generate QR code
             String data = eventData.toString();
