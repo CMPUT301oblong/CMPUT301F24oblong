@@ -27,7 +27,8 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
         Database db = new Database();
         Button joinButton = findViewById(R.id.join_event_join_button);
         Button cancelButton = findViewById(R.id.join_event_cancel_button);
-        String event_id = "TEST2"; // TODO: replace with actual event name, passed in from intent on QR scanner
+        Intent intent = getIntent();
+        String event_id = intent.getStringExtra("event");
 
         // cancel button listener
         cancelButton.setOnClickListener(v -> {

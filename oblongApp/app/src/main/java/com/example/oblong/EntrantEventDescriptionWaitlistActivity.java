@@ -31,7 +31,8 @@ public class EntrantEventDescriptionWaitlistActivity extends AppCompatActivity {
         Database db = new Database();
         Button joinButton = findViewById(R.id.entrant_event_description_waitlist_leave_button);
         ImageButton backButton = findViewById(R.id.entrant_event_description_waitlist_back_button);
-        String event_id = "TEST2"; // TODO: replace with actual event name, passed in from intent on QR scanner
+        Intent intent = getIntent();
+        String event_id = intent.getStringExtra("event");
 
         // cancel button listener
         backButton.setOnClickListener(v -> {
