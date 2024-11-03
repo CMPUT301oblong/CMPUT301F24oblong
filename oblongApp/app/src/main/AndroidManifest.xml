@@ -54,7 +54,14 @@
             android:name=".EntrantEventDescriptionActivity"
             android:exported="false" />
         <activity
+            android:name=".EntrantEventList"
+            android:exported="false" />
+        <activity
             android:name=".RoleSelector"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".EntrantJoinEventActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
