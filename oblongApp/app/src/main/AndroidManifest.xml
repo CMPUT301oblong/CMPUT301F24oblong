@@ -58,16 +58,15 @@
             android:exported="false" />
         <activity
             android:name=".RoleSelector"
-            android:exported="false">
-        </activity>
-        <activity
-            android:name=".EntrantJoinEventActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".EntrantJoinEventActivity"
+            android:exported="false"/>
         <activity
             android:name=".organizer_profile"
             android:exported="true" />
