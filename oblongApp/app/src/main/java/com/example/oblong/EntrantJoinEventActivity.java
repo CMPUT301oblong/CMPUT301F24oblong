@@ -1,11 +1,11 @@
 package com.example.oblong;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
-import android.widget.TextView;
+
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,8 +13,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
-// TODO: Add entrants to database if they join the event
+import com.google.firebase.firestore.FirebaseFirestore;
+
 
 public class EntrantJoinEventActivity extends AppCompatActivity {
     private TextView eventNameTextView;
@@ -40,24 +42,28 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        populateEventData();
 
-        Button cancelButton = findViewById(R.id.join_event_cancel_button);
-        setCancelButtonNavigation(cancelButton, this);
 
+        // Initialize
+        Database db = new Database();
         Button joinButton = findViewById(R.id.join_event_join_button);
-        setJoinButtonNavigation(joinButton,this);
-    }
+        String event_id = "TEST2";
 
-    private void populateEventData() {
+        // join button listener
+        joinButton.setOnClickListener(v -> {
+            // get current user (asynchronous)
+            db.getCurrentUser(userId -> {
+                // once userid is retrieved add participant
+                String participantId = userId + event_id;
+                String event = "event_id"; // to be replaced with the event id passed in thru intent from QR scanner
+                String location = "[0° N, 0° E]"; // ?
+                String status = "attending";
 
-        String eventName = getIntent().getStringExtra("event name");
-        String eventDescription = getIntent().getStringExtra("event description");
-        String drawDate = getIntent().getStringExtra("event draw date");
-
-        eventNameTextView.setText(eventName);
-        eventDescriptionTextView.setText(eventDescription);
-        eventDrawDateTextView.setText("Draw Date: " + drawDate);
+                // add user as a participant
+                db.addParticipant(participantId, userId, event, location, status);
+                startActivity(new Intent(EntrantJoinEventActivity.this, EntrantEventList.class));
+            });
+        });
     }
 
 
