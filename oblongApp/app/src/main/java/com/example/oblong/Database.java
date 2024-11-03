@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Database {
     private final CollectionReference users;
@@ -19,9 +20,9 @@ public class Database {
     private final CollectionReference notifications;
     private final CollectionReference organizers;
     private final CollectionReference participants;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public Database() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         users = db.collection("users");
         events = db.collection("events");
         entrants = db.collection("entrants");
@@ -51,6 +52,19 @@ public class Database {
     //            }
     //        });
 
+
+    public void updateDocument(String collection, HashMap<String, Object> updates, OnDataReceivedListener<Boolean> listener) {
+        db.collection(collection).document((String) Objects.requireNonNull(updates.get("id")))
+                .update(updates)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Database", "Document updated successfully in: " + collection);
+                    listener.onDataReceived(true); // success
+                })
+                .addOnFailureListener(e -> {
+                    Log.d("Database", "Document failed to update from: " + collection);
+                    listener.onDataReceived(false); // fail
+                });
+    }
 
     public void getParticipants(String id, OnDataReceivedListener<HashMap<String, Object>> listener) {
         participants.document(id).get().addOnSuccessListener(documentSnapshot -> {
