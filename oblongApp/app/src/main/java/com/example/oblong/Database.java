@@ -59,21 +59,19 @@ public class Database {
     //        });
 
     // Retrieve the user ID asynchronously
-    public String getCurrentUser() {
-        FirebaseInstallations.getInstance().getId().addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
-                if (task.isSuccessful() && task.getResult() != null) {
-                    user_id = task.getResult();
-                    Log.d("RoleSelector", "User ID: " + user_id);
-                } else {
-                    Log.e("RoleSelector", "Failed to retrieve user ID");
-                    user_id = "0";
-                }
+    public void getCurrentUser(OnDataReceivedListener<String> listener) {
+        FirebaseInstallations.getInstance().getId().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                String userId = task.getResult();
+                Log.d("RoleSelector", "User ID: " + userId);
+                listener.onDataReceived(userId); // Pass the userId back to the listener
+            } else {
+                Log.e("RoleSelector", "Failed to retrieve user ID");
+                listener.onDataReceived("0"); // return 0 on failure
             }
         });
-        return user_id;
     }
+
 
 
     public void updateDocument(String collection, HashMap<String, Object> updates, OnDataReceivedListener<Boolean> listener) {
