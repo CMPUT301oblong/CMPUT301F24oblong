@@ -3,7 +3,6 @@ package com.example.oblong;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -15,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.installations.FirebaseInstallations;
+
 
 public class RoleSelector extends AppCompatActivity implements AddNewUserFragment.AddUserDialogListener {
     private Database db = new Database();
@@ -55,7 +55,7 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserFragmen
         // Verify user exists in database
         db.getUser(user_id, user -> {
             if (user != null) {
-                Log.d("user", "User Name:" + user.get("name")); // print user's name to console
+                Log.d("user", "User Name: " + user.get("name")); // print user's name to console
                 // User exists, check their type
                 String type = (String) user.get("type");
                 assert type != null;
@@ -87,7 +87,7 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserFragmen
 
     @Override
     public void addUser(String name, String email, String phone) {
-        db.addUser(user_id, name, email, "entrant", phone, null);
+        db.addUser(user_id, name, email, "entrant", (phone.isEmpty() ? null : phone), null);
         Intent intent = new Intent(this, EntrantProfileScreenActivity.class);
         startActivity(intent);
     }

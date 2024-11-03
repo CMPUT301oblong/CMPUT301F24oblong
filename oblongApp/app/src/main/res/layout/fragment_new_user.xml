@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="780-xxx-xxxx"
+        android:hint="(OPTIONAL) 780-xxx-xxxx"
         android:inputType="phone"
         android:textSize="20sp" />
 </LinearLayout>

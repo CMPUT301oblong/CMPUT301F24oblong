@@ -65,8 +65,8 @@ public class AddNewUserFragment extends DialogFragment {
 
 
     private boolean validateInput(String name, String email, String phone) {
-        if (name.isEmpty() || email.isEmpty() || phone.isEmpty()) {
-            Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+        if (name.isEmpty() || email.isEmpty()){
+            Toast.makeText(getContext(), "Please fill in all required fields", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -83,8 +83,8 @@ public class AddNewUserFragment extends DialogFragment {
             return false;
         }
 
-        // Validate phone format (example: checking for 10-digit numbers)
-        if (!phone.matches("\\d{10}")) {
+        // Validate optional phone format (example: checking for 10-digit numbers) or it is empty
+        if (!phone.isEmpty() && !phone.matches("\\d{10}")) {
             Toast.makeText(getContext(), "Please enter a valid 10-digit phone number", Toast.LENGTH_SHORT).show();
             return false;
         }
