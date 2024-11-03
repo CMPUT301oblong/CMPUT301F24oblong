@@ -49,7 +49,7 @@
             android:exported="false" />
         <activity
             android:name=".EntrantProfileScreenActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".EntrantEventDescriptionActivity"
             android:exported="false" />

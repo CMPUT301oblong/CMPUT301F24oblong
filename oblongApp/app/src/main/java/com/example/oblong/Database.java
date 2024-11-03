@@ -63,10 +63,10 @@ public class Database {
         FirebaseInstallations.getInstance().getId().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 String userId = task.getResult();
-                Log.d("RoleSelector", "User ID: " + userId);
+                Log.d("Database", "User ID: " + userId);
                 listener.onDataReceived(userId); // Pass the userId back to the listener
             } else {
-                Log.e("RoleSelector", "Failed to retrieve user ID");
+                Log.e("Database", "Failed to retrieve user ID");
                 listener.onDataReceived("0"); // return 0 on failure
             }
         });
