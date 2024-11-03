@@ -43,7 +43,6 @@ public class AddNewUserFragment extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setView(view)
-                .setTitle("Add New User")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Add", null);  // Set null to override the default closing behavior
 
@@ -68,6 +67,13 @@ public class AddNewUserFragment extends DialogFragment {
     private boolean validateInput(String name, String email, String phone) {
         if (name.isEmpty() || email.isEmpty() || phone.isEmpty()) {
             Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        // Validate that two names are provided and they are valid
+        String[] names = name.split(" ");
+        if (names.length < 2 || !name.matches("[a-zA-Z ]+")) {
+            Toast.makeText(getContext(), "Please enter a valid first and last name", Toast.LENGTH_SHORT).show();
             return false;
         }
 
