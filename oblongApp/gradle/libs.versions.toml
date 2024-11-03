@@ -10,6 +10,7 @@ activity = "1.9.2"
 constraintlayout = "2.1.4"
 zxingAndroidEmbedded = "4.1.0"
 playServicesMaps = "19.0.0"
+firebaseMessaging = "24.0.3"
 
 [libraries]
 core = { module = "com.google.zxing:core", version.ref = "core" }
@@ -22,6 +23,7 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 zxing-android-embedded = { module = "com.journeyapps:zxing-android-embedded", version.ref = "zxingAndroidEmbedded" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
