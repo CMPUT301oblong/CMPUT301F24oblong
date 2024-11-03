@@ -2,9 +2,14 @@ package com.example.oblong;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.installations.FirebaseInstallations;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +25,7 @@ public class Database {
     private final CollectionReference notifications;
     private final CollectionReference organizers;
     private final CollectionReference participants;
+    private String user_id;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public Database() {
@@ -51,6 +57,23 @@ public class Database {
     //                Log.d("user", "User not found or an error occurred.");
     //            }
     //        });
+
+    // Retrieve the user ID asynchronously
+    public String getCurrentUser() {
+        FirebaseInstallations.getInstance().getId().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    user_id = task.getResult();
+                    Log.d("RoleSelector", "User ID: " + user_id);
+                } else {
+                    Log.e("RoleSelector", "Failed to retrieve user ID");
+                    user_id = "0";
+                }
+            }
+        });
+        return user_id;
+    }
 
 
     public void updateDocument(String collection, HashMap<String, Object> updates, OnDataReceivedListener<Boolean> listener) {
