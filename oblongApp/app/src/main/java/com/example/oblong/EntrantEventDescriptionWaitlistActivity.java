@@ -1,16 +1,18 @@
 package com.example.oblong;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import java.util.HashMap;
 
 public class EntrantEventDescriptionWaitlistActivity extends AppCompatActivity {
 
@@ -24,20 +26,37 @@ public class EntrantEventDescriptionWaitlistActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-    }
-    public static void leaveWaitlist(){
-//  TODO: This method should remove the entrant from the event waitlist in the firebase
-    }
 
-    public static void setJoinButtonNavigation(Button cancelButton, Context context) {
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                leaveWaitlist();
-                Intent intent = new Intent(context, EntrantEventDescriptionWaitlistActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            }
+        // Initialize
+        Database db = new Database();
+        Button joinButton = findViewById(R.id.entrant_event_description_waitlist_leave_button);
+        ImageButton backButton = findViewById(R.id.entrant_event_description_waitlist_back_button);
+        String event_id = "TEST2"; // TODO: replace with actual event name, passed in from intent on QR scanner
+
+        // cancel button listener
+        backButton.setOnClickListener(v -> {
+            startActivity(new Intent(EntrantEventDescriptionWaitlistActivity.this, EntrantEventList.class));
+        });
+
+        // join button listener
+        joinButton.setOnClickListener(v -> {
+            // get current user (asynchronous)
+            db.getCurrentUser(userId -> {
+                // once userid is retrieved remove participant
+                String participantId = userId + event_id;
+
+                // add user as a participant
+                HashMap<String, Object> cancelParticipant = new HashMap<>();
+                cancelParticipant.put("id",participantId);
+                cancelParticipant.put("status","cancelled");
+                db.updateDocument("participants", cancelParticipant, participant -> {
+                    if (participant != null) {
+                        // Process data
+                        startActivity(new Intent(EntrantEventDescriptionWaitlistActivity.this, EntrantEventList.class));
+                    }
+                });
+
+            });
         });
     }
 }
