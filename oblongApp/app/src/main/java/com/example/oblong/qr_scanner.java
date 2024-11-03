@@ -4,17 +4,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.util.Log;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The {@code qr_scanner} class handles QR code scanning functionality, retrieves event details
@@ -28,8 +32,7 @@ import com.google.zxing.integration.android.IntentResult;
 public class qr_scanner extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_CAMERA = 1;
-    private FirebaseFirestore db;
-    private FirebaseAuth auth;
+    private static final Database db = new Database();
 
     /**
      * Initializes the Firebase instances and checks for camera permissions.
@@ -41,9 +44,13 @@ public class qr_scanner extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.qr_scanner_entrant);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.qr_title_text), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
@@ -59,7 +66,7 @@ public class qr_scanner extends AppCompatActivity {
     private void initQRCodeScanner() {
         IntentIntegrator integrator = new IntentIntegrator(this);
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-        integrator.setOrientationLocked(true);
+        integrator.setOrientationLocked(false);
         integrator.setPrompt("Scan a QR code");
         integrator.initiateScan();
     }
@@ -89,62 +96,42 @@ public class qr_scanner extends AppCompatActivity {
      * Checks the association of the scanned event with the user in Firestore.
      * Based on the association, directs to the appropriate activity.
      *
-     * @param uniqueId The unique ID of the event extracted from the QR code.
+     * @param event The unique ID of the event extracted from the QR code.
      */
-    private void handleScannedData(String uniqueId) {
-        String userId = auth.getCurrentUser().getUid();
+    private void handleScannedData(String event) {
+        db.getCurrentUser(userId -> {
+            String participant = userId + event;
+            // must be atomic since multiple "threads" could access at same time
+            AtomicBoolean isAttending = new AtomicBoolean(false);
+            db.getParticipants(participant, results -> {
+                if (results != null && results.get("status") == "attending"){
+                    isAttending.set(true);
+                }
+            });
+            retrieveEventDetails(event, isAttending.get());
+        });
 
-        db.collection("entrants").document(userId).collection("associatedEvents")
-                .document(uniqueId).get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            retrieveEventDetails(uniqueId, true);
-                        } else {
-                            retrieveEventDetails(uniqueId, false);
-                        }
-                    } else {
-                        Toast.makeText(this, "Error checking event association", Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 
     /**
      * Retrieves event details from Firestore based on the event's unique ID.
      * Directs the user to the event description or joining page based on association status.
      *
-     * @param uniqueId      The unique ID of the event in Firestore.
+     * @param event      The unique ID of the event in Firestore.
      * @param isAssociated  {@code true} if the event is associated with the user; otherwise {@code false}.
      */
-    private void retrieveEventDetails(String uniqueId, boolean isAssociated) {
-        db.collection("events").document(uniqueId)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        String eventName = documentSnapshot.getString("eventName");
-                        String eventDescription = documentSnapshot.getString("eventDescription");
-                        String drawDate = documentSnapshot.getString("drawDate");
+    private void retrieveEventDetails(String event, boolean isAssociated) {
 
-                        Intent intent;
-                        if (isAssociated) {
-                            intent = new Intent(this, EntrantEventDescriptionActivity.class);
-                            intent.putExtra("eventName", eventName);
-                            intent.putExtra("eventDescription", eventDescription);
-                            intent.putExtra("drawDate", drawDate);
-                            intent.putExtra("uniqueId", uniqueId);
-                        } else {
-                            intent = new Intent(this, EntrantJoinEventActivity.class);
-                            intent.putExtra("uniqueId", uniqueId);
-                        }
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(this, "Event not found", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error fetching event details", Toast.LENGTH_SHORT).show();
-                    e.printStackTrace();
-                });
+        db.getEvent(event, results -> {
+            Intent intent;
+            if (isAssociated){
+                intent = new Intent(this, EntrantEventDescriptionActivity.class);
+            }else {
+                intent = new Intent(this, EntrantJoinEventActivity.class);
+            }
+            intent.putExtra("event", event);
+            startActivity(intent);
+        });
     }
 
     /**
