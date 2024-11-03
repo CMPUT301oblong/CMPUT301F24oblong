@@ -26,6 +26,7 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         Spinner notificationTargetSpinner = findViewById(R.id.notification_spinner);
         Button sendNotificationButton = findViewById(R.id.organizer_send_notification_button);
         Button cancelButton = findViewById(R.id.organizer_notification_cancel_button);
+        Button sendButton = findViewById(R.id.organizer_send_notification_button);
 
         //Clicking Cancel button moves back to organizer view event screen currently
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -35,7 +36,16 @@ public class organizer_create_notification_activity extends AppCompatActivity {
                         organizer_view_event_screen.class);
                 startActivity(intent);
             }
-            // trying to fix .gitignore
+        });
+
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String label = newLabelText.getText().toString();
+                String content = newContentText.getText().toString();
+                Notification newNotification = new Notification(label, content);
+
+            }
         });
     }
 }
