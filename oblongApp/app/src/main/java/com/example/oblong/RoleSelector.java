@@ -33,20 +33,12 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserFragmen
             return insets;
         });
 
-        // Retrieve the user ID asynchronously
-        FirebaseInstallations.getInstance().getId().addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
-                if (task.isSuccessful() && task.getResult() != null) {
-                    user_id = task.getResult();
-                    Log.d("RoleSelector", "User ID: " + user_id);
-
-                    // Now that you have the user ID, you can use it as needed
-                    // For example, you can verify user in the database here if required
-                    verifyUser();
-                } else {
-                    Log.e("RoleSelector", "Failed to retrieve user ID");
-                }
+        db.getCurrentUser(user_id -> {
+            if (user_id != null) {
+                this.user_id = user_id;
+                verifyUser();
+            } else {
+                Log.e("RoleSelector", "Failed to retrieve user ID");
             }
         });
     }

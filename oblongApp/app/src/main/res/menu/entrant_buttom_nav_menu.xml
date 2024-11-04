@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="My Events"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:id="@+id/myEvents"/>
+    <item android:title="All Events"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:id="@+id/allEvents"/>
+    <item android:title="Camera"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:id="@+id/camera"/>
+    <item android:title="Profile"
+        android:icon="@drawable/baseline_person_24"
+        android:id="@+id/profile"/>
+</menu>

@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.installations.FirebaseInstallations;
 
@@ -63,10 +64,10 @@ public class Database {
         FirebaseInstallations.getInstance().getId().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 String userId = task.getResult();
-                Log.d("RoleSelector", "User ID: " + userId);
+                Log.d("Database", "User ID: " + userId);
                 listener.onDataReceived(userId); // Pass the userId back to the listener
             } else {
-                Log.e("RoleSelector", "Failed to retrieve user ID");
+                Log.e("Database", "Failed to retrieve user ID");
                 listener.onDataReceived("0"); // return 0 on failure
             }
         });
@@ -74,8 +75,8 @@ public class Database {
 
 
 
-    public void updateDocument(String collection, HashMap<String, Object> updates, OnDataReceivedListener<Boolean> listener) {
-        db.collection(collection).document((String) Objects.requireNonNull(updates.get("id")))
+    public void updateDocument(String collection, String document_id, HashMap<String, Object> updates, OnDataReceivedListener<Boolean> listener) {
+        db.collection(collection).document(document_id)
                 .update(updates)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Database", "Document updated successfully in: " + collection);
@@ -229,8 +230,8 @@ public class Database {
     }
 
 
-    public void addParticipant(String id, String entrant, String event, String location, String status){
-        HashMap<String, String> participant = new HashMap<>();
+    public void addParticipant(String id, String entrant, String event, GeoPoint location, String status){
+        HashMap<String, Object> participant = new HashMap<>();
         // create a new participant and store the id
         participant.put("entrant", entrant);
         participant.put("event", event);
@@ -292,8 +293,8 @@ public class Database {
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
 
-    public void addEvent(String id, String capacity, String dateAndTime, String description, String location, String poster){
-        HashMap<String, String> event = new HashMap<>();
+    public void addEvent(String id, String capacity, String dateAndTime, String description, GeoPoint location, String poster){
+        HashMap<String, Object> event = new HashMap<>();
         // create a new event and store at the id
         event.put("capacity", capacity);
         event.put("dateAndTime", dateAndTime);

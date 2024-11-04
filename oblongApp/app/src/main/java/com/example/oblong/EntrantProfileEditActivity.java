@@ -1,101 +1,102 @@
 package com.example.oblong;
 
-import android.Manifest;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.view.View;
-import android.widget.ImageButton;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.io.InputStream;
+import java.util.HashMap;
 
 public class EntrantProfileEditActivity extends AppCompatActivity {
-    private static final int PICK_IMAGE_REQUEST = 1;
-    private static final int STORAGE_PERMISSION_CODE = 2;
 
-    private ImageView profilePictureImageView;
-    private ImageButton editImageButton;
+    private String user_id;
+    HashMap<String, Object> user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_entrant_profile_edit);
-
-        profilePictureImageView = findViewById(R.id.activity_entrant_profile_edit_profile_picture);
-        editImageButton = findViewById(R.id.entrant_profile_edit_image_button);
-
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Set an OnClickListener for the edit image button
-        editImageButton.setOnClickListener(v -> {
-            // Check if storage permission is granted
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                openImageChooser();
-            } else {
-                // Request storage permission
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+
+        EditText nameInput = findViewById(R.id.entrant_profile_edit_name_input);
+        EditText emailInput = findViewById(R.id.entrant_profile_edit_email_input);
+        EditText phoneInput = findViewById(R.id.entrant_profile_edit_phone_input);
+        ImageView profilePic = findViewById(R.id.imageView);
+        Button saveChangesButton = findViewById(R.id.entrant_profile_edit_save_changes_button);
+        Button cancelButton = findViewById(R.id.entrant_profile_edit_cancel_button);
+        // TODO: Implement notification checkbox
+        Button notificationCheckbox = findViewById(R.id.entrant_profile_edit_notification_checkbox);
+
+        // TODO: Implement image picker
+        ImageView imageButton = findViewById(R.id.entrant_profile_edit_image_button);
+        imageButton.setOnClickListener(v -> {
+            // Handle image button click
+        });
+
+        // Pull and display all user Info here
+        Database db = new Database();
+        db.getCurrentUser(userId -> {
+            if (userId != null) {
+                user_id = userId;
+                db.getUser(userId, user -> {
+                    if (user != null) {
+                        // Process data
+                        this.user = user;
+                        profilePic.setImageResource(user.get("photo") == null ? R.drawable.image_placeholder : (int) user.get("photo"));
+                        nameInput.setText((CharSequence) user.get("name"));
+                        emailInput.setText((CharSequence) user.get("email"));
+                        phoneInput.setText((CharSequence) (user.get("phone") == null ? "" : user.get("phone")));
+
+                        Log.d("Edit Activity", "Obtained all user info"); // print user's name to console
+                    } else {
+                        Log.d("Edit Activity", "User not found or an error occurred.");
+                    }
+                });
             }
         });
-    }
 
-    private void openImageChooser() {
-        // Create an intent to open the gallery
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
+        saveChangesButton.setOnClickListener(v -> {
+            // Handle save changes button click
+            inputValidator validator = new inputValidator(this);
+            Log.d("Edit Activity", "Entered save changes button");
+            if(validator.validateInput(nameInput.getText().toString(), emailInput.getText().toString(), phoneInput.getText().toString())) {
+                // Update user info into hashmap
+                user.put("name", nameInput.getText().toString());
+                user.put("email", emailInput.getText().toString());
+                user.put("phone", phoneInput.getText().toString().isEmpty() ? null : phoneInput.getText().toString());
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri imageUri = data.getData();
-
-            try {
-                // Open the image as a stream and set it as the profile picture
-                InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                profilePictureImageView.setImageBitmap(selectedImage);
-            } catch (Exception e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Failed to load image", Toast.LENGTH_SHORT).show();
+                db.updateDocument("users", user_id, user, success -> {
+                    if(success)
+                        Log.d("user", "User updated");
+                    else
+                        Log.d("user", "User not updated");
+                });
+                Toast.makeText(this, "Changes saved", Toast.LENGTH_SHORT).show();
+                setResult(RESULT_OK);
+                finish();
             }
-        }
+        });
+
+        cancelButton.setOnClickListener(v -> {
+            // Handle cancel button click
+            finish();
+        });
+
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == STORAGE_PERMISSION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openImageChooser();
-            } else {
-                Toast.makeText(this, "Storage permission is required to select an image", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 }
