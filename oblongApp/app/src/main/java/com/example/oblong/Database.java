@@ -74,8 +74,8 @@ public class Database {
 
 
 
-    public void updateDocument(String collection, HashMap<String, Object> updates, OnDataReceivedListener<Boolean> listener) {
-        db.collection(collection).document((String) Objects.requireNonNull(updates.get("id")))
+    public void updateDocument(String collection, String document_id, HashMap<String, Object> updates, OnDataReceivedListener<Boolean> listener) {
+        db.collection(collection).document(document_id)
                 .update(updates)
                 .addOnSuccessListener(aVoid -> {
                     Log.d("Database", "Document updated successfully in: " + collection);
