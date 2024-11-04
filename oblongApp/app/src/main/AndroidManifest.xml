@@ -54,8 +54,8 @@
             android:name=".EntrantEventDescriptionActivity"
             android:exported="false" />
         <activity
-            android:name=".EntrantEventList"
-            android:exported="false" />
+            android:name=".EntrantEventListActivity"
+            android:exported="true" />
         <activity
             android:name=".RoleSelector"
             android:exported="true">
@@ -66,7 +66,7 @@
         </activity>
         <activity
             android:name=".EntrantJoinEventActivity"
-            android:exported="false"/>
+            android:exported="true"/>
         <activity
             android:name=".organizer_profile"
             android:exported="true" />

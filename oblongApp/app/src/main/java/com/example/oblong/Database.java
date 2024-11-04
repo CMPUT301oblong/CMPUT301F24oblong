@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.installations.FirebaseInstallations;
 
@@ -229,8 +230,8 @@ public class Database {
     }
 
 
-    public void addParticipant(String id, String entrant, String event, String location, String status){
-        HashMap<String, String> participant = new HashMap<>();
+    public void addParticipant(String id, String entrant, String event, GeoPoint location, String status){
+        HashMap<String, Object> participant = new HashMap<>();
         // create a new participant and store the id
         participant.put("entrant", entrant);
         participant.put("event", event);
@@ -292,8 +293,8 @@ public class Database {
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
 
-    public void addEvent(String id, String capacity, String dateAndTime, String description, String location, String poster){
-        HashMap<String, String> event = new HashMap<>();
+    public void addEvent(String id, String capacity, String dateAndTime, String description, GeoPoint location, String poster){
+        HashMap<String, Object> event = new HashMap<>();
         // create a new event and store at the id
         event.put("capacity", capacity);
         event.put("dateAndTime", dateAndTime);
