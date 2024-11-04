@@ -153,7 +153,10 @@
         android:layout_height="50dp"
         android:background="@null"
         app:srcCompat="@android:drawable/ic_menu_edit"
-        tools:layout_editor_absoluteX="261dp"
-        tools:layout_editor_absoluteY="131dp" />
+        app:layout_constraintTop_toTopOf="@+id/activity_entrant_profile_edit_profile_picture"
+        app:layout_constraintEnd_toEndOf="@+id/activity_entrant_profile_edit_profile_picture"
+        app:layout_constraintStart_toEndOf="@+id/activity_entrant_profile_edit_profile_picture"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_entrant_profile_edit_profile_picture"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
