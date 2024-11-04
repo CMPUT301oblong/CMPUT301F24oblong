@@ -54,8 +54,8 @@
             android:name=".EntrantEventDescriptionActivity"
             android:exported="false" />
         <activity
-            android:name=".EntrantEventList"
-            android:exported="false" />
+            android:name=".EntrantEventListActivity"
+            android:exported="true" />
         <activity
             android:name=".RoleSelector"
             android:exported="true">
