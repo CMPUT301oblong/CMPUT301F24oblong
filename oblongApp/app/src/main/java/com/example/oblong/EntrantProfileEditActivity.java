@@ -1,12 +1,11 @@
 package com.example.oblong;
 
-import static java.security.AccessController.getContext;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,6 +38,7 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
         ImageView profilePic = findViewById(R.id.imageView);
         Button saveChangesButton = findViewById(R.id.entrant_profile_edit_save_changes_button);
         Button cancelButton = findViewById(R.id.entrant_profile_edit_cancel_button);
+        // TODO: Implement notification checkbox
         Button notificationCheckbox = findViewById(R.id.entrant_profile_edit_notification_checkbox);
 
         // TODO: Implement image picker
@@ -77,7 +77,7 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
                 // Update user info into hashmap
                 user.put("name", nameInput.getText().toString());
                 user.put("email", emailInput.getText().toString());
-                user.put("phone", phoneInput.getText().toString().isEmpty() ? null : phoneInput.getText().toString());;
+                user.put("phone", phoneInput.getText().toString().isEmpty() ? null : phoneInput.getText().toString());
 
                 db.updateDocument("users", user_id, user, success -> {
                     if(success)
@@ -85,9 +85,18 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
                     else
                         Log.d("user", "User not updated");
                 });
+                Toast.makeText(this, "Changes saved", Toast.LENGTH_SHORT).show();
+                setResult(RESULT_OK);
+                finish();
             }
+        });
 
+        cancelButton.setOnClickListener(v -> {
+            // Handle cancel button click
+            finish();
         });
 
     }
+
+
 }

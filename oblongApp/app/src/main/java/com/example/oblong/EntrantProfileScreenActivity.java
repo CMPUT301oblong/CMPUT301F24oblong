@@ -8,12 +8,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class EntrantProfileScreenActivity extends AppCompatActivity {
+
+    private TextView name;
+    private TextView email;
+    private TextView phone;
+    private ImageView profilePic;
+    private Database db;
+
+    private final ActivityResultLauncher<Intent> editProfileLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    // The edit activity finished successfully, update UI
+                    fetchUserProfileData();
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,36 +42,41 @@ public class EntrantProfileScreenActivity extends AppCompatActivity {
             return insets;
         });
 
-        TextView name = findViewById(R.id.entrant_profile_name);
-        TextView email = findViewById(R.id.entrant_profile_email);
-        TextView phone = findViewById(R.id.entrant_profile_phone);
-        ImageView profilePic = findViewById(R.id.entrant_profile_picture);
+        name = findViewById(R.id.entrant_profile_name);
+        email = findViewById(R.id.entrant_profile_email);
+        phone = findViewById(R.id.entrant_profile_phone);
+        profilePic = findViewById(R.id.entrant_profile_picture);
         ImageButton editProfileButton = findViewById(R.id.entrant_profile_edit_button);
 
         // Pull and display all user Info here
-        Database db = new Database();
+        db = new Database();
+        fetchUserProfileData();
+
+        editProfileButton.setOnClickListener(v -> {
+            // Handle edit profile button click
+            Intent intent = new Intent(this, EntrantProfileEditActivity.class);
+            editProfileLauncher.launch(intent);
+        });
+    }
+
+    private void fetchUserProfileData() {
         db.getCurrentUser(userId -> {
             if (userId != null) {
                 db.getUser(userId, user -> {
                     if (user != null) {
-                        // Process data
+                        // Update the UI with user data
                         profilePic.setImageResource(user.get("photo") == null ? R.drawable.image_placeholder : (int) user.get("photo"));
                         name.setText((CharSequence) user.get("name"));
                         email.setText((CharSequence) user.get("email"));
                         phone.setText((CharSequence) (user.get("phone") == null ? "No Phone # Provided" : user.get("phone")));
 
-                        Log.d("user", "User Name: " + user.get("name")); // print user's name to console
+                        Log.d("user", "User Name: " + user.get("name"));
                     } else {
                         Log.d("user", "User not found or an error occurred.");
                     }
                 });
             }
         });
-
-        editProfileButton.setOnClickListener(v -> {
-            // Handle edit profile button click
-            Intent intent = new Intent(this, EntrantProfileEditActivity.class);
-            startActivity(intent);
-        });
     }
+
 }
