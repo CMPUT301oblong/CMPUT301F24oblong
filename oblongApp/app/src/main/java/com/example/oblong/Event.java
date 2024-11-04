@@ -8,11 +8,13 @@ public class Event {
     private String eventName;
     private String eventDescription;
     private Date eventCloseDate;
+    private Integer eventCapacity;
 
-    public Event(String eventName, String eventDescription, Date eventCloseDate) {
+    public Event(String eventName, String eventDescription, Date eventCloseDate, Integer eventCapacity ) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.eventCloseDate = eventCloseDate;
+        this.eventCapacity = eventCapacity;
     }
 
     public String getEventName() {
@@ -39,5 +41,13 @@ public class Event {
 
     public void setEventCloseDate(Date eventCloseDate) {
         this.eventCloseDate = eventCloseDate;
+    }
+
+    public Integer getEventCapacity() {
+        return eventCapacity;
+    }
+
+    public void setEventCapacity(Integer eventCapacity) {
+        this.eventCapacity = eventCapacity;
     }
 }

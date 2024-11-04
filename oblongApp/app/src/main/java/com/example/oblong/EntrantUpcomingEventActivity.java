@@ -27,7 +27,7 @@ public class EntrantUpcomingEventActivity extends AppCompatActivity {
 
         //Testing the list view
         Date date = new Date();
-        Event testEvent = new Event("testEvent", "null", date);
+        Event testEvent = new Event("testEvent", "null", date, 1);
 
         ArrayList<Event> datalist = new ArrayList<Event>();
         datalist.add(testEvent);
