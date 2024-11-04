@@ -36,7 +36,7 @@ public class EntrantEventDescriptionWaitlistActivity extends AppCompatActivity {
 
         // cancel button listener
         backButton.setOnClickListener(v -> {
-            startActivity(new Intent(EntrantEventDescriptionWaitlistActivity.this, EntrantEventList.class));
+            startActivity(new Intent(EntrantEventDescriptionWaitlistActivity.this, EntrantEventListActivity.class));
         });
 
         // join button listener
@@ -48,12 +48,11 @@ public class EntrantEventDescriptionWaitlistActivity extends AppCompatActivity {
 
                 // add user as a participant
                 HashMap<String, Object> cancelParticipant = new HashMap<>();
-                cancelParticipant.put("id",participantId);
                 cancelParticipant.put("status","cancelled");
-                db.updateDocument("participants", cancelParticipant, participant -> {
+                db.updateDocument("participants", participantId,cancelParticipant, participant -> {
                     if (participant != null) {
                         // Process data
-                        startActivity(new Intent(EntrantEventDescriptionWaitlistActivity.this, EntrantEventList.class));
+                        startActivity(new Intent(EntrantEventDescriptionWaitlistActivity.this, EntrantEventListActivity.class));
                     }
                 });
 
