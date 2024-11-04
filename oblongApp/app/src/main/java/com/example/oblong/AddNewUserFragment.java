@@ -53,7 +53,8 @@ public class AddNewUserFragment extends DialogFragment {
         dialog.setOnShowListener(dialogInterface ->
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
                     // Perform validation before adding the user
-                    if (validateInput(name.getText().toString(), email.getText().toString(), phone.getText().toString())) {
+                    inputValidator validator = new inputValidator(getContext());
+                    if (validator.validateInput(name.getText().toString(), email.getText().toString(), phone.getText().toString())) {
                         listener.addUser(name.getText().toString(), email.getText().toString(), phone.getText().toString());
                         dialog.dismiss();  // Close the dialog only if validation succeeds
                     }
@@ -63,33 +64,5 @@ public class AddNewUserFragment extends DialogFragment {
         return dialog;
     }
 
-
-    private boolean validateInput(String name, String email, String phone) {
-        if (name.isEmpty() || email.isEmpty()){
-            Toast.makeText(getContext(), "Please fill in all required fields", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        // Validate that two names are provided and they are valid
-        String[] names = name.split(" ");
-        if (names.length < 2 || !name.matches("[a-zA-Z ]+")) {
-            Toast.makeText(getContext(), "Please enter a valid first and last name", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        // Validate email format
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(getContext(), "Please enter a valid email address", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        // Validate optional phone format (example: checking for 10-digit numbers) or it is empty
-        if (!phone.isEmpty() && !phone.matches("\\d{10}")) {
-            Toast.makeText(getContext(), "Please enter a valid 10-digit phone number", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        return true;
-    }
 
 }
