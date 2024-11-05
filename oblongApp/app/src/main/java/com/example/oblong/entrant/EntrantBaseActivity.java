@@ -1,14 +1,17 @@
-package com.example.oblong;
+package com.example.oblong.entrant;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import com.example.oblong.R;
+import com.example.oblong.qr_scanner;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
-public class MainActivity extends AppCompatActivity {
+public class EntrantBaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 if (itemId == R.id.myEvents) {
                     selectedFragment = new EntrantMyEventsFragment();
                 } else if (itemId == R.id.allEvents) {
-                    selectedFragment = new EntrantUpcomingWaitlistedEventsFragment();
+                    selectedFragment = new EntrantUpcomingEventsFragment();
                 } else if (itemId == R.id.camera) {
                     startActivity(new Intent(this, qr_scanner.class));
                 } else if (itemId == R.id.profile) {

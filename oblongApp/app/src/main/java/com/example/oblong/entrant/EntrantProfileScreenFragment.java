@@ -1,4 +1,4 @@
-package com.example.oblong;
+package com.example.oblong.entrant;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -17,6 +17,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.oblong.Database;
+import com.example.oblong.R;
 
 public class EntrantProfileScreenFragment extends Fragment {
 
