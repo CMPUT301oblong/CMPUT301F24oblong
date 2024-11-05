@@ -19,6 +19,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <ImageButton
+        android:id="@+id/delete_profile_button"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@null"
+        android:contentDescription="Delete Profile Picture"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+        app:layout_constraintTop_toTopOf="@id/activity_entrant_profile_edit_profile_picture"
+        app:layout_constraintEnd_toEndOf="@id/activity_entrant_profile_edit_profile_picture"
+        android:layout_margin="4dp"/>
+
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="0dp"
