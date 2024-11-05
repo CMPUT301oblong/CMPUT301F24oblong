@@ -53,8 +53,8 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserFragmen
                 assert type != null;
                 switch (type) {
                     case "entrant": {
-                        // Entrant, navigate to EntrantProfileScreenActivity
-                        Intent intent = new Intent(this, EntrantProfileScreenActivity.class);
+                        // Entrant, navigate to EntrantProfileScreenFragment
+                        Intent intent = new Intent(this, MainActivity.class);
                         startActivity(intent);
                         break;
                     }
@@ -80,7 +80,7 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserFragmen
     @Override
     public void addUser(String name, String email, String phone) {
         db.addUser(user_id, name, email, "entrant", (phone.isEmpty() ? null : phone), null);
-        Intent intent = new Intent(this, EntrantProfileScreenActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }
