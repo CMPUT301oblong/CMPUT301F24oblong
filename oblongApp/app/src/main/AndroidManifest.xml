@@ -41,7 +41,6 @@
         <activity
             android:name=".organizer_profile_edit"
             android:exported="false" />
-        <activity android:name=".RoleSelector" />
         <activity
             android:name=".EntrantProfileEditActivity"
             android:exported="false" />
@@ -56,15 +55,18 @@
             android:exported="false" />
         <activity
             android:name=".EntrantUpcomingEventActivity"
-            android:name=".EntrantEventListActivity"
-            android:exported="true" />
-        <activity
-            android:name=".RoleSelector"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".EntrantEventListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".RoleSelector"
+            android:exported="true">
         </activity>
         <activity
             android:name=".EntrantJoinEventActivity"
