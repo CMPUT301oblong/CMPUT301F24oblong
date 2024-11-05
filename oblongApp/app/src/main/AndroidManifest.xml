@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Oblong"
         tools:targetApi="31">
         <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".AdminProfileBrowserActivity"
             android:exported="false" />
         <activity
@@ -33,9 +36,6 @@
             android:name=".organizer_create_notification_activity"
             android:exported="false" />
         <activity
-            android:name=".organizer_entrant_waitlist"
-            android:exported="false" />
-        <activity
             android:name=".organizer_create_event_screen"
             android:exported="false" />
         <activity
@@ -48,28 +48,32 @@
             android:name=".EntrantEventDescriptionWaitlistActivity"
             android:exported="false" />
         <activity
-            android:name=".EntrantProfileScreenActivity"
-            android:exported="true" />
-        <activity
             android:name=".EntrantEventDescriptionActivity"
             android:exported="false" />
         <activity
             android:name=".EntrantEventListActivity"
             android:exported="true" />
         <activity
-            android:name=".RoleSelector"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".qr_scanner"
+            android:exported="true"
+            android:screenOrientation="fullSensor"
+            tools:ignore="DiscouragedApi" />
         <activity
             android:name=".EntrantJoinEventActivity"
-            android:exported="true"/>
+            android:exported="true" />
         <activity
             android:name=".organizer_profile"
             android:exported="true" />
+        <activity
+            android:name=".RoleSelector"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
