@@ -1,5 +1,6 @@
 package com.example.oblong;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -8,17 +9,36 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import java.io.IOException;
 
 import java.util.HashMap;
 
 public class EntrantProfileEditActivity extends AppCompatActivity {
 
     private String user_id;
-    HashMap<String, Object> user;
+    private HashMap<String, Object> user;
+    private ImageView profilePic;
+    private Bitmap selectedProfilePicBitmap = null; // Store the selected profile picture bitmap
+    private boolean isProfilePicChanged = false;    // Track if the profile picture has changed
+
+    private static final int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 100;
+    private ActivityResultLauncher<Intent> imagePickerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,17 +55,37 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
         EditText nameInput = findViewById(R.id.entrant_profile_edit_name_input);
         EditText emailInput = findViewById(R.id.entrant_profile_edit_email_input);
         EditText phoneInput = findViewById(R.id.entrant_profile_edit_phone_input);
-        ImageView profilePic = findViewById(R.id.imageView);
+        profilePic = findViewById(R.id.activity_entrant_profile_edit_profile_picture);
         Button saveChangesButton = findViewById(R.id.entrant_profile_edit_save_changes_button);
         Button cancelButton = findViewById(R.id.entrant_profile_edit_cancel_button);
+        ImageView imageButton = findViewById(R.id.entrant_profile_edit_image_button);
+        ImageView deleteProfileButton = findViewById(R.id.delete_profile_button);
+
         // TODO: Implement notification checkbox
         Button notificationCheckbox = findViewById(R.id.entrant_profile_edit_notification_checkbox);
 
-        // TODO: Implement image picker
-        ImageView imageButton = findViewById(R.id.entrant_profile_edit_image_button);
-        imageButton.setOnClickListener(v -> {
-            // Handle image button click
-        });
+
+        imagePickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Uri imageUri = result.getData().getData();
+                        try {
+                            // Convert URI to bitmap
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+
+                            // Update ImageView and set flags
+                            profilePic.setImageBitmap(bitmap);
+                            selectedProfilePicBitmap = bitmap;
+                            isProfilePicChanged = true;
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(this, "Error loading image", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+        );
 
         // Pull and display all user Info here
         Database db = new Database();
@@ -69,25 +109,54 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
             }
         });
 
+        imageButton.setOnClickListener(v -> {
+            // Check for permission
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
+            } else {
+                openImageChooser();
+            }
+        });
+
+        deleteProfileButton.setOnClickListener(v -> {
+            profilePic.setImageResource(R.drawable.image_placeholder);
+            selectedProfilePicBitmap = null;
+            isProfilePicChanged = true;
+        });
+
         saveChangesButton.setOnClickListener(v -> {
-            // Handle save changes button click
             inputValidator validator = new inputValidator(this);
-            Log.d("Edit Activity", "Entered save changes button");
             if(validator.validateInput(nameInput.getText().toString(), emailInput.getText().toString(), phoneInput.getText().toString())) {
-                // Update user info into hashmap
+                // Update user info in hashmap
                 user.put("name", nameInput.getText().toString());
                 user.put("email", emailInput.getText().toString());
                 user.put("phone", phoneInput.getText().toString().isEmpty() ? null : phoneInput.getText().toString());
 
+                // Check if profile picture was changed
+                if (isProfilePicChanged) {
+                    if (selectedProfilePicBitmap != null) {
+                        // Convert Bitmap to Base64 String
+                        String base64Image = imageUtils.bitmapToBase64(selectedProfilePicBitmap);
+                        user.put("profilePhoto", base64Image);
+                    } else {
+                        user.put("profilePhoto", null); // Set to null if deleted
+                    }
+                }
+
                 db.updateDocument("users", user_id, user, success -> {
-                    if(success)
+                    if(success) {
                         Log.d("user", "User updated");
-                    else
+                        Toast.makeText(this, "Changes saved", Toast.LENGTH_SHORT).show();
+                        setResult(RESULT_OK);
+                        finish();
+                    } else {
                         Log.d("user", "User not updated");
+                        Toast.makeText(this, "Failed to save changes", Toast.LENGTH_SHORT).show();
+                    }
                 });
-                Toast.makeText(this, "Changes saved", Toast.LENGTH_SHORT).show();
-                setResult(RESULT_OK);
-                finish();
             }
         });
 
@@ -96,6 +165,24 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
             finish();
         });
 
+    }
+    private void openImageChooser() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        imagePickerLauncher.launch(intent);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_PERMISSION_READ_EXTERNAL_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openImageChooser();
+            } else {
+                Toast.makeText(this, "Permission required to access photos", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 
