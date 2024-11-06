@@ -4,12 +4,14 @@ import android.util.Log;
 
 import com.google.firebase.Timestamp;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Event {
+public class Event implements Serializable {
+    private String eventID;
     private String eventName;
     private String eventDescription;
     private Date eventCloseDate;
@@ -25,7 +27,7 @@ public class Event {
 
     public Event(String eventID){
         //Access database
-
+        this.eventID = eventID;
         Database db = new Database();
 
         db.getEvent(eventID,data -> {
@@ -87,5 +89,13 @@ public class Event {
 
     public void setEventCapacity(Long eventCapacity) {
         this.eventCapacity = eventCapacity;
+    }
+
+    public String getEventID() {
+        return eventID;
+    }
+
+    public void setEventID(String eventID) {
+        this.eventID = eventID;
     }
 }
