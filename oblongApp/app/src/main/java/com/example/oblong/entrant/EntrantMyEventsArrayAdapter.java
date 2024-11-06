@@ -1,6 +1,10 @@
 package com.example.oblong.entrant;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,11 +56,13 @@ public class EntrantMyEventsArrayAdapter extends ArrayAdapter<Event> {
             // Handle the button click event
             @Override
             public void onClick(View v) {
-                // TODO: open the event page
-                // Create an Intent to start the new activity
-                // Intent intent = new Intent(getContext(), NewActivity.class);
-                // Start the new activity
-                // context.startActivity(intent);
+                Intent intent = new Intent(context, EntrantEventDescriptionActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("EVENT", event);
+                intent.putExtras(bundle);
+
+                context.startActivity(intent);
 
                 Log.d("button", String.format("%s button clicked", event.getEventName()));
             }
@@ -66,11 +72,13 @@ public class EntrantMyEventsArrayAdapter extends ArrayAdapter<Event> {
             // Handle the button click event
             @Override
             public void onClick(View v) {
-                // TODO: Accept the invitation
-                // Create an Intent to start the new activity
-                // Intent intent = new Intent(getContext(), NewActivity.class);
-                // Start the new activity
-                // context.startActivity(intent);
+
+                Intent intent = new Intent(context, EntrantEventAcceptDescriptionActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("EVENT", event);
+                intent.putExtras(bundle);
+
+                context.startActivity(intent);
             }
         });
 

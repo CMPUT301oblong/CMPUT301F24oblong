@@ -31,8 +31,8 @@ public class EntrantEventDescriptionWaitlistActivity extends AppCompatActivity {
 
         // Initialize
         Database db = new Database();
-        Button joinButton = findViewById(R.id.entrant_event_description_waitlist_leave_button);
-        ImageButton backButton = findViewById(R.id.entrant_event_description_waitlist_back_button);
+        Button joinButton = findViewById(R.id.entrant_event_description_leave_button);
+        ImageButton backButton = findViewById(R.id.entrant_event_description_back_button);
         Intent intent = getIntent();
         String event_id = intent.getStringExtra("event");
 
