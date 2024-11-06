@@ -2,6 +2,7 @@ package com.example.oblong.entrant;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -14,8 +15,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.oblong.Database;
 import com.example.oblong.Event;
 import com.example.oblong.R;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class EntrantEventDescriptionActivity extends AppCompatActivity {
 
@@ -25,6 +32,9 @@ public class EntrantEventDescriptionActivity extends AppCompatActivity {
     private TextView eventDescriptionTextView;
     private ImageButton backButton;
     private Button leaveButton;
+    private FirebaseFirestore db;
+    private CollectionReference participantsRef;
+    private CollectionReference eventsRef;
 
 
 
@@ -83,6 +93,27 @@ public class EntrantEventDescriptionActivity extends AppCompatActivity {
         //remove participant relation from database
         //kick user back to their events
 
+        //FIND PARTICIPANT RELATION WITH BOTH USERID AND EVENTID
+        db = FirebaseFirestore.getInstance();
+        participantsRef = db.collection("participants");
+        eventsRef = db.collection("events");
+
+        Database.getCurrentUser(new Database.OnDataReceivedListener<String>() {
+            @Override
+            public void onDataReceived(String data) {
+                db.collection("participants")
+                        .whereEqualTo("event", event.getEventID())
+                        .whereEqualTo("entrant", data)
+                        .get()
+                        .addOnSuccessListener(queryDocumentSnapshots -> {
+                            if(!queryDocumentSnapshots.isEmpty()){
+                                DocumentSnapshot doc = queryDocumentSnapshots.getDocuments().get(0);
+                                doc.getReference().delete();
+                            }
+                                }
+                                );
+            }
+        });
         finish();
     }
 

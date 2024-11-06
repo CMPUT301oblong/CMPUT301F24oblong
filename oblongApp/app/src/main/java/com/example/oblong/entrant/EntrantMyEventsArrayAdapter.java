@@ -60,7 +60,6 @@ public class EntrantMyEventsArrayAdapter extends ArrayAdapter<Event> {
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("EVENT", event);
-
                 intent.putExtras(bundle);
 
                 context.startActivity(intent);
@@ -73,16 +72,11 @@ public class EntrantMyEventsArrayAdapter extends ArrayAdapter<Event> {
             // Handle the button click event
             @Override
             public void onClick(View v) {
-                // TODO: Accept the invitation
-                // Create an Intent to start the new activity
-                // Intent intent = new Intent(getContext(), NewActivity.class);
-                // Start the new activity
-                // context.startActivity(intent);
 
                 Intent intent = new Intent(context, EntrantEventAcceptDescriptionActivity.class);
-                intent.putExtra("EVENT_NAME", event.getEventName());
-                //NEED TO SEND IMAGE
-                intent.putExtra("EVENT_DESCRIPTION", event.getEventDescription());
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("EVENT", event);
+                intent.putExtras(bundle);
 
                 context.startActivity(intent);
             }
