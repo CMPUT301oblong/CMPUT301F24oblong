@@ -67,7 +67,7 @@ public class EntrantMyEventsFragment extends Fragment {
 
     private void fetchEvents() {
         // Fetch events where the user is a participant
-        participantsRef.whereEqualTo("entrant", user_id).get().addOnSuccessListener(queryDocumentSnapshots -> {
+        participantsRef.whereEqualTo("entrant", user_id).whereEqualTo("status", "attending").get().addOnSuccessListener(queryDocumentSnapshots -> {
             if (queryDocumentSnapshots != null) {
                 Log.d("EntrantMyEventsFragment", String.format("Searching for documents for %s", user_id));
                 eventsDataList.clear();

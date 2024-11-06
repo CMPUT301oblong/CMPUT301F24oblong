@@ -36,7 +36,7 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
 
         // cancel button listener
         cancelButton.setOnClickListener(v -> {
-            startActivity(new Intent(EntrantJoinEventActivity.this, EntrantEventListActivity.class));
+            startActivity(new Intent(EntrantJoinEventActivity.this, EntrantBaseActivity.class));
         });
 
         // join button listener
@@ -50,7 +50,7 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
 
                 // add user as a participant
                 db.addParticipant(participantId, userId, event_id, location, status);
-                startActivity(new Intent(EntrantJoinEventActivity.this, EntrantEventListActivity.class));
+                startActivity(new Intent(EntrantJoinEventActivity.this, EntrantBaseActivity.class));
             });
         });
     }
