@@ -18,62 +18,61 @@
         android:theme="@style/Theme.Oblong"
         tools:targetApi="31">
         <activity
-            android:name=".AdminProfileBrowserActivity"
+            android:name=".entrant.EntrantBaseActivity"
             android:exported="false" />
         <activity
-            android:name=".AdminEventBrowserActivity"
+            android:name=".admin.AdminProfileBrowserActivity"
             android:exported="false" />
         <activity
-            android:name=".AdminProfileActivity"
+            android:name=".admin.AdminEventBrowserActivity"
             android:exported="false" />
         <activity
-            android:name=".organizer_view_entrant_profile"
+            android:name=".admin.AdminProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".organizer_create_notification_activity"
+            android:name=".organizer.organizer_view_entrant_profile"
             android:exported="false" />
         <activity
-            android:name=".organizer_entrant_waitlist"
+            android:name=".organizer.organizer_create_notification_activity"
             android:exported="false" />
         <activity
-            android:name=".organizer_create_event_screen"
+            android:name=".organizer.organizer_create_event_screen"
             android:exported="false" />
         <activity
-            android:name=".organizer_profile_edit"
+            android:name=".organizer.organizer_profile_edit"
             android:exported="false" />
         <activity
-            android:name=".EntrantProfileEditActivity"
+            android:name=".entrant.EntrantProfileEditActivity"
             android:exported="false" />
         <activity
-            android:name=".EntrantEventDescriptionWaitlistActivity"
+            android:name=".entrant.EntrantEventDescriptionWaitlistActivity"
             android:exported="false" />
         <activity
-            android:name=".EntrantProfileScreenActivity"
+            android:name=".entrant.EntrantEventDescriptionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".entrant.EntrantEventListActivity"
             android:exported="true" />
         <activity
-            android:name=".EntrantEventDescriptionActivity"
-            android:exported="false" />
+            android:name=".qr_scanner"
+            android:exported="true"
+            android:screenOrientation="fullSensor"
+            tools:ignore="DiscouragedApi" />
         <activity
-            android:name=".EntrantUpcomingEventActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".entrant.EntrantJoinEventActivity"
+            android:exported="true" />
         <activity
-            android:name=".EntrantEventListActivity"
+            android:name=".organizer.organizer_profile"
             android:exported="true" />
         <activity
             android:name=".RoleSelector"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity
-            android:name=".EntrantJoinEventActivity"
-            android:exported="true"/>
-        <activity
-            android:name=".organizer_profile"
-            android:exported="true" />
     </application>
 
 </manifest>

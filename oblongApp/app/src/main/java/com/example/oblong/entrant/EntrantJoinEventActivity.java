@@ -1,4 +1,4 @@
-package com.example.oblong;
+package com.example.oblong.entrant;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.oblong.Database;
+import com.example.oblong.R;
 import com.google.firebase.firestore.GeoPoint;
 
 public class EntrantJoinEventActivity extends AppCompatActivity {

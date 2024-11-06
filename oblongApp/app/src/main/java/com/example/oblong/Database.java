@@ -60,7 +60,7 @@ public class Database {
     //        });
 
     // Retrieve the user ID asynchronously
-    public void getCurrentUser(OnDataReceivedListener<String> listener) {
+    public static void getCurrentUser(OnDataReceivedListener<String> listener) {
         FirebaseInstallations.getInstance().getId().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 String userId = task.getResult();

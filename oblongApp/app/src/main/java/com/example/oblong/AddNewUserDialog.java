@@ -3,20 +3,17 @@ package com.example.oblong;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import android.util.Patterns;
 
 
-public class AddNewUserFragment extends DialogFragment {
+public class AddNewUserDialog extends DialogFragment {
     interface AddUserDialogListener {
         void addUser(String name, String email, String phone);
     }
@@ -54,7 +51,7 @@ public class AddNewUserFragment extends DialogFragment {
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
                     // Perform validation before adding the user
                     inputValidator validator = new inputValidator(getContext());
-                    if (validator.validateInput(name.getText().toString(), email.getText().toString(), phone.getText().toString())) {
+                    if (validator.validateUserProfile(name.getText().toString(), email.getText().toString(), phone.getText().toString())) {
                         listener.addUser(name.getText().toString(), email.getText().toString(), phone.getText().toString());
                         dialog.dismiss();  // Close the dialog only if validation succeeds
                     }
