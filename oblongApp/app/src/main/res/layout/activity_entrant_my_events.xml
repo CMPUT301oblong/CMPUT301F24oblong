@@ -14,9 +14,9 @@
         android:layout_marginHorizontal="24dp"
         android:paddingTop="4dp"
         android:text="My Events"
-
+        android:gravity="center"
         android:textColor="#000000"
-        android:textSize="48sp" />
+        android:textSize="40sp" />
 
 
     <ListView

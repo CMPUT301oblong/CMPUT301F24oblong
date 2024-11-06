@@ -1,7 +1,5 @@
 package com.example.oblong;
 
-import static java.security.AccessController.getContext;
-
 import android.content.Context;
 import android.util.Patterns;
 import android.widget.Toast;
@@ -12,7 +10,7 @@ public class inputValidator {
         this.context = context;
     }
 
-    public boolean validateInput(String name, String email, String phone) {
+    public boolean validateUserProfile(String name, String email, String phone) {
         if (name.isEmpty() || email.isEmpty()){
             Toast.makeText(context, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
             return false;

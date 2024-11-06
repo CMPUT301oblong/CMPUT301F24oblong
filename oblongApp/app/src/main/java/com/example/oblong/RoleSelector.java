@@ -5,18 +5,17 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.installations.FirebaseInstallations;
+import com.example.oblong.admin.AdminProfileBrowserActivity;
+import com.example.oblong.entrant.EntrantBaseActivity;
+import com.example.oblong.organizer.organizer_profile;
 
 
-public class RoleSelector extends AppCompatActivity implements AddNewUserFragment.AddUserDialogListener {
+public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.AddUserDialogListener {
     private Database db = new Database();
     private String user_id;
 
@@ -33,7 +32,7 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserFragmen
             return insets;
         });
 
-        db.getCurrentUser(user_id -> {
+        Database.getCurrentUser(user_id -> {
             if (user_id != null) {
                 this.user_id = user_id;
                 verifyUser();
@@ -54,7 +53,7 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserFragmen
                 switch (type) {
                     case "entrant": {
                         // Entrant, navigate to EntrantProfileScreenFragment
-                        Intent intent = new Intent(this, MainActivity.class);
+                        Intent intent = new Intent(this, EntrantBaseActivity.class);
                         startActivity(intent);
                         break;
                     }
@@ -72,7 +71,7 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserFragmen
                     }
                 }
             } else {
-                new AddNewUserFragment().show(getSupportFragmentManager(), "add_user");
+                new AddNewUserDialog().show(getSupportFragmentManager(), "add_user");
             }
         });
     }
@@ -80,7 +79,7 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserFragmen
     @Override
     public void addUser(String name, String email, String phone) {
         db.addUser(user_id, name, email, "entrant", (phone.isEmpty() ? null : phone), null);
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, EntrantBaseActivity.class);
         startActivity(intent);
     }
 }

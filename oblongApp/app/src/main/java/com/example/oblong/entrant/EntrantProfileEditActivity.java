@@ -1,6 +1,5 @@
-package com.example.oblong;
+package com.example.oblong.entrant;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -25,6 +24,12 @@ import android.provider.MediaStore;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.example.oblong.Database;
+import com.example.oblong.R;
+import com.example.oblong.imageUtils;
+import com.example.oblong.inputValidator;
+
 import java.io.IOException;
 
 import java.util.HashMap;
@@ -129,7 +134,7 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
 
         saveChangesButton.setOnClickListener(v -> {
             inputValidator validator = new inputValidator(this);
-            if(validator.validateInput(nameInput.getText().toString(), emailInput.getText().toString(), phoneInput.getText().toString())) {
+            if(validator.validateUserProfile(nameInput.getText().toString(), emailInput.getText().toString(), phoneInput.getText().toString())) {
                 // Update user info in hashmap
                 user.put("name", nameInput.getText().toString());
                 user.put("email", emailInput.getText().toString());
