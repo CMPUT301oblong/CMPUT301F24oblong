@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -15,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import com.example.oblong.Event;
 import com.example.oblong.R;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -23,14 +21,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.UUID;
 
 public class EntrantUpcomingEventsFragment extends Fragment {
 
     private ListView eventList;
     private ArrayList<Event> eventsDataList;
-    private EntrantEventArrayAdapter adapter;
+    private EntrantAllEventsArrayAdapter adapter;
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
 
@@ -51,7 +47,7 @@ public class EntrantUpcomingEventsFragment extends Fragment {
         eventList = view.findViewById(R.id.activity_entrant_all_events_list); // Corrected line
         eventsDataList = new ArrayList<>();
 
-        adapter = new EntrantEventArrayAdapter(getContext(), eventsDataList);
+        adapter = new EntrantAllEventsArrayAdapter(getContext(), eventsDataList);
         eventList.setAdapter(adapter);
 
         // Fetch Items from Firebase

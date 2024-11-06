@@ -134,7 +134,7 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
 
         saveChangesButton.setOnClickListener(v -> {
             inputValidator validator = new inputValidator(this);
-            if(validator.validateInput(nameInput.getText().toString(), emailInput.getText().toString(), phoneInput.getText().toString())) {
+            if(validator.validateUserProfile(nameInput.getText().toString(), emailInput.getText().toString(), phoneInput.getText().toString())) {
                 // Update user info in hashmap
                 user.put("name", nameInput.getText().toString());
                 user.put("email", emailInput.getText().toString());

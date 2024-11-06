@@ -32,7 +32,7 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.
             return insets;
         });
 
-        db.getCurrentUser(user_id -> {
+        Database.getCurrentUser(user_id -> {
             if (user_id != null) {
                 this.user_id = user_id;
                 verifyUser();

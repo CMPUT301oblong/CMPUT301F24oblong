@@ -51,7 +51,7 @@ public class AddNewUserDialog extends DialogFragment {
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
                     // Perform validation before adding the user
                     inputValidator validator = new inputValidator(getContext());
-                    if (validator.validateInput(name.getText().toString(), email.getText().toString(), phone.getText().toString())) {
+                    if (validator.validateUserProfile(name.getText().toString(), email.getText().toString(), phone.getText().toString())) {
                         listener.addUser(name.getText().toString(), email.getText().toString(), phone.getText().toString());
                         dialog.dismiss();  // Close the dialog only if validation succeeds
                     }

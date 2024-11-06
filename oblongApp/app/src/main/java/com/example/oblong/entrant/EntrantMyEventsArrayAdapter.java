@@ -17,11 +17,11 @@ import com.example.oblong.R;
 
 import java.util.ArrayList;
 
-public class EntrantEventArrayAdapter extends ArrayAdapter<Event> {
+public class EntrantMyEventsArrayAdapter extends ArrayAdapter<Event> {
     private ArrayList<Event> events;
     private Context context;
 
-    public EntrantEventArrayAdapter(Context context, ArrayList<Event> events){
+    public EntrantMyEventsArrayAdapter(Context context, ArrayList<Event> events){
         super(context,0, events);
         this.events = events;
         this.context = context;
@@ -46,6 +46,7 @@ public class EntrantEventArrayAdapter extends ArrayAdapter<Event> {
         TextView eventName = view.findViewById(R.id.entrant_event_list_item_event_name);
         TextView drawDate = view.findViewById(R.id.entrant_event_list_item_draw_date);
         Button viewButton = view.findViewById(R.id.entrant_event_list_item_view_button);
+        Button acceptButton = view.findViewById(R.id.entrant_event_list_item_accept_invite_button);
 
         viewButton.setOnClickListener(new View.OnClickListener() {
             // Handle the button click event
@@ -58,6 +59,18 @@ public class EntrantEventArrayAdapter extends ArrayAdapter<Event> {
                 // context.startActivity(intent);
 
                 Log.d("button", String.format("%s button clicked", event.getEventName()));
+            }
+        });
+
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            // Handle the button click event
+            @Override
+            public void onClick(View v) {
+                // TODO: Accept the invitation
+                // Create an Intent to start the new activity
+                // Intent intent = new Intent(getContext(), NewActivity.class);
+                // Start the new activity
+                // context.startActivity(intent);
             }
         });
 
