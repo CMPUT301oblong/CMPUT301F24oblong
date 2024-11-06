@@ -38,6 +38,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore")
+    implementation ("com.google.firebase:firebase-auth:21.0.1")
     implementation (libs.zxing.android.embedded)
     implementation (libs.core)
     implementation(libs.appcompat)
@@ -45,8 +46,11 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.play.services.maps)
+<<<<<<< HEAD
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.firestore)
+=======
+>>>>>>> main
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

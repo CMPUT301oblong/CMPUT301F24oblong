@@ -2,14 +2,20 @@ package com.example.oblong;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.installations.FirebaseInstallations;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Database {
     private final CollectionReference users;
@@ -19,9 +25,10 @@ public class Database {
     private final CollectionReference notifications;
     private final CollectionReference organizers;
     private final CollectionReference participants;
+    private String user_id;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public Database() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
         users = db.collection("users");
         events = db.collection("events");
         entrants = db.collection("entrants");
@@ -51,6 +58,34 @@ public class Database {
     //            }
     //        });
 
+    // Retrieve the user ID asynchronously
+    public void getCurrentUser(OnDataReceivedListener<String> listener) {
+        FirebaseInstallations.getInstance().getId().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                String userId = task.getResult();
+                Log.d("RoleSelector", "User ID: " + userId);
+                listener.onDataReceived(userId); // Pass the userId back to the listener
+            } else {
+                Log.e("RoleSelector", "Failed to retrieve user ID");
+                listener.onDataReceived("0"); // return 0 on failure
+            }
+        });
+    }
+
+
+
+    public void updateDocument(String collection, HashMap<String, Object> updates, OnDataReceivedListener<Boolean> listener) {
+        db.collection(collection).document((String) Objects.requireNonNull(updates.get("id")))
+                .update(updates)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("Database", "Document updated successfully in: " + collection);
+                    listener.onDataReceived(true); // success
+                })
+                .addOnFailureListener(e -> {
+                    Log.d("Database", "Document failed to update from: " + collection);
+                    listener.onDataReceived(false); // fail
+                });
+    }
 
     public void getParticipants(String id, OnDataReceivedListener<HashMap<String, Object>> listener) {
         participants.document(id).get().addOnSuccessListener(documentSnapshot -> {
