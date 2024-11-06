@@ -46,11 +46,8 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.play.services.maps)
-<<<<<<< HEAD
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.firestore)
-=======
->>>>>>> main
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
