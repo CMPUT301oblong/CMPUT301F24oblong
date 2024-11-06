@@ -34,6 +34,18 @@ import java.io.IOException;
 
 import java.util.HashMap;
 
+/**
+ * Activity class for editing a user profile.
+ * <p>
+ * This activity allows the user to update their profile information, including
+ * name, email, phone number, and profile picture. It includes functionality for
+ * selecting an image from the device gallery, deleting the profile picture, and
+ * saving or canceling changes.
+ * <p>
+ * User data is pulled from a database on creation, and updates are saved to the
+ * database when the user confirms changes.
+ */
+
 public class EntrantProfileEditActivity extends AppCompatActivity {
 
     private String user_id;
@@ -45,6 +57,15 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
     private static final int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 100;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
 
+    /**
+     * Initializes the activity, sets up the user interface, retrieves current user data from
+     * the database, and sets up click listeners for buttons.
+     * <p>
+     * It also sets up edge-to-edge insets for the UI and initializes the image picker
+     * for profile picture selection.
+     *
+     * @param savedInstanceState The saved instance state bundle.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -166,18 +187,29 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
         });
 
         cancelButton.setOnClickListener(v -> {
-            // Handle cancel button click
+            Intent intent = new Intent(String.valueOf(EntrantProfileScreenFragment.class));
+            startActivity(intent);
             finish();
         });
 
     }
+    /**
+     * Opens the device's image picker to select a new profile picture.
+     */
     private void openImageChooser() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         imagePickerLauncher.launch(intent);
     }
 
-
+    /**
+     * Handles permission result for accessing external storage. If permission is granted,
+     * the image picker is opened; otherwise, a toast message is displayed to the user.
+     *
+     * @param requestCode  The request code for the permission request.
+     * @param permissions  The requested permissions.
+     * @param grantResults The results for the requested permissions.
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
