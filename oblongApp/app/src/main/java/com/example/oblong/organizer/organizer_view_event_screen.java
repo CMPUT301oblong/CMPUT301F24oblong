@@ -1,11 +1,8 @@
-package com.example.oblong;
+package com.example.oblong.organizer;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.Base64;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -14,8 +11,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import com.example.oblong.R;
+import com.example.oblong.qr_generator;
 
 public class organizer_view_event_screen extends AppCompatActivity {
 
