@@ -102,6 +102,7 @@ public class organizer_my_events_fragment extends Fragment {
                                                 DocumentSnapshot data = task.getResult();
                                                 event.setEventName(data.getString("name"));
                                                 event.setEventCloseDate(data.getDate("dateAndTime"));
+                                                event.setPoster(data.getString("poster"));
                                                 eventsDataList.add(event);
                                                 adapter.notifyDataSetChanged();
                                             });
