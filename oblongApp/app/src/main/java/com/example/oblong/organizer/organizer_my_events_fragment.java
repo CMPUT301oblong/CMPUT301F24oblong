@@ -31,7 +31,7 @@ public class organizer_my_events_fragment extends Fragment {
 
     private ListView eventList;
     private ArrayList<Event> eventsDataList;
-    private EntrantMyEventsArrayAdapter adapter;
+    private OrganizerMyEventsArrayAdapter adapter;
     private FirebaseFirestore db;
     private CollectionReference organizersRef;
     private CollectionReference createdRef;
@@ -58,7 +58,7 @@ public class organizer_my_events_fragment extends Fragment {
         eventList = view.findViewById(R.id.my_events_list); // Corrected line
        eventsDataList = new ArrayList<>();
 
-        adapter = new EntrantMyEventsArrayAdapter(getContext(), eventsDataList);
+        adapter = new OrganizerMyEventsArrayAdapter(getContext(), eventsDataList);
        eventList.setAdapter(adapter);
 
         // Obtain userID on fragment creation
