@@ -90,4 +90,6 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         Event event = (Event) bundle.get("EVENT");
         eventID = event.getEventID();
     }
+
+
 }

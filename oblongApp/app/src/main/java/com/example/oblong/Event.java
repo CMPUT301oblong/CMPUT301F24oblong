@@ -3,6 +3,9 @@ package com.example.oblong;
 import android.util.Log;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -18,7 +21,8 @@ public class Event implements Serializable {
     private Long eventCapacity;
 
 
-    /*public Event(String eventName, String eventDescription, Date eventCloseDate, Long eventCapacity ) {
+    /*public Event(String eventID, String eventName, String eventDescription, Date eventCloseDate, Long eventCapacity ) {
+        this.eventID = eventID;
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.eventCloseDate = eventCloseDate;
@@ -26,11 +30,31 @@ public class Event implements Serializable {
     }*/
 
     public Event(String eventID){
-        //Access database
-        this.eventID = eventID;
-        Database db = new Database();
 
-        db.getEvent(eventID,data -> {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference eventDoc = db.collection("events").document(eventID);
+
+        eventDoc.get().addOnCompleteListener(task -> {
+            DocumentSnapshot data = task.getResult();
+            this.eventCapacity = (Long) data.getLong("capacity");
+            Log.d("event cap", Long.toString(this.eventCapacity));
+
+            this.eventName = (String) data.getString("name");
+            Log.d("event name", this.eventName);
+
+            Timestamp timestamp = (Timestamp) data.getTimestamp("dateAndTime");
+            Date date = timestamp.toDate();
+            this.eventCloseDate = date;
+
+            //this.eventCloseDate =  newEvent.get("dateAndTime").toDate();
+            this.eventDescription = (String) data.get("description");
+
+
+        });
+
+
+
+        /*db.getEvent(eventID,data -> {
             if(data!=null) {
                 Log.d("event name", (String) data.get("name"));
                 setEventInformation(data);
@@ -38,9 +62,10 @@ public class Event implements Serializable {
             else{
                 Log.d("event", "event not found");
             }
-        });
+        });*/
 
     }
+
 
     private void setEventInformation(HashMap<String, Object> data){
         this.eventCapacity = (Long) data.get("capacity");

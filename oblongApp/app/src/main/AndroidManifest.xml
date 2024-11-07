@@ -34,6 +34,9 @@
             android:name=".organizer.organizer_view_entrant_profile"
             android:exported="false" />
         <activity
+            android:name=".organizer.organizer_view_event_screen"
+            android:exported="false" />
+        <activity
             android:name=".organizer.organizer_create_notification_activity"
             android:exported="false" />
         <activity
