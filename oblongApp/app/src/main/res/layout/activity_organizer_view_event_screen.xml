@@ -175,21 +175,6 @@
                 android:src="@android:drawable/ic_dialog_dialer" />
 
 
-            <ImageView
-                android:id="@+id/activity_organizer_view_event_event_description_download_icon"
-                android:contentDescription="Downloads the QR code"
-                android:layout_width="0dp"
-                android:layout_height="46dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/download_icon" />
-
-            <TextView
-                android:id="@+id/activity_organizer_view_event_event_description_qr_code_download_text"
-                android:layout_width="154dp"
-                android:layout_height="wrap_content"
-                android:text="Click to download QR code"
-                android:textColor="#1E1E1E"
-                android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout

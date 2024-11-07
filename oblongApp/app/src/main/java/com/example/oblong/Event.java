@@ -58,7 +58,7 @@ public class Event implements Serializable {
 
             setPoster(data.getString("poster"));
 
-
+            this.eventID = eventID;
         });
 
 
