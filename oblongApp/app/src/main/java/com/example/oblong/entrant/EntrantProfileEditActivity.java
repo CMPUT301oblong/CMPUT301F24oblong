@@ -53,6 +53,7 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
     private ImageView profilePic;
     private Bitmap selectedProfilePicBitmap = null; // Store the selected profile picture bitmap
     private boolean isProfilePicChanged = false;    // Track if the profile picture has changed
+    private Database db;
 
     private static final int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 100;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
@@ -68,6 +69,8 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_entrant_profile_edit);
@@ -114,14 +117,13 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
         );
 
         // Pull and display all user Info here
-        Database db = new Database();
+        db = new Database();
         db.getCurrentUser(userId -> {
             if (userId != null) {
-                user_id = userId;
+                this.user_id = "0";
                 db.getUser(userId, user -> {
                     if (user != null) {
                         // Process data
-                        this.user = user;
                         profilePic.setImageResource(user.get("photo") == null ? R.drawable.image_placeholder : (int) user.get("photo"));
                         nameInput.setText((CharSequence) user.get("name"));
                         emailInput.setText((CharSequence) user.get("email"));
@@ -160,7 +162,7 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
                         String base64Image = imageUtils.bitmapToBase64(selectedProfilePicBitmap);
                         user.put("profilePhoto", base64Image);
                     } else {
-                        user.put("profilePhoto", null); // Set to null if deleted
+                        user.put("profilePhoto", "");
                     }
                 }
 
@@ -213,9 +215,6 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
      * @param permissions  The requested permissions.
      * @param grantResults The results for the requested permissions.
      */
-    // TODO:Fix Permissions method
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
