@@ -12,7 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.oblong.admin.AdminProfileBrowserActivity;
 import com.example.oblong.entrant.EntrantBaseActivity;
-import com.example.oblong.organizer.organizer_profile;
+import com.example.oblong.organizer.organizer_base_activity;
 
 
 public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.AddUserDialogListener {
@@ -58,8 +58,8 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.
                         break;
                     }
                     case "organizer": {
-                        // Organizer, navigate to organizer_profile
-                        Intent intent = new Intent(this, organizer_profile.class);
+                        // Organizer, navigate to organizer_profile_fragment
+                        Intent intent = new Intent(this, organizer_base_activity.class);
                         startActivity(intent);
                         break;
                     }
@@ -78,6 +78,7 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.
 
     @Override
     public void addUser(String name, String email, String phone) {
+        // TODO: Add the user as an entrant in firebase database
         db.addUser(user_id, name, email, "entrant", (phone.isEmpty() ? null : phone), null);
         Intent intent = new Intent(this, EntrantBaseActivity.class);
         startActivity(intent);

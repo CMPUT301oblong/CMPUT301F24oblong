@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Use entrant_event_list_item to populate list-->
+<!--NOTE THAT THIS IS USED FOR ORGANIZERS AND ENTRANTS-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,7 +9,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/activity_entrant_my_events_banner"
+        android:id="@+id/my_events_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
@@ -20,7 +21,7 @@
 
 
     <ListView
-        android:id="@+id/activity_entrant_my_events_list"
+        android:id="@+id/my_events_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:dividerHeight="2dp"

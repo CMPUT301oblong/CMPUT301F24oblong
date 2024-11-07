@@ -35,7 +35,7 @@ public class EntrantMyEventsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.activity_entrant_my_events, container, false);
+        return inflater.inflate(R.layout.activity_my_events, container, false);
     }
 
 
@@ -47,7 +47,7 @@ public class EntrantMyEventsFragment extends Fragment {
         participantsRef = db.collection("participants");
         eventsRef = db.collection("events");
 
-        eventList = view.findViewById(R.id.activity_entrant_my_events_list); // Corrected line
+        eventList = view.findViewById(R.id.my_events_list); // Corrected line
         eventsDataList = new ArrayList<>();
 
         adapter = new EntrantMyEventsArrayAdapter(getContext(), eventsDataList);

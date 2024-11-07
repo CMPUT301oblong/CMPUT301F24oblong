@@ -37,9 +37,6 @@
             android:name=".organizer.organizer_create_notification_activity"
             android:exported="false" />
         <activity
-            android:name=".organizer.organizer_create_event_screen"
-            android:exported="false" />
-        <activity
             android:name=".organizer.organizer_profile_edit"
             android:exported="false" />
         <activity
@@ -63,7 +60,7 @@
             android:name=".entrant.EntrantJoinEventActivity"
             android:exported="true" />
         <activity
-            android:name=".organizer.organizer_profile"
+            android:name=".organizer.organizer_base_activity"
             android:exported="true" />
         <activity
             android:name=".RoleSelector"

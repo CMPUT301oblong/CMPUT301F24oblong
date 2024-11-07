@@ -1,112 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    tools:context=".organizer.organizer_create_event_fragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".organizer.organizer_create_event_screen">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="30dp">
 
+    <TextView
+        android:id="@+id/new_event_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Event:"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/event_name_entry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="ENTER EVENT NAME"
+        android:inputType="text" />
+
+    <TextView
+        android:id="@+id/event_description_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Event Description" />
+
+    <EditText
+        android:id="@+id/event_description_entry"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="Enter your description..."
+        android:inputType="textMultiLine" />
+
+    <Button
+        android:id="@+id/upload_button"
+        style="@style/Widget.Material3.Button.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Click to upload a poster"
+        app:icon="@drawable/baseline_arrow_circle_up_24" />
+
+    <TextView
+        android:id="@+id/max_capacity_textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Max Capacity (optional)" />
+
+    <Spinner
+        android:id="@+id/capacity_dropdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:padding="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/new_event_textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="New Event:"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/event_name_entry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="ENTER EVENT NAME"
-            android:inputType="text" />
-
-        <TextView
-            android:id="@+id/event_description_textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Event Description" />
-
-        <EditText
-            android:id="@+id/event_description_entry"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="Enter your description..."
-            android:inputType="textMultiLine" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/upload_button"
-            style="@style/Widget.Material3.Button.Icon"
-            app:icon="@drawable/baseline_arrow_circle_up_24"
-            android:layout_width="match_parent"
+            android:id="@+id/create_event_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Click to upload a poster"
-            />
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:text="Create Event" />
 
-        <TextView
-            android:id="@+id/max_capacity_textView"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/event_creation_cancel_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Max Capacity (optional)" />
-
-        <Spinner
-            android:id="@+id/capacity_dropdown"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/create_event_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_weight="1"
-                android:text="Create Event" />
-
-            <Button
-                android:id="@+id/event_creation_cancel_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_weight="1"
-                android:text="Cancel" />
-        </LinearLayout>
-
-
+            android:layout_margin="20dp"
+            android:layout_weight="1"
+            android:text="Cancel" />
     </LinearLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/organizer_bottom_nav_menu" >
 
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
