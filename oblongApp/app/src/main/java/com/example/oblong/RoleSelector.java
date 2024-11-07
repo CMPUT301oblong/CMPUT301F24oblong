@@ -5,18 +5,17 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.installations.FirebaseInstallations;
+import com.example.oblong.admin.AdminProfileBrowserActivity;
+import com.example.oblong.entrant.EntrantBaseActivity;
+import com.example.oblong.organizer.organizer_profile;
 
 
-public class RoleSelector extends AppCompatActivity implements AddNewUserFragment.AddUserDialogListener {
+public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.AddUserDialogListener {
     private Database db = new Database();
     private String user_id;
 
@@ -33,20 +32,12 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserFragmen
             return insets;
         });
 
-        // Retrieve the user ID asynchronously
-        FirebaseInstallations.getInstance().getId().addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
-                if (task.isSuccessful() && task.getResult() != null) {
-                    user_id = task.getResult();
-                    Log.d("RoleSelector", "User ID: " + user_id);
-
-                    // Now that you have the user ID, you can use it as needed
-                    // For example, you can verify user in the database here if required
-                    verifyUser();
-                } else {
-                    Log.e("RoleSelector", "Failed to retrieve user ID");
-                }
+        Database.getCurrentUser(user_id -> {
+            if (user_id != null) {
+                this.user_id = user_id;
+                verifyUser();
+            } else {
+                Log.e("RoleSelector", "Failed to retrieve user ID");
             }
         });
     }
@@ -61,8 +52,8 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserFragmen
                 assert type != null;
                 switch (type) {
                     case "entrant": {
-                        // Entrant, navigate to EntrantProfileScreenActivity
-                        Intent intent = new Intent(this, EntrantProfileScreenActivity.class);
+                        // Entrant, navigate to EntrantProfileScreenFragment
+                        Intent intent = new Intent(this, EntrantBaseActivity.class);
                         startActivity(intent);
                         break;
                     }
@@ -80,7 +71,7 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserFragmen
                     }
                 }
             } else {
-                new AddNewUserFragment().show(getSupportFragmentManager(), "add_user");
+                new AddNewUserDialog().show(getSupportFragmentManager(), "add_user");
             }
         });
     }
@@ -88,7 +79,7 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserFragmen
     @Override
     public void addUser(String name, String email, String phone) {
         db.addUser(user_id, name, email, "entrant", (phone.isEmpty() ? null : phone), null);
-        Intent intent = new Intent(this, EntrantProfileScreenActivity.class);
+        Intent intent = new Intent(this, EntrantBaseActivity.class);
         startActivity(intent);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.oblong;
+package com.example.oblong.entrant;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.oblong.Database;
+import com.example.oblong.R;
+import com.google.firebase.firestore.GeoPoint;
 
 public class EntrantJoinEventActivity extends AppCompatActivity {
 
@@ -32,7 +36,7 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
 
         // cancel button listener
         cancelButton.setOnClickListener(v -> {
-            startActivity(new Intent(EntrantJoinEventActivity.this, EntrantEventList.class));
+            startActivity(new Intent(EntrantJoinEventActivity.this, EntrantBaseActivity.class));
         });
 
         // join button listener
@@ -41,12 +45,12 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
             db.getCurrentUser(userId -> {
                 // once userid is retrieved add participant
                 String participantId = userId + event_id;
-                String location = "[0° N, 0° E]"; // ?
+                GeoPoint location = new GeoPoint(0, 0);
                 String status = "attending";
 
                 // add user as a participant
                 db.addParticipant(participantId, userId, event_id, location, status);
-                startActivity(new Intent(EntrantJoinEventActivity.this, EntrantEventList.class));
+                startActivity(new Intent(EntrantJoinEventActivity.this, EntrantBaseActivity.class));
             });
         });
     }
