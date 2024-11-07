@@ -53,6 +53,7 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
     private ImageView profilePic;
     private Bitmap selectedProfilePicBitmap = null; // Store the selected profile picture bitmap
     private boolean isProfilePicChanged = false;    // Track if the profile picture has changed
+    private Database db;
 
     private static final int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 100;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
@@ -68,6 +69,8 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_entrant_profile_edit);
@@ -114,14 +117,13 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
         );
 
         // Pull and display all user Info here
-        Database db = new Database();
+        db = new Database();
         db.getCurrentUser(userId -> {
             if (userId != null) {
-                user_id = userId;
+                this.user_id = "0";
                 db.getUser(userId, user -> {
                     if (user != null) {
                         // Process data
-                        this.user = user;
                         profilePic.setImageResource(user.get("photo") == null ? R.drawable.image_placeholder : (int) user.get("photo"));
                         nameInput.setText((CharSequence) user.get("name"));
                         emailInput.setText((CharSequence) user.get("email"));
@@ -136,15 +138,7 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
         });
 
         imageButton.setOnClickListener(v -> {
-            // Check for permission
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
-            } else {
-                openImageChooser();
-            }
+            requestGalleryPermissions();
         });
 
         deleteProfileButton.setOnClickListener(v -> {
@@ -168,7 +162,7 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
                         String base64Image = imageUtils.bitmapToBase64(selectedProfilePicBitmap);
                         user.put("profilePhoto", base64Image);
                     } else {
-                        user.put("profilePhoto", null); // Set to null if deleted
+                        user.put("profilePhoto", "");
                     }
                 }
 
@@ -195,11 +189,24 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
      * Opens the device's image picker to select a new profile picture.
      */
     private void openImageChooser() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         imagePickerLauncher.launch(intent);
     }
 
+
+    private void requestGalleryPermissions(){
+        // Check for permission
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
+        } else {
+            openImageChooser();
+        }
+    }
     /**
      * Handles permission result for accessing external storage. If permission is granted,
      * the image picker is opened; otherwise, a toast message is displayed to the user.
@@ -212,11 +219,13 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_PERMISSION_READ_EXTERNAL_STORAGE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openImageChooser();
-            } else {
-                Toast.makeText(this, "Permission required to access photos", Toast.LENGTH_SHORT).show();
-            }
+
+            openImageChooser();
+//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                openImageChooser();
+//            } else {
+//                Toast.makeText(this, "Permission required to access photos", Toast.LENGTH_SHORT).show();
+//            }
         }
     }
 
