@@ -23,7 +23,6 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         EditText newLabelText = findViewById(R.id.organizer_new_notification_label_inputText);
         EditText newContentText = findViewById(R.id.organizer_new_notification_body_inputText);
         Spinner notificationTargetSpinner = findViewById(R.id.notification_spinner);
-        Button sendNotificationButton = findViewById(R.id.organizer_send_notification_button);
         Button cancelButton = findViewById(R.id.organizer_notification_cancel_button);
         Button sendButton = findViewById(R.id.organizer_send_notification_button);
 
