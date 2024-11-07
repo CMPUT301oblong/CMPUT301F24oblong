@@ -112,7 +112,7 @@ public class Event implements Serializable {
     }
 
     public int getEventCapacity() {
-        return eventCapacity;
+        return Math.toIntExact(eventCapacity);
     }
 
     public void setEventCapacity(Long eventCapacity) {
