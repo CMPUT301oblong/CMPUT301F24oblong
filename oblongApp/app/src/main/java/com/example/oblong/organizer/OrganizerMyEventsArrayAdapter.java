@@ -1,6 +1,4 @@
-package com.example.oblong.entrant;
-
-import static android.app.PendingIntent.getActivity;
+package com.example.oblong.organizer;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,14 +17,17 @@ import androidx.annotation.Nullable;
 
 import com.example.oblong.Event;
 import com.example.oblong.R;
+import com.example.oblong.entrant.EntrantEventAcceptDescriptionActivity;
+import com.example.oblong.entrant.EntrantEventDescriptionActivity;
+import com.example.oblong.imageUtils;
 
 import java.util.ArrayList;
 
-public class EntrantMyEventsArrayAdapter extends ArrayAdapter<Event> {
+public class OrganizerMyEventsArrayAdapter extends ArrayAdapter<Event> {
     private ArrayList<Event> events;
     private Context context;
 
-    public EntrantMyEventsArrayAdapter(Context context, ArrayList<Event> events){
+    public OrganizerMyEventsArrayAdapter(Context context, ArrayList<Event> events){
         super(context,0, events);
         this.events = events;
         this.context = context;
@@ -47,6 +49,7 @@ public class EntrantMyEventsArrayAdapter extends ArrayAdapter<Event> {
         //TODO: Get the event images
 
         // Set the event name
+        ImageView eventPoster = view.findViewById(R.id.entrant_event_list_item_poster);
         TextView eventName = view.findViewById(R.id.entrant_event_list_item_event_name);
         TextView drawDate = view.findViewById(R.id.entrant_event_list_item_draw_date);
         Button viewButton = view.findViewById(R.id.entrant_event_list_item_view_button);
@@ -56,7 +59,7 @@ public class EntrantMyEventsArrayAdapter extends ArrayAdapter<Event> {
             // Handle the button click event
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, EntrantEventDescriptionActivity.class);
+                Intent intent = new Intent(context, organizer_view_event_screen.class);
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("EVENT", event);
@@ -73,7 +76,7 @@ public class EntrantMyEventsArrayAdapter extends ArrayAdapter<Event> {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(context, EntrantEventAcceptDescriptionActivity.class);
+                Intent intent = new Intent(context, organizer_view_event_screen.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("EVENT", event);
                 intent.putExtras(bundle);
@@ -84,6 +87,9 @@ public class EntrantMyEventsArrayAdapter extends ArrayAdapter<Event> {
 
 
         //TODO: implement images
+        if(!(event.getPoster() == null)) {
+            eventPoster.setImageBitmap(imageUtils.base64ToBitmap(event.getPoster()));
+        }
         drawDate.setText("Due: " + event.getEventCloseDate());
         eventName.setText(event.getEventName());
 

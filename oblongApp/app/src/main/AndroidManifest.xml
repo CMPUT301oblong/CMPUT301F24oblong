@@ -7,6 +7,7 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -33,10 +34,10 @@
             android:name=".organizer.organizer_view_entrant_profile"
             android:exported="false" />
         <activity
-            android:name=".organizer.organizer_create_notification_activity"
+            android:name=".organizer.organizer_view_event_screen"
             android:exported="false" />
         <activity
-            android:name=".organizer.organizer_create_event_screen"
+            android:name=".organizer.organizer_create_notification_activity"
             android:exported="false" />
         <activity
             android:name=".organizer.organizer_profile_edit"
@@ -62,7 +63,7 @@
             android:name=".entrant.EntrantJoinEventActivity"
             android:exported="true" />
         <activity
-            android:name=".organizer.organizer_profile"
+            android:name=".organizer.organizer_base_activity"
             android:exported="true" />
         <activity
             android:name=".RoleSelector"
@@ -73,7 +74,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

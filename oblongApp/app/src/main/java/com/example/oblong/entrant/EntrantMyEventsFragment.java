@@ -35,7 +35,7 @@ public class EntrantMyEventsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.activity_entrant_my_events, container, false);
+        return inflater.inflate(R.layout.activity_my_events, container, false);
     }
 
 
@@ -47,7 +47,7 @@ public class EntrantMyEventsFragment extends Fragment {
         participantsRef = db.collection("participants");
         eventsRef = db.collection("events");
 
-        eventList = view.findViewById(R.id.activity_entrant_my_events_list); // Corrected line
+        eventList = view.findViewById(R.id.my_events_list); // Corrected line
         eventsDataList = new ArrayList<>();
 
         adapter = new EntrantMyEventsArrayAdapter(getContext(), eventsDataList);
@@ -67,7 +67,7 @@ public class EntrantMyEventsFragment extends Fragment {
 
     private void fetchEvents() {
         // Fetch events where the user is a participant
-        participantsRef.whereEqualTo("entrant", user_id).get().addOnSuccessListener(queryDocumentSnapshots -> {
+        participantsRef.whereEqualTo("entrant", user_id).whereEqualTo("status", "attending").get().addOnSuccessListener(queryDocumentSnapshots -> {
             if (queryDocumentSnapshots != null) {
                 Log.d("EntrantMyEventsFragment", String.format("Searching for documents for %s", user_id));
                 eventsDataList.clear();

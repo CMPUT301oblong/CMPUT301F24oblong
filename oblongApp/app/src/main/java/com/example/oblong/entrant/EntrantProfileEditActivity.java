@@ -179,8 +179,6 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
         });
 
         cancelButton.setOnClickListener(v -> {
-            Intent intent = new Intent(String.valueOf(EntrantProfileScreenFragment.class));
-            startActivity(intent);
             finish();
         });
 
