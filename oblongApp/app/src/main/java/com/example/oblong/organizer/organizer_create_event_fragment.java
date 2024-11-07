@@ -1,6 +1,16 @@
 package com.example.oblong.organizer;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +23,15 @@ import androidx.fragment.app.Fragment;
 
 import com.example.oblong.Database;
 import com.example.oblong.R;
+import com.example.oblong.imageUtils;
+import com.example.oblong.qr_generator;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +43,10 @@ public class organizer_create_event_fragment extends Fragment {
     private EditText maxCapacityInput;
     private Button createEventButton;
     private Button cancelButton;
+
+    private Bitmap imageBitmap = null;
+
+
 
     @Nullable
     @Override
@@ -54,7 +73,13 @@ public class organizer_create_event_fragment extends Fragment {
                 //Get all info user entered:
                 String eventName = eventNameInput.getText().toString();
                 String eventDescription = eventDescriptionInput.getText().toString();
-                Long maxCapacity = Long.parseLong(maxCapacityInput.getText().toString());
+                Long maxCapacity;
+                if(maxCapacityInput.getText().toString() == ""){
+                    maxCapacity = -1L;
+                }else{
+                    maxCapacity = Long.parseLong(maxCapacityInput.getText().toString());
+                }
+
 
 
                 //When we click this we want to take all this info and put it into database
@@ -62,16 +87,29 @@ public class organizer_create_event_fragment extends Fragment {
 
                 Map<String, Object> event = new HashMap<>();
 
+                qr_generator qr_gen = new qr_generator();
+
                 event.put("capacity", maxCapacity);
                 event.put("dateAndTime", FieldValue.serverTimestamp());
                 event.put("description", eventDescription);
                 event.put("drawDate", FieldValue.serverTimestamp());
                 event.put("location", new GeoPoint(0,0));
                 event.put("name", eventName);
-                event.put("poster", "image");
+
+                if (imageBitmap != null) {
+                    String imageBase64 = imageUtils.bitmapToBase64(imageBitmap);
+                    event.put("poster", imageBase64);
+                }else{
+                    event.put("poster", "image");
+                }
+                event.put("QR", "");
 
                 db.collection("events").add(event).addOnSuccessListener(documentReference -> {
                     String eventID = documentReference.getId();
+                    Bitmap qrBitmap = qr_gen.generateQRCode(eventID);
+                    String qrBase64 = imageUtils.bitmapToBase64(qrBitmap);
+
+                    db.collection("events").document(eventID).update("QR",qrBase64);
 
                 //Now we want to put the organizer in a created relation with this event
                     Database.getCurrentUser(new Database.OnDataReceivedListener<String>() {
@@ -94,5 +132,43 @@ public class organizer_create_event_fragment extends Fragment {
             }
         });
 
+        uploadImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                askForImage();
+            }
+        });
+
+    }
+
+    private void askForImage(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        startActivityForResult(Intent.createChooser(intent, "Select a poster"), 200);
+
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 200) {
+                Uri imageUri = data.getData();
+                if (null != imageUri) {
+
+                    try {
+                        imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageUri);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
+                }
+            }
+        }
     }
 }
