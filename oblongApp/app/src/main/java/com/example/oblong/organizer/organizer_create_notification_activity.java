@@ -42,7 +42,6 @@ public class organizer_create_notification_activity extends AppCompatActivity {
             public void onClick(View view) {
                 String label = newLabelText.getText().toString();
                 String content = newContentText.getText().toString();
-                Notification newNotification = new Notification(label, content);
 
             }
         });
