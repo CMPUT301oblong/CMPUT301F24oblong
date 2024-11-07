@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.oblong.Event;
 import com.example.oblong.R;
 import com.example.oblong.entrant.EntrantEventDescriptionActivity;
+import com.example.oblong.entrant.EntrantProfileEditActivity;
 import com.example.oblong.imageUtils;
 import com.example.oblong.qr_generator;
 
@@ -31,6 +32,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
     private ImageView poster;
     private Event event;
     private Button notificationButton;
+    private Button waitlistButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
             return insets;
         });
 
+        //yaya remove this when push
         eventNameDisplay = findViewById(R.id.organizer_view_event_name);
         eventDescriptionDisplay = findViewById(R.id.activity_organizer_view_event_event_description_text);
         maxCapacityDisplay = findViewById(R.id.activity_organizer_view_event_event_description_max_capacity);
@@ -50,6 +53,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
         qrCode = findViewById(R.id.activity_organizer_view_event_event_description_qr_code_display);
         poster = findViewById(R.id.activity_organizer_viewevent_event_description_poster);
         notificationButton = findViewById(R.id.activity_organizer_view_event_event_description_setup_notification_button);
+        waitlistButton = findViewById(R.id.activity_organizer_view_event_event_description_view_waitlist_button);
 
         Intent intent = getIntent();
 
@@ -74,6 +78,15 @@ public class organizer_view_event_screen extends AppCompatActivity {
             public void onClick(View v) {
                 finish();
             }
+        });
+
+        waitlistButton.setOnClickListener(v -> {
+            Intent intentWaitlist = new Intent(organizer_view_event_screen.this, EventWaitingList.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("EVENT", event);
+            intentWaitlist.putExtras(bundle);
+
+            startActivity(intentWaitlist);
         });
 
     }

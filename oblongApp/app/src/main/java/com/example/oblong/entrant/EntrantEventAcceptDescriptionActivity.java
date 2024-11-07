@@ -96,33 +96,31 @@ public class EntrantEventAcceptDescriptionActivity extends AppCompatActivity {
             if (user_id != null) {
                 this.user_id = user_id;
 
+                // check for entrants with the given user id and events with the given event id
                 db.collection("participants").whereEqualTo("entrant", user_id).whereEqualTo("event", event_id).get().addOnSuccessListener(queryDocumentSnapshots -> {
-                            if (!queryDocumentSnapshots.isEmpty()) {
-                                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                                    String eventId = doc.getString("event");
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                            String eventId = doc.getString("event");
 
-                                    DocumentReference participantRef = doc.getReference();
+                            DocumentReference participantRef = doc.getReference();
 
-                                    // Update the status field to "attending"
-                                    participantRef.update("status", "attending")
-                                            .addOnSuccessListener(aVoid -> {
-                                                Log.d("EntrantEventAcceptDescriptionActivity", "Status updated to attending");
+                            // Update the status field to "attending"
+                            participantRef.update("status", "attending").addOnSuccessListener(aVoid -> {
+                                Log.d("EntrantEventAcceptDescriptionActivity", "Status updated to attending");
+                                // finish after status is updated
+                                finish();
 
-                                                finish();
-                                            })
-                                            .addOnFailureListener(e -> Log.e("EntrantEventAcceptDescriptionActivity", "Error updating status", e));
-                                }
-                            } else {
-                                Log.e("EntrantEventAcceptDescriptionActivity", "No participant document found for this event and user");
-                            }
-                        })
-                        .addOnFailureListener(e -> Log.e("EntrantEventAcceptDescriptionActivity", "Error retrieving participant document", e));
-            } else {
+                            }).addOnFailureListener(e -> Log.e("EntrantEventAcceptDescriptionActivity", "Error updating status", e));
+                        }
+                    }
+                    else {
+                        Log.e("EntrantEventAcceptDescriptionActivity", "No participant document found for this event and user");
+                    }
+                }).addOnFailureListener(e -> Log.e("EntrantEventAcceptDescriptionActivity", "Error retrieving participant document", e));
+            }
+            else {
                 Log.e("EntrantEventAcceptDescriptionActivity", "Failed to retrieve user ID");
             }
         });
     }
-
-
-        //String eventId = QueryDocumentSnapshot doc.getString("event");
 }
