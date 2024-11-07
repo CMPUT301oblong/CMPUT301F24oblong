@@ -65,4 +65,12 @@ public class inputValidator {
 
         return true;
     }
+
+    public boolean validateCreateNotification(String label, String content, String targets){
+        if(label.isEmpty() || content.isEmpty()){
+            Toast.makeText(context, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
 }
