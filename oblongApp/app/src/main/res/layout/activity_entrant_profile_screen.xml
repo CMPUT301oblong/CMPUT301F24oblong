@@ -72,7 +72,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/become_an_organizer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Become an organizer:"

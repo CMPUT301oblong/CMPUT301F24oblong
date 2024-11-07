@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".organizer.organizer_profile">
+    tools:context=".organizer.organizer_profile_fragment">
 
     <ImageView
         android:id="@+id/imageView"
@@ -69,6 +69,7 @@
         android:id="@+id/profile_edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
         android:contentDescription="Profile Edit Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -114,31 +115,12 @@
         android:id="@+id/facility_edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
         android:contentDescription="Facility Edit Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/facility_linearLayout"
         app:layout_constraintTop_toTopOf="@+id/facility_linearLayout"
         app:srcCompat="@android:drawable/ic_menu_edit" />
-
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </FrameLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/organizer_bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
