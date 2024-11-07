@@ -136,15 +136,7 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
         });
 
         imageButton.setOnClickListener(v -> {
-            // Check for permission
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
-            } else {
-                openImageChooser();
-            }
+            requestGalleryPermissions();
         });
 
         deleteProfileButton.setOnClickListener(v -> {
@@ -197,11 +189,24 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
      * Opens the device's image picker to select a new profile picture.
      */
     private void openImageChooser() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
         imagePickerLauncher.launch(intent);
     }
 
+
+    private void requestGalleryPermissions(){
+        // Check for permission
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_PERMISSION_READ_EXTERNAL_STORAGE);
+        } else {
+            openImageChooser();
+        }
+    }
     /**
      * Handles permission result for accessing external storage. If permission is granted,
      * the image picker is opened; otherwise, a toast message is displayed to the user.
@@ -210,15 +215,20 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
      * @param permissions  The requested permissions.
      * @param grantResults The results for the requested permissions.
      */
+    // TODO:Fix Permissions method
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_PERMISSION_READ_EXTERNAL_STORAGE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openImageChooser();
-            } else {
-                Toast.makeText(this, "Permission required to access photos", Toast.LENGTH_SHORT).show();
-            }
+
+            openImageChooser();
+//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                openImageChooser();
+//            } else {
+//                Toast.makeText(this, "Permission required to access photos", Toast.LENGTH_SHORT).show();
+//            }
         }
     }
 
