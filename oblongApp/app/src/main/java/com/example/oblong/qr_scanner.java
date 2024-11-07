@@ -16,9 +16,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.oblong.entrant.EntrantEventDescriptionActivity;
 import com.example.oblong.entrant.EntrantJoinEventActivity;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -130,7 +132,19 @@ public class qr_scanner extends AppCompatActivity {
             }else {
                 intent = new Intent(this, EntrantJoinEventActivity.class);
             }
-            intent.putExtra("event", event);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("event", results);
+            intent.putExtras(bundle);
+            if (results.containsKey("location")) {
+                GeoPoint geoPoint = (GeoPoint) results.get("location");
+                if (geoPoint != null) {
+                    HashMap<String, Double> locationMap = new HashMap<>();
+                    locationMap.put("latitude", geoPoint.getLatitude());
+                    locationMap.put("longitude", geoPoint.getLongitude());
+                    results.put("location", locationMap);  // Replace GeoPoint with HashMap
+                }
+            }
+
             startActivity(intent);
         });
     }
