@@ -45,7 +45,7 @@ public class Notification {
         this.targets = (String) data.get("targets");
         Log.d("notif targets", this.targets);
     }
-    
+
     public String getLabel() {
         return label;
     }
