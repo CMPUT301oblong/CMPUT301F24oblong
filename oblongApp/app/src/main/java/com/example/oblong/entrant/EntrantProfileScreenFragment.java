@@ -25,6 +25,7 @@ import com.example.oblong.Database;
 import com.example.oblong.R;
 import com.example.oblong.organizer.AddNewFacilityDialog;
 import com.example.oblong.organizer.organizer_base_activity;
+import com.example.oblong.imageUtils;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -115,7 +116,12 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
                 db.getUser(userId, user -> {
                     if (user != null) {
                         // Update the UI with user data
-                        profilePic.setImageResource(user.get("photo") == null ? R.drawable.image_placeholder : (int) user.get("photo"));
+//                        profilePic.setImageResource(user.get("photo") == null ? R.drawable.image_placeholder :  user.get("profilePhoto"));
+                        if(user.get("profilePhoto") == null){
+                            profilePic.setImageResource(R.drawable.image_placeholder);
+                        }else{
+                            profilePic.setImageBitmap(imageUtils.base64ToBitmap((String)user.get("profilePhoto")));
+                        }
                         name.setText((CharSequence) user.get("name"));
                         email.setText((CharSequence) user.get("email"));
                         phone.setText((CharSequence) (user.get("phone") == null ? "No Phone # Provided" : user.get("phone")));
