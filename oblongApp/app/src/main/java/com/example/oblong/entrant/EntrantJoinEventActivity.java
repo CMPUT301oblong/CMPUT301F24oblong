@@ -2,6 +2,7 @@ package com.example.oblong.entrant;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -64,6 +65,7 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         HashMap<String, Object> event = (HashMap<String, Object>) bundle.get("event");
+
         title.setText((String)event.get("name"));
         desc.setText((String) event.get("description"));
         Timestamp fireDate = (Timestamp) event.get("dateAndTime");
@@ -72,7 +74,7 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
         date.setText(fireDate.toDate().toString());
         poster.setImageBitmap(imageUtils.base64ToBitmap(img));
 
-        String event_id = (String)event.get("id");
+        String event_id = (String)event.get("eventID");
 
 
         // cancel button listener
@@ -87,7 +89,7 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
                 // once userid is retrieved add participant
                 String participantId = userId + event_id;
                 GeoPoint location = new GeoPoint(0, 0);
-                String status = "attending";
+                String status = "waitlisted";
 
                 // add user as a participant
                 db.addParticipant(participantId, userId, event_id, location, status);

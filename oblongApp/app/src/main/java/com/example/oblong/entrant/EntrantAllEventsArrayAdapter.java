@@ -68,6 +68,7 @@ public class EntrantAllEventsArrayAdapter extends ArrayAdapter<Event> {
         // Set the event name
         TextView eventName = view.findViewById(R.id.entrant_event_list_item_event_name);
         TextView drawDate = view.findViewById(R.id.entrant_event_list_item_draw_date);
+        TextView statusTextView = view.findViewById(R.id.entrant_event_status);
         Button viewButton = view.findViewById(R.id.entrant_event_list_item_view_button);
 
         viewButton.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +89,10 @@ public class EntrantAllEventsArrayAdapter extends ArrayAdapter<Event> {
         //TODO: implement images
         drawDate.setText("Due: " + event.getEventCloseDate());
         eventName.setText(event.getEventName());
+        if(event.getStatus().contains("waitlisted") || event.getStatus().contains("selected")) {
+            statusTextView.setVisibility(View.VISIBLE);
+            statusTextView.setText((CharSequence) event.getStatus());
+        }
 
 
         return view;
