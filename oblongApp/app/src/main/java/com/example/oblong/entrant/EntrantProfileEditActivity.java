@@ -124,7 +124,12 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
                 db.getUser(userId, user -> {
                     if (user != null) {
                         // Process data
-                        profilePic.setImageResource(user.get("photo") == null ? R.drawable.image_placeholder : (int) user.get("photo"));
+//                        profilePic.setImageResource(user.get("photo") == null ? R.drawable.image_placeholder : (int) user.get("photo"));
+                        if(user.get("profilePhoto") == null){
+                            profilePic.setImageResource(R.drawable.image_placeholder);
+                        }else{
+                            profilePic.setImageBitmap(imageUtils.base64ToBitmap((String)user.get("profilePhoto")));
+                        }
                         nameInput.setText((CharSequence) user.get("name"));
                         emailInput.setText((CharSequence) user.get("email"));
                         phoneInput.setText((CharSequence) (user.get("phone") == null ? "" : user.get("phone")));
