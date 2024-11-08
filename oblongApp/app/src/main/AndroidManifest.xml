@@ -52,6 +52,9 @@
             android:name=".entrant.EntrantEventDescriptionActivity"
             android:exported="false" />
         <activity
+            android:name=".entrant.EntrantEventAcceptDescriptionActivity"
+            android:exported="false" />
+        <activity
             android:name=".entrant.EntrantEventListActivity"
             android:exported="true" />
         <activity
