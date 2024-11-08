@@ -154,6 +154,7 @@ public class EntrantUpcomingEventsFragment extends Fragment {
                         Event event = new Event(eventDocumentSnapshot.getId());
                         event.setEventName(eventDocumentSnapshot.getString("name"));
                         event.setEventCloseDate(eventDocumentSnapshot.getDate("dateAndTime"));
+                        event.setPoster(eventDocumentSnapshot.getString("poster"));
                         event.setStatus(status);
 
                         eventsDataList.add(event);

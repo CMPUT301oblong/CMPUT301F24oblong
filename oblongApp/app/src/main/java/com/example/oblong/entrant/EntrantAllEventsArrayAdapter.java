@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 
 import com.example.oblong.Event;
 import com.example.oblong.R;
+import com.example.oblong.imageUtils;
 import com.example.oblong.organizer.organizer_view_event_screen;
 
 import java.util.ArrayList;
@@ -66,7 +68,6 @@ public class EntrantAllEventsArrayAdapter extends ArrayAdapter<Event> {
 
         Event event = events.get(position);
 
-        //TODO: Get the event images
 
         // Set the event name
         TextView eventName = view.findViewById(R.id.entrant_event_list_item_event_name);
@@ -74,6 +75,7 @@ public class EntrantAllEventsArrayAdapter extends ArrayAdapter<Event> {
         TextView statusTextView = view.findViewById(R.id.entrant_event_status);
         Button viewButton = view.findViewById(R.id.entrant_event_list_item_view_button);
         Button acceptButton = view.findViewById(R.id.entrant_event_list_item_accept_invite_button);
+        ImageView poster = view.findViewById(R.id.entrant_event_list_item_poster);
 
         viewButton.setOnClickListener(new View.OnClickListener() {
             // Handle the button click event
@@ -106,9 +108,11 @@ public class EntrantAllEventsArrayAdapter extends ArrayAdapter<Event> {
         });
 
 
-        //TODO: implement images
         drawDate.setText("Due: " + event.getEventCloseDate());
         eventName.setText(event.getEventName());
+        if(event.getPoster() != null) {
+            poster.setImageBitmap(imageUtils.base64ToBitmap(event.getPoster()));
+        }
         if(event.getStatus().contains("waitlisted") || event.getStatus().contains("selected")) {
             statusTextView.setVisibility(View.VISIBLE);
             statusTextView.setText((CharSequence) event.getStatus());

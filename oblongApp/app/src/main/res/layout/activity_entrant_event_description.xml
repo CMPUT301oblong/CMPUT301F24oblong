@@ -39,11 +39,10 @@
 
     <ImageView
         android:id="@+id/entrant_event_description_photo"
-        android:layout_width="wrap_content"
-        android:layout_height="157dp"
-        android:layout_marginTop="14dp"
+        android:layout_width="322dp"
+        android:layout_height="155dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />

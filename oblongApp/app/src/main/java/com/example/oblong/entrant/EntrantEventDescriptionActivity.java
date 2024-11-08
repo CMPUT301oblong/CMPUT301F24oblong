@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.oblong.Database;
 import com.example.oblong.Event;
 import com.example.oblong.R;
+import com.example.oblong.imageUtils;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 public class EntrantEventDescriptionActivity extends AppCompatActivity {
 
     private Event event;
+    private TextView date;
     private TextView eventNameTextView;
     private ImageView eventImageView;
     private TextView eventDescriptionTextView;
@@ -59,13 +61,13 @@ public class EntrantEventDescriptionActivity extends AppCompatActivity {
             return insets;
         });
 
-        //assign Views
-     eventNameTextView = findViewById(R.id.entrant_event_description_event_name);
-     eventImageView = findViewById(R.id.entrant_event_description_photo);
-     eventDescriptionTextView = findViewById(R.id.entrant_event_description_text);
-     backButton = findViewById(R.id.entrant_event_description_back_button);
-     leaveButton = findViewById(R.id.entrant_event_description_leave_button);
-
+    //assign Views
+    eventNameTextView = findViewById(R.id.entrant_event_description_event_name);
+    eventImageView = findViewById(R.id.entrant_event_description_photo);
+    eventDescriptionTextView = findViewById(R.id.entrant_event_description_text);
+    backButton = findViewById(R.id.entrant_event_description_back_button);
+    leaveButton = findViewById(R.id.entrant_event_description_leave_button);
+    date = findViewById(R.id.textView3);
 
      //Get Data from Intent
      Intent intent = getIntent();
@@ -99,6 +101,10 @@ public class EntrantEventDescriptionActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         event = (Event) bundle.get("EVENT");
         eventNameTextView.setText(event.getEventName());
+        if(event.getPoster() != null) {
+            eventImageView.setImageBitmap(imageUtils.base64ToBitmap(event.getPoster()));
+        }
+        date.setText(event.getEventCloseDate());
         eventDescriptionTextView.setText(event.getEventDescription());
     }
     /**
