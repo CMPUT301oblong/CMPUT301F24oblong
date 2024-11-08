@@ -15,9 +15,22 @@ import com.example.oblong.Database;
 import com.example.oblong.R;
 
 import java.util.HashMap;
-
+/**
+ * Activity class for managing the event description page when an entrant is on the waitlist.
+ *
+ * <p>This activity allows the user to leave the event waitlist and provides a back navigation option.</p>
+ */
 public class EntrantEventDescriptionWaitlistActivity extends AppCompatActivity {
-
+    /**
+     * Initializes the activity, sets up the UI, and handles user interactions.
+     *
+     * <p>This method sets the content view, applies edge-to-edge display configurations, and
+     * initializes the UI components. It sets up the back button to navigate to the event list
+     * and a leave button to update the participant status to "cancelled".</p>
+     *
+     * @param savedInstanceState The saved instance state containing the activity's previously
+     *                           saved state, if any.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +49,25 @@ public class EntrantEventDescriptionWaitlistActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String event_id = intent.getStringExtra("event");
 
+        /**
+         * Handles the click event for the back button.
+         *
+         * <p>When the user clicks the back button, the activity navigates back to the
+         * {@link EntrantEventListActivity}, allowing the user to view the list of events.</p>
+         */
         // cancel button listener
         backButton.setOnClickListener(v -> {
             startActivity(new Intent(EntrantEventDescriptionWaitlistActivity.this, EntrantEventListActivity.class));
         });
 
+
+        /**
+         * Handles the click event for the join button.
+         *
+         * <p>When the user clicks the "Leave" button, the current user's ID is retrieved asynchronously.
+         * The participant's status is then updated to "cancelled" in the database, effectively removing
+         * them from the event waitlist. The activity then navigates back to the {@link EntrantEventListActivity}.</p>
+         */
         // join button listener
         joinButton.setOnClickListener(v -> {
             // get current user (asynchronous)

@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * {@code Database} This class handles sending and fetching data from the Firebase
+ */
 public class Database {
     private final CollectionReference users;
     private final CollectionReference events;
@@ -29,6 +32,9 @@ public class Database {
     private String user_id;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    /**
+     * The {@code Database} method assigns the variables to the Firebase collections
+     */
     public Database() {
         users = db.collection("users");
         events = db.collection("events");
@@ -39,6 +45,10 @@ public class Database {
         participants = db.collection("participants");
     }
 
+    /**
+     * {@interface OnDataReceivedListener} Called when data is successfully received.
+     * @param <T>
+     */
     // Interface to handle getting data
     public interface OnDataReceivedListener<T> {
         // onDataRecieved called when db request is complete (or errors)
@@ -59,6 +69,10 @@ public class Database {
     //            }
     //        });
 
+    /**
+     * The {@code getCurrentUser} method retrieves the user ID from Firebase
+     * @param listener
+     */
     // Retrieve the user ID asynchronously
     public static void getCurrentUser(OnDataReceivedListener<String> listener) {
         FirebaseInstallations.getInstance().getId().addOnCompleteListener(task -> {
@@ -74,7 +88,13 @@ public class Database {
     }
 
 
-
+    /**
+     * The {@code updateDocument} method updates a document in Firebase
+     * @param collection
+     * @param document_id
+     * @param updates
+     * @param listener
+     */
     public void updateDocument(String collection, String document_id, HashMap<String, Object> updates, OnDataReceivedListener<Boolean> listener) {
         db.collection(collection).document(document_id)
                 .update(updates)
@@ -88,6 +108,11 @@ public class Database {
                 });
     }
 
+    /**
+     * The {@code getParticipant} method retrieves a participant data from Firebase
+     * @param id
+     * @param listener
+     */
     public void getParticipants(String id, OnDataReceivedListener<HashMap<String, Object>> listener) {
         participants.document(id).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -102,7 +127,11 @@ public class Database {
         });
     }
 
-
+    /**
+     * The {@code getOrganizer} method retrieves an organizer data from Firebase
+     * @param id
+     * @param listener
+     */
     public void getOrganizer(String id, OnDataReceivedListener<HashMap<String, Object>> listener) {
         organizers.document(id).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -117,7 +146,11 @@ public class Database {
         });
     }
 
-
+    /**
+     * {@code getNotification} method retrieves a notification data from Firebase}
+     * @param id
+     * @param listener
+     */
     public void getNotification(String id, OnDataReceivedListener<HashMap<String, Object>> listener) {
         notifications.document(id).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -132,7 +165,11 @@ public class Database {
         });
     }
 
-
+    /**
+     * The {@code getFacility} method retrieves a facility data from Firebase
+     * @param id
+     * @param listener
+     */
     public void getFacility(String id, OnDataReceivedListener<HashMap<String, Object>> listener) {
         facilities.document(id).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -147,7 +184,11 @@ public class Database {
         });
     }
 
-
+    /**
+     * The {@code getEntrant} method retrieves an entrant data from Firebase
+     * @param id
+     * @param listener
+     */
     public void getEntrant(String id, OnDataReceivedListener<HashMap<String, Object>> listener) {
         entrants.document(id).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -162,7 +203,11 @@ public class Database {
         });
     }
 
-
+    /**
+     * The {@code getEvent} method retrieves an event data from Firebase
+     * @param id
+     * @param listener
+     */
     public void getEvent(String id, OnDataReceivedListener<HashMap<String, Object>> listener) {
         events.document(id).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -177,7 +222,11 @@ public class Database {
         });
     }
 
-
+    /**
+     * The {@code getUser} method retrieves a user data from Firebase
+     * @param id
+     * @param listener
+     */
     public void getUser(String id, OnDataReceivedListener<HashMap<String, Object>> listener) {
         users.document(id).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -191,6 +240,7 @@ public class Database {
             listener.onDataReceived(null); // error
         });
     }
+
 
     // example of using a custom query: finding organizers with user id 0:
     //
@@ -209,7 +259,12 @@ public class Database {
     //            Log.d("user", "User not found or an error occurred.");
     //        }
     //    });
-
+    /**
+     * The {@code query} method queries a collection in Firebase
+     * @param collectionName
+     * @param conditions
+     * @param listener
+     */
     public void query(String collectionName, HashMap<String, Object> conditions, OnDataReceivedListener<List<HashMap<String, Object>>> listener) {
         CollectionReference collection = FirebaseFirestore.getInstance().collection(collectionName);
         Query query = collection;
@@ -229,7 +284,14 @@ public class Database {
         });
     }
 
-
+    /**
+     * The {@code addParticipant} method adds a participant to Firebase
+     * @param id
+     * @param entrant
+     * @param event
+     * @param location
+     * @param status
+     */
     public void addParticipant(String id, String entrant, String event, GeoPoint location, String status){
         HashMap<String, Object> participant = new HashMap<>();
         // create a new participant and store the id
@@ -241,6 +303,12 @@ public class Database {
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
 
+    /**
+     * The {@code addOrganizer} method adds an organizer to Firebase
+     * @param id
+     * @param facility
+     * @param user
+     */
     public void addOrganizer(String id, String facility, String user){
         HashMap<String, String> organizer = new HashMap<>();
         // create a new organizer and store the id
@@ -250,6 +318,13 @@ public class Database {
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
 
+    /**
+     * The {@code addNotification} method adds a notification to Firebase
+     * @param id
+     * @param event
+     * @param text
+     * @param title
+     */
     public void addNotification(String id, String event, String text, String title){
         HashMap<String, String> notification = new HashMap<>();
         // create a new notification and store the id
@@ -260,6 +335,14 @@ public class Database {
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
 
+    /**
+     * The {@code addFacility} method adds a facility to Firebase
+     * @param id
+     * @param email
+     * @param name
+     * @param phone
+     * @param photo
+     */
     public void addFacility(String id, String email, String name, String phone, String photo){
         HashMap<String, String> facility = new HashMap<>();
         // create a new facility and store the id
@@ -271,6 +354,13 @@ public class Database {
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
 
+    /**
+     * The {@code addEntrant} method adds an entrant to Firebase
+     * @param id
+     * @param locationEnabled
+     * @param notificationsEnabled
+     * @param user
+     */
     public void addEntrant(String id, boolean locationEnabled, boolean notificationsEnabled, String user){
         HashMap<String, Object> entrant = new HashMap<>();
         // create a new entrant and store the id
@@ -281,6 +371,15 @@ public class Database {
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
 
+    /**
+     * The {@code addUser} method adds a user to Firebase
+     * @param id
+     * @param name
+     * @param email
+     * @param type
+     * @param phone
+     * @param profilePhoto
+     */
     public void addUser(String id, String name, String email, String type, String phone, String profilePhoto){
         HashMap<String, String> user = new HashMap<>();
         // create a new user and store the id
@@ -293,6 +392,15 @@ public class Database {
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
 
+    /**
+     * The {@code addEvent} method adds an event to Firebase
+     * @param id
+     * @param capacity
+     * @param dateAndTime
+     * @param description
+     * @param location
+     * @param poster
+     */
     public void addEvent(String id, String capacity, String dateAndTime, String description, GeoPoint location, String poster){
         HashMap<String, Object> event = new HashMap<>();
         // create a new event and store at the id

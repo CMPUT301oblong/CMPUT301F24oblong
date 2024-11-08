@@ -12,6 +12,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * This class generates the QR code to be scanned by Entrants to join and view events
+ *
+ *
+ */
+
 public class qr_generator {
     private String uniqueID;
 
@@ -24,7 +30,7 @@ public class qr_generator {
     }
 
     /**
-     * Generates a QR code containing only the unique ID.
+     * The {@code qr_generator} class generates a QR code containing only the unique ID.
      *
      * @return QR code bitmap with unique ID embedded.
      */

@@ -18,7 +18,7 @@ public class imageUtils {
      */
     public static String bitmapToBase64(Bitmap bitmap) {
         int quality;
-        quality = 25;   // Change quality to change size of the resulting file
+        quality = 25;   // Change quality to change file size of the resulting file
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream);

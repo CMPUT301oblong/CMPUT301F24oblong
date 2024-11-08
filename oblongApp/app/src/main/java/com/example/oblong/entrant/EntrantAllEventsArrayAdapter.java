@@ -19,18 +19,41 @@ import com.example.oblong.R;
 import com.example.oblong.organizer.organizer_view_event_screen;
 
 import java.util.ArrayList;
-
+/**
+ * Custom ArrayAdapter for displaying a list of events in the "All Events" section of the entrant's interface.
+ *
+ * <p>This adapter is responsible for inflating the list item view for each event and setting its
+ * corresponding data such as event name and draw date. It also provides an onClickListener for the
+ * "View" button to handle user interactions.</p>
+ */
 public class EntrantAllEventsArrayAdapter extends ArrayAdapter<Event> {
     private ArrayList<Event> events;
     private Context context;
 
+    /**
+     * Constructs a new EntrantAllEventsArrayAdapter.
+     *
+     * @param context The context of the current state of the application.
+     * @param events  The list of events to be displayed in the ListView.
+     */
     public EntrantAllEventsArrayAdapter(Context context, ArrayList<Event> events){
         super(context,0, events);
         this.events = events;
         this.context = context;
     }
 
-
+    /**
+     * Provides a view for an adapter view (ListView) for each event item in the list.
+     *
+     * <p>This method inflates the layout for each event list item and sets the event data
+     * such as the event name and draw date. It also sets a click listener on the "View"
+     * button for each event.</p>
+     *
+     * @param position    The position of the item within the adapter's data set.
+     * @param convertView The old view to reuse, if possible.
+     * @param parent      The parent view that this view will eventually be attached to.
+     * @return The constructed view for the specified position in the list.
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

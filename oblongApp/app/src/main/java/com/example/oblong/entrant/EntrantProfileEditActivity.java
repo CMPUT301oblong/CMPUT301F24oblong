@@ -120,7 +120,7 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
         db = new Database();
         db.getCurrentUser(userId -> {
             if (userId != null) {
-                this.user_id = "0";
+                this.user_id = userId;
                 db.getUser(userId, user -> {
                     if (user != null) {
                         // Process data
@@ -151,22 +151,28 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
             inputValidator validator = new inputValidator(this);
             if(validator.validateUserProfile(nameInput.getText().toString(), emailInput.getText().toString(), phoneInput.getText().toString())) {
                 // Update user info in hashmap
-                user.put("name", nameInput.getText().toString());
-                user.put("email", emailInput.getText().toString());
-                user.put("phone", phoneInput.getText().toString().isEmpty() ? null : phoneInput.getText().toString());
-
+                HashMap<String, Object> newUser = new HashMap<>();
+                newUser.put("name", nameInput.getText().toString());
+                newUser.put("email", emailInput.getText().toString());
+                String phoneIn = phoneInput.getText().toString();
+                if (phoneIn.isEmpty()){
+                    phoneIn = "";
+                }
+                newUser.put("phone", phoneIn);
+                Log.d("user", "newusername: " + newUser);
                 // Check if profile picture was changed
                 if (isProfilePicChanged) {
                     if (selectedProfilePicBitmap != null) {
                         // Convert Bitmap to Base64 String
                         String base64Image = imageUtils.bitmapToBase64(selectedProfilePicBitmap);
-                        user.put("profilePhoto", base64Image);
+                        newUser.put("profilePhoto", base64Image);
                     } else {
-                        user.put("profilePhoto", "");
+                        newUser.put("profilePhoto", "");
                     }
                 }
+                Log.d("user", "User updated: " + newUser);
 
-                db.updateDocument("users", user_id, user, success -> {
+                db.updateDocument("users", user_id, newUser, success -> {
                     if(success) {
                         Log.d("user", "User updated");
                         Toast.makeText(this, "Changes saved", Toast.LENGTH_SHORT).show();
@@ -194,7 +200,9 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
         imagePickerLauncher.launch(intent);
     }
 
-
+    /**
+     * Requests the necessary permissions to access the device's external storage.
+     */
     private void requestGalleryPermissions(){
         // Check for permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)

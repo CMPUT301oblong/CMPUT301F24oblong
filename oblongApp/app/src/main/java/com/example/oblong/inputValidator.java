@@ -4,12 +4,24 @@ import android.content.Context;
 import android.util.Patterns;
 import android.widget.Toast;
 
+/**
+ * The {@code inputValidator} class ensures that information entered by users
+ * is formatted correctly.
+ *
+ */
 public class inputValidator {
     private Context context;
     public inputValidator(Context context) {
         this.context = context;
     }
 
+    /**
+     * The {@code validateUserProfile} method validates the user profile information
+     * @param name
+     * @param email
+     * @param phone
+     * @return
+     */
     public boolean validateUserProfile(String name, String email, String phone) {
         if (name.isEmpty() || email.isEmpty()){
             Toast.makeText(context, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
@@ -38,6 +50,13 @@ public class inputValidator {
         return true;
     }
 
+    /**
+     * The {@code validateFacilityProfile} method validates the facility profile information
+     * @param name
+     * @param email
+     * @param phone
+     * @return
+     */
     public boolean validateFacilityProfile(String name, String email, String phone) {
         if (name.isEmpty() || email.isEmpty()){
             Toast.makeText(context, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
@@ -66,6 +85,13 @@ public class inputValidator {
         return true;
     }
 
+    /**
+     * The {@code validateCreateNotification} method validates 
+     * @param label
+     * @param content
+     * @param targets
+     * @return
+     */
     public boolean validateCreateNotification(String label, String content, String targets){
         if(label.isEmpty() || content.isEmpty()){
             Toast.makeText(context, "Please fill in all required fields", Toast.LENGTH_SHORT).show();

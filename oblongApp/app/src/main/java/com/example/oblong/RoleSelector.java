@@ -14,11 +14,18 @@ import com.example.oblong.admin.AdminProfileBrowserActivity;
 import com.example.oblong.entrant.EntrantBaseActivity;
 import com.example.oblong.organizer.organizer_base_activity;
 
-
+/**
+ * {@code RoleSelector} This class handles the role selection screen which is the first screen a user will see
+ * upon opening the app
+ */
 public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.AddUserDialogListener {
     private Database db = new Database();
     private String user_id;
 
+    /**
+     * The {@code onCreate} method populates the screen and UI elements
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +49,9 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.
         });
     }
 
+    /**
+     * The {@code verifyUser} method navigates the user based on their type to their respective screens
+     */
     private void verifyUser() {
         // Verify user exists in database
         db.getUser(user_id, user -> {
@@ -76,6 +86,12 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.
         });
     }
 
+    /**
+     * The {@code addUser} method adds a user to the database as an entrant
+     * @param name
+     * @param email
+     * @param phone
+     */
     @Override
     public void addUser(String name, String email, String phone) {
         db.addUser(user_id, name, email, "entrant", (phone.isEmpty() ? null : phone), null);

@@ -24,6 +24,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+
+/**
+ * Fragment class for displaying the events that the user is participating in.
+ *
+ * <p>This fragment retrieves a list of events where the user is marked as attending,
+ * using Firebase to fetch relevant data. It then populates a list view
+ * with these events for display.</p>
+ */
 public class EntrantMyEventsFragment extends Fragment {
 
     private ListView eventList;
@@ -35,6 +43,14 @@ public class EntrantMyEventsFragment extends Fragment {
     private String user_id;
     private ListenerRegistration participantListener;
 
+    /**
+     * Inflates the fragment's layout.
+     *
+     * @param inflater The LayoutInflater object used to inflate views.
+     * @param container The parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState Bundle containing the fragment's previously saved state, if any.
+     * @return The View for the fragment's UI.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -42,6 +58,17 @@ public class EntrantMyEventsFragment extends Fragment {
         return inflater.inflate(R.layout.activity_my_events, container, false);
     }
 
+
+    /**
+     * Called immediately after {@link #onCreateView} has returned.
+     *
+     * <p>This method initializes Firebase Firestore references and sets up
+     * the ListView adapter for displaying events. It also retrieves the current user's ID
+     * and starts fetching the user's participating events using a snapshot listener.</p>
+     *
+     * @param view The View returned by {@link #onCreateView}.
+     * @param savedInstanceState The saved instance state bundle.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -65,6 +92,12 @@ public class EntrantMyEventsFragment extends Fragment {
         });
     }
 
+    /**
+   * Cleans up resources when the view is destroyed.
+   *
+   * <p>This method removes the Firestore snapshot listener to stop listening for 
+   * participant updates when the fragment's view is destroyed.</p>
+   */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -73,6 +106,17 @@ public class EntrantMyEventsFragment extends Fragment {
         }
     }
 
+    /**
+   * Attaches a Firestore snapshot listener to the "participants" collection to track real-time updates.
+   *
+   * <p>This method listens for changes in the participant data where the "entrant" field matches
+   * the current user's ID. On any change in the participant documents, it triggers a callback to 
+   * fetch the latest list of events the user is attending, ensuring the displayed event list is 
+   * always up-to-date.</p>
+   *
+   * <p>To prevent multiple active listeners, it first checks if an existing listener is attached
+   * and removes it if necessary.</p>
+   */
     private void attachParticipantListener() {
         // Ensure only one listener is active
         if (participantListener != null) {
@@ -84,6 +128,7 @@ public class EntrantMyEventsFragment extends Fragment {
                     if (e != null) {
                         Log.e("EntrantMyEventsFragment", "Error listening for updates", e);
                         return;
+
                     }
 
                     if (queryDocumentSnapshots != null) {
@@ -92,6 +137,14 @@ public class EntrantMyEventsFragment extends Fragment {
                 });
     }
 
+    /**
+     * Fetches events from Firestore where the current entrants status is marked as "attending".
+     *
+     * <p>This method queries the "participants" collection to find documents where the
+     * entrant field matches the current user ID and the status is "attending". For each
+     * participant document, it fetches the corresponding event document from the "events"
+     * collection and adds it to the list of events to be displayed.</p>
+     */
     private void updateEventList(QuerySnapshot queryDocumentSnapshots) {
         Set<String> eventIds = new HashSet<>();
         eventsDataList.clear(); // Clear the list before adding events that match criteria

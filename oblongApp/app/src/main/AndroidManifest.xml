@@ -55,6 +55,9 @@
             android:name=".entrant.EntrantEventDescriptionActivity"
             android:exported="false" />
         <activity
+            android:name=".entrant.EntrantEventAcceptDescriptionActivity"
+            android:exported="false" />
+        <activity
             android:name=".entrant.EntrantEventListActivity"
             android:exported="true" />
         <activity
@@ -67,6 +70,9 @@
             android:exported="true" />
         <activity
             android:name=".organizer.organizer_base_activity"
+            android:exported="true" />
+        <activity
+            android:name=".organizer.EventWaitingList"
             android:exported="true" />
         <activity
             android:name=".RoleSelector"
