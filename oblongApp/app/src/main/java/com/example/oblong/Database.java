@@ -222,7 +222,11 @@ public class Database {
         });
     }
 
-
+    /**
+     * The {@code getUser} method retrieves a user data from Firebase
+     * @param id
+     * @param listener
+     */
     public void getUser(String id, OnDataReceivedListener<HashMap<String, Object>> listener) {
         users.document(id).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -236,6 +240,7 @@ public class Database {
             listener.onDataReceived(null); // error
         });
     }
+
 
     // example of using a custom query: finding organizers with user id 0:
     //
@@ -254,7 +259,12 @@ public class Database {
     //            Log.d("user", "User not found or an error occurred.");
     //        }
     //    });
-
+    /**
+     * The {@code query} method queries a collection in Firebase
+     * @param collectionName
+     * @param conditions
+     * @param listener
+     */
     public void query(String collectionName, HashMap<String, Object> conditions, OnDataReceivedListener<List<HashMap<String, Object>>> listener) {
         CollectionReference collection = FirebaseFirestore.getInstance().collection(collectionName);
         Query query = collection;
@@ -274,7 +284,14 @@ public class Database {
         });
     }
 
-
+    /**
+     * The {@code addParticipant} method adds a participant to Firebase
+     * @param id
+     * @param entrant
+     * @param event
+     * @param location
+     * @param status
+     */
     public void addParticipant(String id, String entrant, String event, GeoPoint location, String status){
         HashMap<String, Object> participant = new HashMap<>();
         // create a new participant and store the id
@@ -286,6 +303,12 @@ public class Database {
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
 
+    /**
+     * The {@code addOrganizer} method adds an organizer to Firebase
+     * @param id
+     * @param facility
+     * @param user
+     */
     public void addOrganizer(String id, String facility, String user){
         HashMap<String, String> organizer = new HashMap<>();
         // create a new organizer and store the id
@@ -295,6 +318,13 @@ public class Database {
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
 
+    /**
+     * The {@code addNotification} method adds a notification to Firebase
+     * @param id
+     * @param event
+     * @param text
+     * @param title
+     */
     public void addNotification(String id, String event, String text, String title){
         HashMap<String, String> notification = new HashMap<>();
         // create a new notification and store the id
@@ -305,6 +335,14 @@ public class Database {
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
 
+    /**
+     * The {@code addFacility} method adds a facility to Firebase
+     * @param id
+     * @param email
+     * @param name
+     * @param phone
+     * @param photo
+     */
     public void addFacility(String id, String email, String name, String phone, String photo){
         HashMap<String, String> facility = new HashMap<>();
         // create a new facility and store the id
@@ -316,6 +354,13 @@ public class Database {
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
 
+    /**
+     * The {@code addEntrant} method adds an entrant to Firebase
+     * @param id
+     * @param locationEnabled
+     * @param notificationsEnabled
+     * @param user
+     */
     public void addEntrant(String id, boolean locationEnabled, boolean notificationsEnabled, String user){
         HashMap<String, Object> entrant = new HashMap<>();
         // create a new entrant and store the id
@@ -326,6 +371,15 @@ public class Database {
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
 
+    /**
+     * The {@code addUser} method adds a user to Firebase
+     * @param id
+     * @param name
+     * @param email
+     * @param type
+     * @param phone
+     * @param profilePhoto
+     */
     public void addUser(String id, String name, String email, String type, String phone, String profilePhoto){
         HashMap<String, String> user = new HashMap<>();
         // create a new user and store the id
@@ -338,6 +392,15 @@ public class Database {
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
 
+    /**
+     * The {@code addEvent} method adds an event to Firebase
+     * @param id
+     * @param capacity
+     * @param dateAndTime
+     * @param description
+     * @param location
+     * @param poster
+     */
     public void addEvent(String id, String capacity, String dateAndTime, String description, GeoPoint location, String poster){
         HashMap<String, Object> event = new HashMap<>();
         // create a new event and store at the id

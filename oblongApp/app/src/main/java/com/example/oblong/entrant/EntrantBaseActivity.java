@@ -11,8 +11,27 @@ import com.example.oblong.qr_scanner;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+/**
+ * The main activity for the entrant's section of the app.
+ *
+ * <p>This activity serves as the base for the entrant's interface, using a BottomNavigationView
+ * to navigate between different fragments: "My Events", "All Events", QR Scanner, and "Profile".</p>
+ *
+ * <p>The activity initializes with the profile screen as the default fragment and provides
+ * navigation for the user to switch between different sections of the app.</p>
+ */
 public class EntrantBaseActivity extends AppCompatActivity {
 
+    /**
+     * Called when the activity is first created.
+     *
+     * <p>This method sets up the main layout, initializes the BottomNavigationView,
+     * and sets the default fragment to be the profile screen. It also sets up the
+     * navigation listener for handling user interactions with the BottomNavigationView.</p>
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
+     *                           this Bundle contains the most recent data supplied by onSaveInstanceState.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

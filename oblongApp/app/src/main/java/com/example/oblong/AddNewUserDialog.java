@@ -12,14 +12,29 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
-
+/**
+ * {@code AddNewUserDialog} This class handles the dialog box popup for adding a new user
+ *
+ */
 public class AddNewUserDialog extends DialogFragment {
+    /**
+     * {@interface AddUserDialogListener} Called when a new user is added.
+     */
     interface AddUserDialogListener {
+        /**
+         * @param name
+         * @param email
+         * @param phone
+         */
         void addUser(String name, String email, String phone);
     }
 
     private AddUserDialogListener listener;
 
+    /**
+     * The {@code onAttach} method is called when the fragment is attached to an activity.
+     * @param context
+     */
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
@@ -30,6 +45,13 @@ public class AddNewUserDialog extends DialogFragment {
         }
     }
 
+    /**
+     * The {@code onCreateDialog} method is called to create the dialog for this fragment.
+     * @param savedInstanceState The last saved instance state of the Fragment,
+     * or null if this is a freshly created Fragment.
+     *
+     * @return
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

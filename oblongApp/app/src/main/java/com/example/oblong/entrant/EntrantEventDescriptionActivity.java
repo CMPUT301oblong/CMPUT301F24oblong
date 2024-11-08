@@ -23,7 +23,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
-
+/**
+ * Activity for displaying detailed information about an event.
+ *
+ * <p>This activity provides the event name, description, and image. Users can navigate back to the
+ * previous screen or leave the event as a participant.</p>
+ */
 public class EntrantEventDescriptionActivity extends AppCompatActivity {
 
     private Event event;
@@ -37,7 +42,12 @@ public class EntrantEventDescriptionActivity extends AppCompatActivity {
     private CollectionReference eventsRef;
 
 
-
+    /**
+     * Initializes the activity, sets up the UI components, and handles user interactions.
+     *
+     * @param savedInstanceState The saved instance state containing the activity's previously
+     *                           saved state, if any.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,14 +90,24 @@ public class EntrantEventDescriptionActivity extends AppCompatActivity {
 
 
     }
-
+    /**
+     * Initializes event data by extracting it from the received Intent and setting it to the view components.
+     *
+     * @param intent The Intent containing event data passed from the previous activity.
+     */
     private void initializeData(Intent intent){
         Bundle bundle = getIntent().getExtras();
         event = (Event) bundle.get("EVENT");
         eventNameTextView.setText(event.getEventName());
         eventDescriptionTextView.setText(event.getEventDescription());
     }
-
+    /**
+     * Handles the process when a user leaves the event.
+     *
+     * <p>This method finds the participant entry in the Firestore database based on the current user's ID
+     * and the event ID. If found, it removes the participant's document from the "participants" collection
+     * and finishes the activity, returning the user to their events list.</p>
+     */
     private void userLeft(){
         //TO DO
         //remove participant relation from database
@@ -98,7 +118,14 @@ public class EntrantEventDescriptionActivity extends AppCompatActivity {
         participantsRef = db.collection("participants");
         eventsRef = db.collection("events");
 
+
+
         Database.getCurrentUser(new Database.OnDataReceivedListener<String>() {
+            /**
+             * Callback method invoked when the current user's ID is received.
+             *
+             * @param data The current user's ID received from the database.
+             */
             @Override
             public void onDataReceived(String data) {
                 db.collection("participants")
