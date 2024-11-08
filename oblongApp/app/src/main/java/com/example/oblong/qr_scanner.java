@@ -133,6 +133,7 @@ public class qr_scanner extends AppCompatActivity {
                 intent = new Intent(this, EntrantJoinEventActivity.class);
             }
             Bundle bundle = new Bundle();
+            results.put("eventID", event);
             bundle.putSerializable("event", results);
             intent.putExtras(bundle);
             if (results.containsKey("location")) {
