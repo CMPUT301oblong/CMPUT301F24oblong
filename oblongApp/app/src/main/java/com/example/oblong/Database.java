@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * {@code Database} This class handles sending and fetching data from the Firebase
+ */
 public class Database {
     private final CollectionReference users;
     private final CollectionReference events;
@@ -29,6 +32,9 @@ public class Database {
     private String user_id;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    /**
+     * The {@code Database} method assigns the variables to the Firebase collections
+     */
     public Database() {
         users = db.collection("users");
         events = db.collection("events");
@@ -39,6 +45,10 @@ public class Database {
         participants = db.collection("participants");
     }
 
+    /**
+     * {@interface OnDataReceivedListener} Called when data is successfully received.
+     * @param <T>
+     */
     // Interface to handle getting data
     public interface OnDataReceivedListener<T> {
         // onDataRecieved called when db request is complete (or errors)
@@ -59,6 +69,10 @@ public class Database {
     //            }
     //        });
 
+    /**
+     * The {@code getCurrentUser} method retrieves the user ID from Firebase
+     * @param listener
+     */
     // Retrieve the user ID asynchronously
     public static void getCurrentUser(OnDataReceivedListener<String> listener) {
         FirebaseInstallations.getInstance().getId().addOnCompleteListener(task -> {
@@ -74,7 +88,13 @@ public class Database {
     }
 
 
-
+    /**
+     * The {@code updateDocument} method updates a document in Firebase
+     * @param collection
+     * @param document_id
+     * @param updates
+     * @param listener
+     */
     public void updateDocument(String collection, String document_id, HashMap<String, Object> updates, OnDataReceivedListener<Boolean> listener) {
         db.collection(collection).document(document_id)
                 .update(updates)
@@ -88,6 +108,11 @@ public class Database {
                 });
     }
 
+    /**
+     * The {@code getParticipant} method retrieves a participant data from Firebase
+     * @param id
+     * @param listener
+     */
     public void getParticipants(String id, OnDataReceivedListener<HashMap<String, Object>> listener) {
         participants.document(id).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -102,7 +127,11 @@ public class Database {
         });
     }
 
-
+    /**
+     * The {@code getOrganizer} method retrieves an organizer data from Firebase
+     * @param id
+     * @param listener
+     */
     public void getOrganizer(String id, OnDataReceivedListener<HashMap<String, Object>> listener) {
         organizers.document(id).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -117,7 +146,11 @@ public class Database {
         });
     }
 
-
+    /**
+     * {@code getNotification} method retrieves a notification data from Firebase}
+     * @param id
+     * @param listener
+     */
     public void getNotification(String id, OnDataReceivedListener<HashMap<String, Object>> listener) {
         notifications.document(id).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -132,7 +165,11 @@ public class Database {
         });
     }
 
-
+    /**
+     * The {@code getFacility} method retrieves a facility data from Firebase
+     * @param id
+     * @param listener
+     */
     public void getFacility(String id, OnDataReceivedListener<HashMap<String, Object>> listener) {
         facilities.document(id).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -147,7 +184,11 @@ public class Database {
         });
     }
 
-
+    /**
+     * The {@code getEntrant} method retrieves an entrant data from Firebase
+     * @param id
+     * @param listener
+     */
     public void getEntrant(String id, OnDataReceivedListener<HashMap<String, Object>> listener) {
         entrants.document(id).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {
@@ -162,7 +203,11 @@ public class Database {
         });
     }
 
-
+    /**
+     * The {@code getEvent} method retrieves an event data from Firebase
+     * @param id
+     * @param listener
+     */
     public void getEvent(String id, OnDataReceivedListener<HashMap<String, Object>> listener) {
         events.document(id).get().addOnSuccessListener(documentSnapshot -> {
             if (documentSnapshot.exists()) {

@@ -16,10 +16,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * {@code EntrantUpcomingEventActivity} This class handles the upcoming event activity screen for entrants
+ */
 public class EntrantUpcomingEventActivity extends AppCompatActivity {
 
     private ArrayList<Event> datalist = new ArrayList<Event>();
     private EventArrayAdapter eventAdapter;
+
+    /**
+     * The {@code onCreate} method handles the creation of the activity
+     * and initiates the Firebase.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +67,11 @@ public class EntrantUpcomingEventActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * The {@code getAllEvents} method gets all the events that the user is a participant for from
+     * Firebase
+     * @param db
+     */
     private void getAllEvents(Database db){
         //This statement queries for all eventIDs that the user is a participant for.
         db.getCurrentUser(new Database.OnDataReceivedListener<String>() {

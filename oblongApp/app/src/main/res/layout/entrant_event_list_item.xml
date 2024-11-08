@@ -68,7 +68,7 @@
     <ImageView
         android:id="@+id/entrant_event_list_item_poster"
         android:layout_width="140dp"
-        android:layout_height="match_parent"
+        android:layout_height="140dp"
         android:layout_gravity="end|center_vertical"
         android:contentDescription="The poster correspoinding to the event will be here"
         android:paddingRight="5dp"
