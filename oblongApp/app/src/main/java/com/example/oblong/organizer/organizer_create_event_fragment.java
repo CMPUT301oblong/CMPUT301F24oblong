@@ -165,8 +165,6 @@ public class organizer_create_event_fragment extends Fragment {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-
-
                 }
             }
         }
