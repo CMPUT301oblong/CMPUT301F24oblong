@@ -20,6 +20,7 @@ public class Event implements Serializable {
     private Date eventCloseDate;
     private Long eventCapacity;
     private String poster;
+    private String attendingStatus;
 
 
     /*public Event(String eventID, String eventName, String eventDescription, Date eventCloseDate, Long eventCapacity ) {
@@ -137,5 +138,13 @@ public class Event implements Serializable {
         } else {
             this.poster = poster;
         }
+    }
+
+    public void setStatus(String status) {
+        this.attendingStatus = status;
+    }
+
+    public String getStatus() {
+        return attendingStatus;
     }
 }

@@ -30,6 +30,16 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/entrant_event_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:text="Status"
+            android:textColor="#666666"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+        <TextView
             android:id="@+id/entrant_event_list_item_draw_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
