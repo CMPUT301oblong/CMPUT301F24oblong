@@ -109,6 +109,7 @@
                 android:layout_width="56dp"
                 android:layout_height="52dp"
                 android:layout_gravity="center_vertical"
+                android:clickable="true"
                 android:scaleType="fitXY"
                 android:src="@android:drawable/ic_menu_upload" />
 

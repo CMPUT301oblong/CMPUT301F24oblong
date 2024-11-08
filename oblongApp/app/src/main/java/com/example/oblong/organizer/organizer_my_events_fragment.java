@@ -116,4 +116,9 @@ public class organizer_my_events_fragment extends Fragment {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        fetchEvents(user_id);
+    }
 }

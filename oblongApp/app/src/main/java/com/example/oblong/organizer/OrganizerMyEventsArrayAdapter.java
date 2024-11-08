@@ -71,6 +71,8 @@ public class OrganizerMyEventsArrayAdapter extends ArrayAdapter<Event> {
             }
         });
 
+
+
         acceptButton.setOnClickListener(new View.OnClickListener() {
             // Handle the button click event
             @Override
@@ -96,4 +98,5 @@ public class OrganizerMyEventsArrayAdapter extends ArrayAdapter<Event> {
 
         return view;
     }
+
 }
