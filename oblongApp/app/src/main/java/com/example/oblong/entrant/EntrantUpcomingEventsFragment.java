@@ -16,10 +16,14 @@ import com.example.oblong.Event;
 import com.example.oblong.R;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * {@code EntrantUpcomingEventsFragment} This class handles the upcoming events screen for the entrant
@@ -34,7 +38,7 @@ public class EntrantUpcomingEventsFragment extends Fragment {
     private CollectionReference participantsRef;
     private CollectionReference eventsRef;
     private String user_id;
-    private String status;
+    private ListenerRegistration participantListener;
 
     /**
      * {@code onCreateView} is called to have the fragment instantiate its user interface view.
@@ -52,10 +56,8 @@ public class EntrantUpcomingEventsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.activity_entrant_event_list, container, false);
     }
-
 
     /**
      * {@code onViewCreated} is called after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
@@ -64,7 +66,6 @@ public class EntrantUpcomingEventsFragment extends Fragment {
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      */
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -73,63 +74,95 @@ public class EntrantUpcomingEventsFragment extends Fragment {
         participantsRef = db.collection("participants");
         eventsRef = db.collection("events");
 
-        eventList = view.findViewById(R.id.activity_entrant_all_events_list); // Corrected line
+        eventList = view.findViewById(R.id.activity_entrant_all_events_list);
         eventsDataList = new ArrayList<>();
-
         adapter = new EntrantAllEventsArrayAdapter(getContext(), eventsDataList);
         eventList.setAdapter(adapter);
 
-        // Obtain userID on fragment creation
         Database.getCurrentUser(user_id -> {
             if (user_id != null) {
                 this.user_id = user_id;
-                // Fetch events for the user
-                fetchEvents();
+                attachParticipantListener();
             } else {
                 Log.e("EntrantUpcomingEventsFragment", "Failed to retrieve user ID");
             }
         });
     }
 
-    /**
-     * {fetchEvents} is called to fetch events from Firebase.
-     */
-    private void fetchEvents() {
-        // Fetch events where the user is either selected for or waitlisted
-        participantsRef.whereEqualTo("entrant", user_id).whereIn("status", Arrays.asList("selected", "waitlisted")).get().addOnSuccessListener(queryDocumentSnapshots -> {
-            if (queryDocumentSnapshots != null) {
-                Log.d("EntrantUpcomingEventsFragment", String.format("Searching for documents for %s", user_id));
-                eventsDataList.clear();
-                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                    String eventId = doc.getString("event");
-                    if (eventId != null) {  // Check if the event field is not null
-                        Log.d("EntrantUpcomingEventsFragment", String.format("Found Event ID: %s", eventId));
-
-                        // Fetch the event document
-                        eventsRef.document(eventId).get().addOnSuccessListener(eventDocumentSnapshot -> {
-                            if (eventDocumentSnapshot.exists()) {
-                                // Get the status
-
-                                Event event = new Event(eventDocumentSnapshot.getId());
-                                event.setEventName(eventDocumentSnapshot.getString("name"));
-                                event.setEventCloseDate(eventDocumentSnapshot.getDate("dateAndTime"));
-
-                                // Set up due date to say waitlisted or attending within the adapter
-                                status = doc.getString("status");
-                                event.setStatus(status);
-
-                                eventsDataList.add(event);
-                                adapter.notifyDataSetChanged();
-                            } else {
-                                Log.e("EntrantUpcomingEventsFragment", "Event document not found for ID: " + eventId);
-                            }
-                        }).addOnFailureListener(e -> Log.e("EntrantUpcomingEventsFragment", "Error fetching event document", e));
-                    } else {
-                        Log.e("EntrantUpcomingEventsFragment", "Event ID is null in participant document: " + doc.getId());
-                    }
-                }
-            }
-        }).addOnFailureListener(e -> Log.e("EntrantUpcomingEventsFragment", "Error fetching participants", e));
+  /**
+   * Cleans up resources when the view is destroyed.
+   *
+   * <p>This method removes the Firestore snapshot listener to stop listening for 
+   * participant updates when the fragment's view is destroyed.</p>
+   */
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (participantListener != null) {
+            participantListener.remove();
+        }
     }
 
+  /**
+   * Attaches a Firestore snapshot listener to the "participants" collection to track real-time updates.
+   *
+   * <p>This method listens for changes in the participant data where the "entrant" field matches
+   * the current user's ID. On any change in the participant documents, it triggers a callback to 
+   * fetch the latest list of events the user is attending, ensuring the displayed event list is 
+   * always up-to-date.</p>
+   *
+   * <p>To prevent multiple active listeners, it first checks if an existing listener is attached
+   * and removes it if necessary.</p>
+   */
+    private void attachParticipantListener() {
+        if (participantListener != null) {
+            participantListener.remove();
+        }
+
+        participantListener = participantsRef.whereEqualTo("entrant", user_id)
+                .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    if (e != null) {
+                        Log.e("EntrantUpcomingEventsFragment", "Error listening for updates", e);
+                        return;
+                    }
+
+                    if (queryDocumentSnapshots != null) {
+                        updateEventList(queryDocumentSnapshots);
+                    }
+                });
+    }
+
+    /**
+     * Fetches events from Firestore where the current entrants status is marked as "selected" or "waitlisted".
+     *
+     * <p>This method queries the "participants" collection to find documents where the
+     * entrant field matches the current user ID and the status is "selected" or "waitlisted". For each
+     * participant document, it fetches the corresponding event document from the "events"
+     * collection and adds it to the list of events to be displayed.</p>
+     */
+    private void updateEventList(QuerySnapshot queryDocumentSnapshots) {
+        Set<String> eventIds = new HashSet<>();
+        eventsDataList.clear(); // Clear the list before adding events that match criteria
+
+        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+            String eventId = doc.getString("event");
+            String status = doc.getString("status");
+
+            if (eventId != null && eventIds.add(eventId) && Arrays.asList("selected", "waitlisted").contains(status)) {
+                eventsRef.document(eventId).get().addOnSuccessListener(eventDocumentSnapshot -> {
+                    if (eventDocumentSnapshot.exists()) {
+                        Event event = new Event(eventDocumentSnapshot.getId());
+                        event.setEventName(eventDocumentSnapshot.getString("name"));
+                        event.setEventCloseDate(eventDocumentSnapshot.getDate("dateAndTime"));
+                        event.setStatus(status);
+
+                        eventsDataList.add(event);
+                        adapter.notifyDataSetChanged();
+                    }
+                }).addOnFailureListener(e -> Log.e("EntrantUpcomingEventsFragment", "Error fetching event document", e));
+            }
+        }
+
+        adapter.notifyDataSetChanged();
+    }
 }

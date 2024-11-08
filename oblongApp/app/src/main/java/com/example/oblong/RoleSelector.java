@@ -94,8 +94,8 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.
      */
     @Override
     public void addUser(String name, String email, String phone) {
-        // TODO: Add the user as an entrant in firebase database
         db.addUser(user_id, name, email, "entrant", (phone.isEmpty() ? null : phone), null);
+        db.addEntrant(user_id, false, false, user_id);
         Intent intent = new Intent(this, EntrantBaseActivity.class);
         startActivity(intent);
     }

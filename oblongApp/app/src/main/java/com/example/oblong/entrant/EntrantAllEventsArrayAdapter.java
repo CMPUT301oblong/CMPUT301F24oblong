@@ -1,6 +1,8 @@
 package com.example.oblong.entrant;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import androidx.annotation.Nullable;
 
 import com.example.oblong.Event;
 import com.example.oblong.R;
+import com.example.oblong.organizer.organizer_view_event_screen;
 
 import java.util.ArrayList;
 /**
@@ -70,18 +73,35 @@ public class EntrantAllEventsArrayAdapter extends ArrayAdapter<Event> {
         TextView drawDate = view.findViewById(R.id.entrant_event_list_item_draw_date);
         TextView statusTextView = view.findViewById(R.id.entrant_event_status);
         Button viewButton = view.findViewById(R.id.entrant_event_list_item_view_button);
+        Button acceptButton = view.findViewById(R.id.entrant_event_list_item_accept_invite_button);
 
         viewButton.setOnClickListener(new View.OnClickListener() {
             // Handle the button click event
             @Override
             public void onClick(View v) {
-                // TODO: open the event page
-                // Create an Intent to start the new activity
-                // Intent intent = new Intent(getContext(), NewActivity.class);
-                // Start the new activity
-                // context.startActivity(intent);
+                Intent intent = new Intent(context, EntrantEventDescriptionActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("EVENT", event);
+                intent.putExtras(bundle);
+
+                context.startActivity(intent);
 
                 Log.d("button", String.format("%s button clicked", event.getEventName()));
+            }
+        });
+
+        acceptButton.setOnClickListener(new View.OnClickListener() {
+            // Handle the button click event
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(context, EntrantEventAcceptDescriptionActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("EVENT", event);
+                intent.putExtras(bundle);
+
+                context.startActivity(intent);
             }
         });
 
@@ -92,6 +112,15 @@ public class EntrantAllEventsArrayAdapter extends ArrayAdapter<Event> {
         if(event.getStatus().contains("waitlisted") || event.getStatus().contains("selected")) {
             statusTextView.setVisibility(View.VISIBLE);
             statusTextView.setText((CharSequence) event.getStatus());
+        } else {
+            statusTextView.setVisibility(View.GONE);
+        }
+
+        // Only if the user is selected will they be able to accept
+        if (event.getStatus().contains("selected")) {
+            acceptButton.setVisibility(View.VISIBLE);
+        } else {
+            acceptButton.setVisibility(View.GONE);
         }
 
 

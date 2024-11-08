@@ -129,6 +129,11 @@ public class organizer_create_event_fragment extends Fragment {
                     });
                 });
 
+                // Navigate to My Event Frame
+                requireActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new organizer_my_events_fragment())
+                        .commit();
+
             }
         });
 
