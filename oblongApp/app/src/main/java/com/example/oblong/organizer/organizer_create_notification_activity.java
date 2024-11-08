@@ -48,7 +48,6 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         //Get eventID
-        //Intent intent = getIntent();
         getEventID();
 
         //Clicking Cancel button ends create notification activity, should move back to view event screen
