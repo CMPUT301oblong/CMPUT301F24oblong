@@ -16,12 +16,26 @@ import androidx.core.content.res.ResourcesCompat;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ */
 public class EventArrayAdapter extends ArrayAdapter<Event> {
-
+    /**
+     * {@code EventArrayAdapter} is a custom adapter for the event list view.
+     * @param context
+     * @param events
+     */
     public EventArrayAdapter(@NonNull Context context, ArrayList<Event> events){
         super(context, 0, events);
     }
 
+    /**
+     * {@code getView} is a method that populates the event list view with the event data
+     * then returns a view for the event list view.
+     * @param position
+     * @param convertView
+     * @param parent
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){

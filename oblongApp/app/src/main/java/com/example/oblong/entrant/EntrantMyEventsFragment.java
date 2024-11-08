@@ -19,7 +19,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-
+/**
+ * Fragment class for displaying the events that the user is participating in.
+ *
+ * <p>This fragment retrieves a list of events where the user is marked as attending,
+ * using Firebase to fetch relevant data. It then populates a list view
+ * with these events for display.</p>
+ */
 public class EntrantMyEventsFragment extends Fragment {
 
     private ListView eventList;
@@ -30,6 +36,14 @@ public class EntrantMyEventsFragment extends Fragment {
     private CollectionReference eventsRef;
     private String user_id;
 
+    /**
+     * Inflates the fragment's layout.
+     *
+     * @param inflater The LayoutInflater object used to inflate views.
+     * @param container The parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState Bundle containing the fragment's previously saved state, if any.
+     * @return The View for the fragment's UI.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -38,7 +52,16 @@ public class EntrantMyEventsFragment extends Fragment {
         return inflater.inflate(R.layout.activity_my_events, container, false);
     }
 
-
+    /**
+     * Called immediately after {@link #onCreateView} has returned.
+     *
+     * <p>This method initializes Firebase Firestore references and sets up
+     * the ListView adapter for displaying events. It also retrieves the current user's ID
+     * and starts fetching the user's participating events.</p>
+     *
+     * @param view The View returned by {@link #onCreateView}.
+     * @param savedInstanceState The saved instance state bundle.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -64,7 +87,14 @@ public class EntrantMyEventsFragment extends Fragment {
             }
         });
     }
-
+    /**
+     * Fetches events from Firestore where the current entrants status is marked as "attending".
+     *
+     * <p>This method queries the "participants" collection to find documents where the
+     * entrant field matches the current user ID and the status is "attending". For each
+     * participant document, it fetches the corresponding event document from the "events"
+     * collection and adds it to the list of events to be displayed.</p>
+     */
     private void fetchEvents() {
         // Fetch events where the user is a participant
         participantsRef.whereEqualTo("entrant", user_id).whereEqualTo("status", "attending").get().addOnSuccessListener(queryDocumentSnapshots -> {

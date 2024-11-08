@@ -23,8 +23,24 @@ import com.google.firebase.firestore.GeoPoint;
 import java.util.Base64;
 import java.util.HashMap;
 
+/**
+ * Activity class for joining an event as an entrant.
+ *
+ * <p>This activity displays the details of an event, such as its title, description, date,
+ * and poster image, and provides the option for the user to join the event or cancel the action.</p>
+ */
 public class EntrantJoinEventActivity extends AppCompatActivity {
-
+    /**
+     * Initializes the activity, sets up the UI, and handles user interactions.
+     *
+     * <p>In this method, the activity's layout is set, and window insets are applied to ensure
+     * that the content is displayed edge-to-edge. It also retrieves event data from the intent's
+     * extras and populates the UI with this data. The join and cancel buttons are set up to
+     * perform respective actions when clicked.</p>
+     *
+     * @param savedInstanceState The saved instance state containing the activity's previously
+     *                           saved state, if any.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

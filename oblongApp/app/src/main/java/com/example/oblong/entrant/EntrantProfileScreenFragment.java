@@ -50,6 +50,19 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
                 }
             });
 
+    /**
+     * {@class onCreateView} is called to have the fragment instantiate its user interface view.
+     * Fills in the layout and initializes the UI elements.
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -91,7 +104,10 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
     }
 
 
-
+    /**
+     * {@code onViewCreated} is called after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
+     * fetches data from the Firebase for the users profile data
+     */
     private void fetchUserProfileData() {
         db.getCurrentUser(userId -> {
             if (userId != null) {
@@ -124,6 +140,15 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
         });
     }
 
+    /**
+     * {@code addFacility} is called when the user clicks the th button to become an organizer.
+     * It grants the user the role of Organizer, and adds the facility to the database before
+     * opening the Organizer base activity.
+     *
+     * @param name
+     * @param email
+     * @param phone
+     */
     @Override
     public void addFacility(String name, String email, String phone) {
         // Generate UUID

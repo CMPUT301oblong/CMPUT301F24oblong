@@ -21,6 +21,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * {@code EntrantUpcomingEventsFragment} This class handles the upcoming events screen for the entrant
+ * which displays all the upcoming events for the current user.
+ */
 public class EntrantUpcomingEventsFragment extends Fragment {
 
     private ListView eventList;
@@ -32,6 +36,18 @@ public class EntrantUpcomingEventsFragment extends Fragment {
     private String user_id;
     private String status;
 
+    /**
+     * {@code onCreateView} is called to have the fragment instantiate its user interface view.
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return inflater turns the layout inta a view
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -40,6 +56,14 @@ public class EntrantUpcomingEventsFragment extends Fragment {
         return inflater.inflate(R.layout.activity_entrant_event_list, container, false);
     }
 
+
+    /**
+     * {@code onViewCreated} is called after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
+     * Calls events that the user is a part of from Firebase.
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -67,6 +91,9 @@ public class EntrantUpcomingEventsFragment extends Fragment {
         });
     }
 
+    /**
+     * {fetchEvents} is called to fetch events from Firebase.
+     */
     private void fetchEvents() {
         // Fetch events where the user is either selected for or waitlisted
         participantsRef.whereEqualTo("entrant", user_id).whereIn("status", Arrays.asList("selected", "waitlisted")).get().addOnSuccessListener(queryDocumentSnapshots -> {

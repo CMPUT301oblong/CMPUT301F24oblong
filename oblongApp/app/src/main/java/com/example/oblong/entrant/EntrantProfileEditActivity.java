@@ -200,7 +200,9 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
         imagePickerLauncher.launch(intent);
     }
 
-
+    /**
+     * Requests the necessary permissions to access the device's external storage.
+     */
     private void requestGalleryPermissions(){
         // Check for permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
