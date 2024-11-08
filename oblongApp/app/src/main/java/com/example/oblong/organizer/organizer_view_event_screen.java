@@ -1,8 +1,13 @@
 package com.example.oblong.organizer;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -23,7 +29,9 @@ import com.example.oblong.entrant.EntrantProfileEditActivity;
 import com.example.oblong.imageUtils;
 import com.example.oblong.qr_generator;
 import com.example.oblong.Database;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,6 +53,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
     private Button waitlistButton;
 
     private Button drawButton;
+    private ImageView uploadPosterButton;
     private String eventId;
     private final Database db = new Database();
 
@@ -62,6 +71,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
 
         //yaya remove this when push
         eventNameDisplay = findViewById(R.id.organizer_view_event_name);
+        uploadPosterButton = findViewById(R.id.activity_organizer_view_event_event_description_upload_icon);
         eventDescriptionDisplay = findViewById(R.id.activity_organizer_view_event_event_description_text);
         maxCapacityDisplay = findViewById(R.id.activity_organizer_view_event_event_description_max_capacity);
         backButton = findViewById(R.id.imageView2);
@@ -116,6 +126,13 @@ public class organizer_view_event_screen extends AppCompatActivity {
             }
         });
 
+        uploadPosterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                askForImage();
+            }
+        });
+
     }
 
     private void chooseParticipants(String eventId){
@@ -158,6 +175,50 @@ public class organizer_view_event_screen extends AppCompatActivity {
         // https://stackoverflow.com/questions/30027242/set-bitmap-to-imageview
         qrCode.setImageBitmap(code);
     }
+
+    private void askForImage(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        startActivityForResult(Intent.createChooser(intent, "Select a poster"), 200);
+
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 200) {
+                Uri imageUri = data.getData();
+                if (null != imageUri) {
+
+                    try {
+                        Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageUri);
+                        String imageBase64 = imageUtils.bitmapToBase64(imageBitmap);
+                        event.setPoster(imageBase64);
+
+                        //Update database
+                        FirebaseFirestore database = FirebaseFirestore.getInstance();
+                        database.collection("events").document(event.getEventID()).update("poster", imageBase64);
+                        poster.setImageBitmap(imageUtils.base64ToBitmap(event.getPoster()));
+
+
+
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        }
+    }
+
+    private Context requireContext() {
+        return getBaseContext();
+    }
+
 }
 
 
