@@ -1,9 +1,12 @@
 package com.example.oblong.organizer;
 
+import static android.app.PendingIntent.getActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -36,12 +39,15 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         EditText newLabelText = findViewById(R.id.organizer_new_notification_label_inputText);
         EditText newContentText = findViewById(R.id.organizer_new_notification_body_inputText);
         Spinner notificationTargetSpinner = findViewById(R.id.notification_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.notification_target_array, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        notificationTargetSpinner.setAdapter(adapter);
         Button cancelButton = findViewById(R.id.organizer_notification_cancel_button);
         Button sendButton = findViewById(R.id.organizer_send_notification_button);
         db = FirebaseFirestore.getInstance();
 
         //Get eventID
-        Intent intent = getIntent();
         getEventID();
 
         //Clicking Cancel button ends create notification activity, should move back to view event screen
