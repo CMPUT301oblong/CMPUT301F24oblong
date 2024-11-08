@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
@@ -174,22 +175,17 @@
                 android:scaleType="fitXY"
                 android:src="@android:drawable/ic_dialog_dialer" />
 
-
-            <ImageView
-                android:id="@+id/activity_organizer_view_event_event_description_download_icon"
-                android:contentDescription="Downloads the QR code"
-                android:layout_width="0dp"
-                android:layout_height="46dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/download_icon" />
-
-            <TextView
-                android:id="@+id/activity_organizer_view_event_event_description_qr_code_download_text"
-                android:layout_width="154dp"
+            <Button
+                android:id="@+id/draw_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Click to download QR code"
-                android:textColor="#1E1E1E"
-                android:textSize="16sp" />
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:text="Draw Entrants"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+
+
         </LinearLayout>
 
         <LinearLayout

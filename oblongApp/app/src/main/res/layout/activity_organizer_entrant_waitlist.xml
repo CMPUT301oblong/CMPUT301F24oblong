@@ -18,18 +18,18 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/event_waitlist_back_arrow"
+            android:id="@+id/event_waitlist_event_name"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Event Name Waitlist"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageButton"
+            app:layout_constraintStart_toEndOf="@+id/organizer_entrant_waitlist_cancel_button"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/organizer_entrant_waitlist_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -40,6 +40,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ListView
+        android:id="@+id/waitlist_list_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"

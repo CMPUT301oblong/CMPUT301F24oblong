@@ -1,10 +1,5 @@
 package com.example.oblong;
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.ImageDecoder;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import com.google.firebase.Timestamp;
@@ -15,13 +10,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 
-/**
- * The {@code Event} class handles the events that the organizer creates
- */
 public class Event implements Serializable {
     private String eventID;
     private String eventName;
@@ -39,10 +30,6 @@ public class Event implements Serializable {
         this.eventCapacity = eventCapacity;
     }*/
 
-    /**
-     * The {@code Event} method retrieves event data belonging to an eventID from Firebase
-     * @param eventID
-     */
     public Event(String eventID){
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -65,7 +52,7 @@ public class Event implements Serializable {
 
             setPoster(data.getString("poster"));
 
-
+            this.eventID = eventID;
         });
 
 
@@ -82,10 +69,7 @@ public class Event implements Serializable {
 
     }
 
-    /**
-     * The {@code setEventInformation} method sets the event data to the instance variables
-     * @param data
-     */
+
     private void setEventInformation(HashMap<String, Object> data){
         this.eventCapacity = (Long) data.get("capacity");
         Log.d("event cap", Long.toString(this.eventCapacity));
@@ -101,98 +85,52 @@ public class Event implements Serializable {
         this.eventDescription = (String) data.get("description");
     }
 
-    /**
-     * The {@code getEventName} method returns the name of the event
-     * @return
-     */
     public String getEventName() {
         return eventName;
     }
 
-    /**
-     * The {@code setEventName} method sets the name of the event
-     * @param eventName
-     */
     public void setEventName(String eventName) {
         this.eventName = eventName;
     }
 
-    /**
-     * The {@code getEventDescription} method returns the description of the event
-     * @return eventDescription
-     */
     public String getEventDescription() {
         return eventDescription;
     }
-    /**
-     * The {@code setEventDescription} method sets the description of the event
-     * @param eventDescription
-     */
+
     public void setEventDescription(String eventDescription) {
         this.eventDescription = eventDescription;
     }
-    /**
-     * The {@code getEventCloseDate} method returns the close date of the event
-     * @return eventCloseDate
-     */
+
     public String getEventCloseDate() {
         String datePattern = "dd/MM/yyyy";
         DateFormat closeDateFormat = new SimpleDateFormat(datePattern);
         return closeDateFormat.format(this.eventCloseDate);
     }
 
-    /**
-     * The {@code setEventCloseDate} method sets the close date of the event
-     * @param eventCloseDate
-     */
     public void setEventCloseDate(Date eventCloseDate) {
         this.eventCloseDate = eventCloseDate;
     }
 
-    /**
-     * The {@code getEventCapacity} method returns the capacity of the event
-     * @return eventCapacity
-     */
-    public Long getEventCapacity() {
-        return eventCapacity;
+    public int getEventCapacity() {
+        return Math.toIntExact(eventCapacity);
     }
 
-    /**
-     * The {@code setEventCapacity} method sets the capacity of the event
-     * @param eventCapacity
-     */
     public void setEventCapacity(Long eventCapacity) {
         this.eventCapacity = eventCapacity;
     }
 
-    /**
-     * The {@code getEventID} method returns the ID of the event
-     * @return eventID
-     */
     public String getEventID() {
         return eventID;
     }
 
-    /**
-     * The {@code setEventID} method sets the ID of the event
-     * @param eventID
-     */
     public void setEventID(String eventID) {
         this.eventID = eventID;
     }
 
-    /**
-     * The {@code getPoster} method returns the poster of the event
-     * @return poster
-     */
     public String getPoster() {
         return poster;
     }
 
-    /**
-     * The {@code setPoster} method sets the poster of the event
-     * @param poster
-     */
     public void setPoster(String poster) {
         if (poster.length() < 10) {
             this.poster = "iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAKaSURBVHgB7ZlBbuIwFIYfobACiSULhNIbzA2GOcnkBtM5AekJZuYGmZOUnqDcIClCYtkukRDQ95AtGcc4tkkcV+WTLDm2E/1/nOc4LwA3bnxtOpc6RshgMPjV6XRmVKAdllj+rlar/5cGKA2Mx+O43+8/YTWGMCh2u91ss9m8yh2RanRg4om41+st6KmQO0oGptPpTwhLPCemR1puvFMMfBAPjsdj1u12fxdF8Q4eiZH9fj/H+Et4G4vFR3FcKQZwBo7iMYqP8zx/hRZAD6PD4fAmtmFAn2mOqi7SlnjCZNYrDYTOHTgymUy+4zOZYvmGhyOMlQXWM92a3QROM4BxMo+iaMGC6rS0sXqGxubgEWsDbJlNL14wilKaHfCEtQFxWdOMScET1gbwWZ+Jx7TM4l2/F9tYXHjBJQbOlrbtdnsqEiPwhMsjtBSPcY9S4N4pF9toRaq6DsUSljcsOYsrJ1wMpAZjMl0/E0xjaKZiqruasDaAb8dn0KxC+OpPde8CQbyMkwmn9wAKpA1Vgnd6wZreqY7B/GO9Xj9eOk8jnmNtonIzJ2+eXDEQL5LwWazS42UvpBGfsCJjPBPOeyFTdOKFuwyKMRlr19LoDJiIJ1g9UYxTnXtGYwZMxXM0JrQ0YsBWPMfFRO0GXMVzbE3UauBa8RwbE7UZqEs8x9RELQbqFs8xOfdqA02JN+UqA22LJ5wNhCCecM1KBCGecM1KZIou7+IJKwOhiScqDfCcfBvi6UdL1ZjSdpq+rMTUyXA4/IN5+dOvHsX5jYmnG4cJAznLt5THqb7I6KQUwqR0w0oGWE7+BcL7S1Og+Hu5sRQDlJOnj3OqQjgUmAGcqTq0H+wUuBgTDxgT3lKFIiweKdvxz/cvrhs3PgsfKfsY4D61rB4AAAAASUVORK5CYII=";

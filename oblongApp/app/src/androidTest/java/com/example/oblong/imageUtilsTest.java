@@ -17,7 +17,10 @@ import org.junit.runner.RunWith;
 import java.io.ByteArrayOutputStream;
 
 @RunWith(AndroidJUnit4.class)
+
 public class imageUtilsTest {
+
+
 
     @Test
     public void testBitmapToBase64() {
@@ -49,15 +52,17 @@ public class imageUtilsTest {
 
         // Check if the decoded bitmap has the same content by comparing bytes
         ByteArrayOutputStream originalStream = new ByteArrayOutputStream();
-        originalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, originalStream);
+        originalBitmap.compress(Bitmap.CompressFormat.JPEG, 25, originalStream);
         byte[] originalBytes = originalStream.toByteArray();
 
         ByteArrayOutputStream decodedStream = new ByteArrayOutputStream();
-        decodedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, decodedStream);
+        decodedBitmap.compress(Bitmap.CompressFormat.JPEG, 25, decodedStream);
         byte[] decodedBytes = decodedStream.toByteArray();
 
         assertEquals("Bitmaps should have the same content", Base64.encodeToString(originalBytes, Base64.DEFAULT),
                 Base64.encodeToString(decodedBytes, Base64.DEFAULT));
     }
+
 }
+
 
