@@ -1,10 +1,5 @@
 package com.example.oblong;
 
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.ImageDecoder;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import com.google.firebase.Timestamp;
@@ -15,7 +10,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -117,8 +111,8 @@ public class Event implements Serializable {
         this.eventCloseDate = eventCloseDate;
     }
 
-    public Long getEventCapacity() {
-        return eventCapacity;
+    public int getEventCapacity() {
+        return Math.toIntExact(eventCapacity);
     }
 
     public void setEventCapacity(Long eventCapacity) {

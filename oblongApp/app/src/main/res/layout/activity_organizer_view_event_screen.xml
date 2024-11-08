@@ -175,6 +175,16 @@
                 android:scaleType="fitXY"
                 android:src="@android:drawable/ic_dialog_dialer" />
 
+            <Button
+                android:id="@+id/draw_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_weight="1"
+                android:text="Draw Entrants"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp" />
+
 
         </LinearLayout>
 

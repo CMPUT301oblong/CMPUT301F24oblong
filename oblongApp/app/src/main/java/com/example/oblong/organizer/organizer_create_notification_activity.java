@@ -40,9 +40,7 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         Button sendButton = findViewById(R.id.organizer_send_notification_button);
         db = FirebaseFirestore.getInstance();
 
-        //TODO Receive eventID from view_even_screen
-        //assuming event data passed through intent/bundle
-        //String eventID = "1";
+        //Get eventID
         Intent intent = getIntent();
         getEventID();
 
@@ -81,6 +79,7 @@ public class organizer_create_notification_activity extends AppCompatActivity {
                             }
                         });
             }
+            finish();
         });
     }
 
