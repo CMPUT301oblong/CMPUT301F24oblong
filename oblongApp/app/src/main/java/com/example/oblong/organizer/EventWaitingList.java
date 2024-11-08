@@ -44,20 +44,21 @@ public class EventWaitingList extends AppCompatActivity {
         waitListAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, waitListedEntrants);
         waitList.setAdapter(waitListAdapter);
         eventName = findViewById(R.id.event_waitlist_event_name);
-        combined_name = event_name + "Waitlist";
+
 
         db = FirebaseFirestore.getInstance();
 
-        Intent intent = getIntent();
+        //Intent intent = getIntent();
 
-        getEventID();
-        getEventName();
-
-        if (eventID != null){
+        Bundle bundle = getIntent().getExtras();
+        Event event = (Event) bundle.get("EVENT");
+        if (event != null) {
+            eventID = event.getEventID();
+            event_name = event.getEventName();
+            combined_name = event_name + " Waitlist";
             eventName.setText(combined_name);
-        }
-        else{
-            Log.d("EventWaitingList", "No event found");
+        } else {
+            Log.d("EventWaitingList", "Event object is null");
         }
 
         fetchWaitlistedEntrants();
@@ -71,18 +72,6 @@ public class EventWaitingList extends AppCompatActivity {
         });
     }
 
-    //gets event id from bundle
-    private void getEventID() {
-        Bundle bundle = getIntent().getExtras();
-        Event event = (Event) bundle.get("EVENT");
-        eventID = event.getEventID();
-    }
-    //gets event name from bundle
-    private void getEventName() {
-        Bundle bundle = getIntent().getExtras();
-        Event event = (Event) bundle.get("EVENT");
-        event_name = event.getEventName();
-    }
 
     // fetches all entrants that are signed up for the event
     private void fetchWaitlistedEntrants() {

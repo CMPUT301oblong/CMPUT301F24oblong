@@ -66,6 +66,9 @@
             android:name=".organizer.organizer_base_activity"
             android:exported="true" />
         <activity
+            android:name=".organizer.EventWaitingList"
+            android:exported="true" />
+        <activity
             android:name=".RoleSelector"
             android:exported="true">
             <intent-filter>
