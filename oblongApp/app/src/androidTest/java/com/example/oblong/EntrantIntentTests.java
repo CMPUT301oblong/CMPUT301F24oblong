@@ -32,6 +32,12 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+/*
+        ******** IMPORTANT! ********
+    These tests fail because Espresso doesn't wait for the database queries to finish
+    Possible solution found using IdlingResource objects
+        Need to try implementing
+ */
 @RunWith(AndroidJUnit4.class)
 public class EntrantIntentTests {
     @Rule
@@ -40,6 +46,7 @@ public class EntrantIntentTests {
     @Test
     public void addUserInfo() {
         //check addNewUserDialog
+        //TODO wait for database query checking for user id
         onView(withId(R.id.editTextText))
                 .perform(ViewActions.typeText("firstTest lastTest"));
         onView(withId(R.id.editTextTextEmailAddress))
@@ -52,6 +59,7 @@ public class EntrantIntentTests {
     @Test
     public void viewEntrantInfo(){
         //add new user info
+        //TODO wait for database query checking for user id
         onView(withId(R.id.editTextText))
                 .perform(ViewActions.typeText("firstTest lastTest"));
         onView(withId(R.id.editTextTextEmailAddress))
@@ -61,6 +69,7 @@ public class EntrantIntentTests {
         onView(withText("Add")).perform(click());
 
         //check profile info displayed
+        //TODO wait for database query to grab entrant info
         onView(withText("firstTest lastTest")).check(matches(isDisplayed()));
         onView(withText("testEmail@gmail.com")).check(matches(isDisplayed()));
         onView(withText("7777777777")).check(matches(isDisplayed()));
@@ -69,8 +78,8 @@ public class EntrantIntentTests {
     //look into espresso database idling resource, db queries take time
     @Test
     public void editEntrantInfo() {
-
         //add new user info
+        //TODO wait for database query checking for user id
         onView(withId(R.id.editTextText))
                 .perform(ViewActions.typeText("firstTest lastTest"));
         onView(withId(R.id.editTextTextEmailAddress))
@@ -80,6 +89,7 @@ public class EntrantIntentTests {
         onView(withText("Add")).perform(click());
 
         //check profile info displayed
+        //TODO wait for database query to grab entrant info
         onView(withText("firstTest lastTest")).check(matches(isDisplayed()));
         onView(withText("testEmail@gmail.com")).check(matches(isDisplayed()));
         onView(withText("7777777777")).check(matches(isDisplayed()));
@@ -87,6 +97,7 @@ public class EntrantIntentTests {
         //update profile info
         onView(withId(R.id.entrant_profile_edit_button)).perform(click());
 
+        //TODO wait for database query to grab entrant info
         onView(withId(R.id.entrant_profile_edit_name_input))
                 .perform(ViewActions.clearText(), ViewActions.typeText("updatedFirstTest updatedLastTest"));
         onView(withText("testEmail@gmail.com"))
@@ -96,6 +107,7 @@ public class EntrantIntentTests {
         onView(withId(R.id.entrant_profile_edit_save_changes_button)).perform(click());
 
         //check updates were saved
+        //TODO wait for database query to grab entrant info
         onView(withText("updatedFirstTest updatedLastTest")).check(matches(isDisplayed()));
         onView(withText("updatedTestEmail@gmail.com")).check(matches(isDisplayed()));
         onView(withText("8888888888")).check(matches(isDisplayed()));
