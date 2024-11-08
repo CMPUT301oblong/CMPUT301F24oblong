@@ -35,6 +35,7 @@ public class EntrantEventAcceptDescriptionActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private String user_id;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,9 +57,6 @@ public class EntrantEventAcceptDescriptionActivity extends AppCompatActivity {
         Intent intent = getIntent();
         initializeData(intent);
 
-
-
-
         //accept button listener
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +69,7 @@ public class EntrantEventAcceptDescriptionActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                userCancelled();
             }
         });
 
@@ -85,9 +83,6 @@ public class EntrantEventAcceptDescriptionActivity extends AppCompatActivity {
     }
 
     private void userAccepted(){
-        //TO DO:
-        //Update Database and add the user as participant in the event
-        //Take the user to the event screen
         db = FirebaseFirestore.getInstance();
         String event_id = event.getEventID();
 
@@ -107,6 +102,42 @@ public class EntrantEventAcceptDescriptionActivity extends AppCompatActivity {
                             // Update the status field to "attending"
                             participantRef.update("status", "attending").addOnSuccessListener(aVoid -> {
                                 Log.d("EntrantEventAcceptDescriptionActivity", "Status updated to attending");
+                                // finish after status is updated
+                                finish();
+
+                            }).addOnFailureListener(e -> Log.e("EntrantEventAcceptDescriptionActivity", "Error updating status", e));
+                        }
+                    }
+                    else {
+                        Log.e("EntrantEventAcceptDescriptionActivity", "No participant document found for this event and user");
+                    }
+                }).addOnFailureListener(e -> Log.e("EntrantEventAcceptDescriptionActivity", "Error retrieving participant document", e));
+            }
+            else {
+                Log.e("EntrantEventAcceptDescriptionActivity", "Failed to retrieve user ID");
+            }
+        });
+    }
+    private void userCancelled(){
+        db = FirebaseFirestore.getInstance();
+        String event_id = event.getEventID();
+
+        // Retrieve the current user's ID
+        Database.getCurrentUser(user_id -> {
+            if (user_id != null) {
+                this.user_id = user_id;
+
+                // check for entrants with the given user id and events with the given event id
+                db.collection("participants").whereEqualTo("entrant", user_id).whereEqualTo("event", event_id).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                            String eventId = doc.getString("event");
+
+                            DocumentReference participantRef = doc.getReference();
+
+                            // Update the status field to "cancelled"
+                            participantRef.update("status", "cancelled").addOnSuccessListener(aVoid -> {
+                                Log.d("EntrantEventAcceptDescriptionActivity", "Status updated to cancelled");
                                 // finish after status is updated
                                 finish();
 
