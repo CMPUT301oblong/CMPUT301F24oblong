@@ -10,7 +10,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.oblong.admin.AdminProfileBrowserActivity;
+import com.example.oblong.admin.AdminBaseActivity;
 import com.example.oblong.entrant.EntrantBaseActivity;
 import com.example.oblong.organizer.organizer_base_activity;
 
@@ -74,8 +74,8 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.
                         break;
                     }
                     case "admin": {
-                        // Admin, navigate to AdminProfileBrowserActivity
-                        Intent intent = new Intent(this, AdminProfileBrowserActivity.class);
+                        // Admin, navigate to AdminBaseActivity
+                        Intent intent = new Intent(this, AdminBaseActivity.class);
                         startActivity(intent);
                         break;
                     }
