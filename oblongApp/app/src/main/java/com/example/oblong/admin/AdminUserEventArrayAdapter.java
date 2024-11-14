@@ -2,7 +2,10 @@ package com.example.oblong.admin;
 
 import static android.app.PendingIntent.getActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +13,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.oblong.Database;
 import com.example.oblong.Event;
 import com.example.oblong.R;
+import com.example.oblong.User;
+import com.example.oblong.imageUtils;
 
 import java.util.ArrayList;
 
@@ -72,10 +79,15 @@ public class AdminUserEventArrayAdapter extends ArrayAdapter<Object> {
         if (object instanceof Event) {
             Event event = (Event) object;
             itemName.setText(event.getEventName());
-        } else if (object instanceof String) {
-            // TODO: implement user as its own object to support profile pictures
-            String user = (String) object;
-            itemName.setText(user);
+        } else if (object instanceof User) {
+            // TODO: support profile pictures
+            User user = (User) object;
+            if(user.getProfilePicture() == null){
+                poster.setImageResource(R.drawable.image_placeholder);
+            }else{
+                poster.setImageBitmap(imageUtils.base64ToBitmap((String)user.getProfilePicture()));
+            }
+            itemName.setText(user.getName());
         }
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
@@ -89,17 +101,47 @@ public class AdminUserEventArrayAdapter extends ArrayAdapter<Object> {
              */
             @Override
             public void onClick(View v) {
-
-                // TODO: Setup Item Deletion
-//                Intent intent = new Intent(context, EntrantEventAcceptDescriptionActivity.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("EVENT", event);
-//                intent.putExtras(bundle);
-
-//                context.startActivity(intent);
+                AlertDialog dialog = createDialog(object);
+                dialog.show();
             }
         });
 
         return view;
+    }
+
+    private AlertDialog createDialog(Object object) {
+        Log.d("AdminUserProfileView", "createDialog called");
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Are you sure you want to delete this user?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(object instanceof Event){
+                    // TODO: delete event
+                }
+                if(object instanceof User){
+                    Database db = new Database();
+                    User user = (User) object;
+
+                    Database.getCurrentUser(user_id -> {
+                        if(!user.getId().equals(user_id)) {
+                            db.deleteUser(getContext(), user);
+                        } else {
+                            Toast.makeText(getContext(), "You cannot delete yourself", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+            }
+        });
+        builder.setNeutralButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d(getContext().toString(), "User not deleted");
+                Toast.makeText(getContext(), "Deletion cancelled", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return builder.create();
     }
 }

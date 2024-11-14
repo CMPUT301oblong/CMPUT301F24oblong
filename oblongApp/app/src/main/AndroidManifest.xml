@@ -21,6 +21,10 @@
         <activity
             android:name=".entrant.EntrantBaseActivity"
             android:exported="false" />
+        <activity android:name=".admin.AdminUserProfileView"
+            android:exported="false" />
+        <activity android:name=".admin.AdminEventView"
+            android:exported="false" />
         <activity
             android:name=".admin.AdminBaseActivity"
             android:exported="false" />

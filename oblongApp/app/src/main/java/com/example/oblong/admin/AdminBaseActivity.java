@@ -42,7 +42,7 @@ public class AdminBaseActivity extends AppCompatActivity {
                 if (itemId == R.id.admin_all_entrants_button) {
                     selectedFragment = new AdminProfileBrowserActivity();
                 } else if (itemId == R.id.admin_all_events_button) {
-                    selectedFragment = new AdminEventBrowserActivity();
+                    selectedFragment = new AdminEventBrowserFragment();
                 } else if (itemId == R.id.admin_all_images_button) {
                     // TODO: setup image list
 //                    selectedFragment = new admin_image_list();

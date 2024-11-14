@@ -64,7 +64,7 @@ public class organizer_profile_fragment extends Fragment {
         profilePic = view.findViewById(R.id.imageView);
         editProfileButton = view.findViewById(R.id.profile_edit_button);
         editFacilityButton = view.findViewById(R.id.facility_edit_button);
-        entrantViewButton = view.findViewById(R.id.entrant_view_button);
+        entrantViewButton = view.findViewById(R.id.delete_user_button);
 
 
         // Pull and display all user Info here

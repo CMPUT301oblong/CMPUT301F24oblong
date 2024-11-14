@@ -1,10 +1,12 @@
 package com.example.oblong.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -13,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.oblong.R;
+import com.example.oblong.User;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -49,10 +52,27 @@ public class AdminProfileBrowserActivity extends Fragment {
         TextView titleText = view.findViewById(R.id.admin_event_browser_title);
         titleText.setText("Profile Browser");
         userDataList = new ArrayList<>();
+        // set an item click listener
 
 //        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, userDataList);
         adapter = new AdminUserEventArrayAdapter(getContext(), userDataList);
         userList.setAdapter(adapter);
+
+        userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // Handle item click event
+                Log.d("AdminProfileBrowserActivity", "Item clicked: " + ((User) userDataList.get(i)).getId());
+                User user = (User) userDataList.get(i);
+                // Open the user's profile
+                Intent intent = new Intent(getActivity(), AdminUserProfileView.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user", user);
+                intent.putExtras(bundle);
+
+                startActivity(intent);
+            }
+        });
 
 
         // Fetch Items from Firebase
@@ -70,9 +90,7 @@ public class AdminProfileBrowserActivity extends Fragment {
                 if (querySnapshots != null) {
                     userDataList.clear();
                     for (QueryDocumentSnapshot doc: querySnapshots) {
-                        String userId = doc.getId();
-                        String user = doc.getString("name");
-
+                        User user = new User(doc.getId(), doc.getString("name"), doc.getString("phone"), doc.getString("email"), doc.getString("profilePicture"), doc.getString("type"));
                         userDataList.add(user);
                     }
                     adapter.notifyDataSetChanged();

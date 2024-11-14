@@ -1,10 +1,7 @@
 package com.example.oblong;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -17,13 +14,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import com.example.oblong.organizer.organizer_base_activity;
-import com.example.oblong.organizer.organizer_my_events_fragment;
-import com.example.oblong.organizer.organizer_profile_edit;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -51,7 +45,7 @@ public class organizerNavigationInstrumentedTest {
         // Click on Profile
         onView(withId(R.id.profile)).perform(click());
         // Check if the organizer_profile_fragment is launched
-        onView(withId(R.id.entrant_view_button)).check(matches(isDisplayed()));
+        onView(withId(R.id.delete_user_button)).check(matches(isDisplayed()));
     }
 
     @Test
@@ -74,7 +68,7 @@ public class organizerNavigationInstrumentedTest {
     public void testOrganizerEntrantView() {
         // Should access the user profile edit
         onView(withId(R.id.profile_edit_button)).check(matches(isDisplayed()));
-        onView(withId(R.id.entrant_view_button)).perform(click());
+        onView(withId(R.id.delete_user_button)).perform(click());
 
         // Check if went to entrant view
         onView(withId(R.id.entrant_profile_name)).check(matches(isDisplayed()));

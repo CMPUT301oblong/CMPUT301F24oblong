@@ -1,10 +1,12 @@
 package com.example.oblong.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,11 +25,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class AdminEventBrowserActivity extends Fragment {
+public class AdminEventBrowserFragment extends Fragment {
 
     private ListView eventList;
     private ArrayList<Object> eventDataList;
-    // Will eventually user AdminUserEventArrayAdapter \/
     private AdminUserEventArrayAdapter adapter;
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
@@ -54,6 +55,22 @@ public class AdminEventBrowserActivity extends Fragment {
 //        adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, eventDataList);
         adapter = new AdminUserEventArrayAdapter(getContext(), eventDataList);
         eventList.setAdapter(adapter);
+
+        eventList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                             @Override
+                                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+                                             {
+                                                 // Handle item click event
+                                                 Log.d("AdminEventBrowserFragment", "Item clicked: " + ((Event) eventDataList.get(i)).getEventID());
+                                                 Event event = (Event) eventDataList.get(i);
+                                                 Intent intent = new Intent(getActivity(), AdminEventView.class);
+                                                 Bundle bundle = new Bundle();
+                                                 bundle.putSerializable("event", event);
+                                                 intent.putExtras(bundle);
+
+                                                 startActivity(intent);
+                                             }
+                                         });
 
 
         // Fetch Items from Firebase
