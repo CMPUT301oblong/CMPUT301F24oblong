@@ -422,7 +422,7 @@ public class Database {
      * That includes: as a participant, organizer/entrant, their facility, and their events.
      */
     public void deleteUser(Context context, User viewed_user) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance(); // Get rid of line if this still works (I moved this method from another file) - Mike
         String user_type = viewed_user.getUserType();
 
         // Delete user from roles
@@ -468,5 +468,38 @@ public class Database {
         db.collection("users").document(viewed_user.getId()).delete()
                 .addOnSuccessListener(unused -> Toast.makeText(context, "User deleted", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Log.e("Firestore", "Failed to delete user", e));
+    }
+
+    /*
+     * Completely remove event from the database.
+     */
+    public void deleteEvent(Context context, Event event) {
+        // Delete event from the "created" collection
+        db.collection("created").whereEqualTo("event", event.getEventID()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
+                db.collection("created").document(snapshot.getId()).delete()
+                        .addOnFailureListener(e -> Log.e("Firestore", "Failed to delete event", e));
+            }
+
+            // Delete event from the "events" collection
+            db.collection("events").document(event.getEventID()).delete()
+                    .addOnSuccessListener(unused -> Toast.makeText(context, "Event deleted", Toast.LENGTH_SHORT).show());
+        });
+
+        // Delete participants of the event ("participants" collection)
+        db.collection("participants").whereEqualTo("event", event.getEventID()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
+                db.collection("participants").document(snapshot.getId()).delete()
+                        .addOnFailureListener(e -> Log.e("Firestore", "Failed to delete participant", e));
+            }
+        });
+
+        // Delete notifications associated with the event ("notification" collection)
+        db.collection("notification").whereEqualTo("event", event.getEventID()).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
+                db.collection("notification").document(snapshot.getId()).delete()
+                        .addOnFailureListener(e -> Log.e("Firestore", "Failed to delete notification", e));
+            }
+        });
     }
 }

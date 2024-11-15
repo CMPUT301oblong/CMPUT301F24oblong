@@ -16,6 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.oblong.Database;
 import com.example.oblong.Event;
 import com.example.oblong.R;
 import com.example.oblong.imageUtils;
@@ -61,6 +62,7 @@ public class AdminEventView extends AppCompatActivity {
 
     }
 
+    // Delete Event Dialog
     private AlertDialog createDialog() {
         Log.d("AdminEventView", "createDialog called");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -68,10 +70,8 @@ public class AdminEventView extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d("AdminEventView", "Event deleted");
-                Toast.makeText(AdminEventView.this, "Event deleted", Toast.LENGTH_SHORT).show();
-                // Delete event from database
-                deleteEvent();
+                Database db = new Database();
+                db.deleteEvent(AdminEventView.this, current_event);
                 finish();
             }
         });
@@ -84,12 +84,5 @@ public class AdminEventView extends AppCompatActivity {
         });
 
         return builder.create();
-    }
-
-    /*
-     * Completely removes the event from the database.
-     */
-    private void deleteEvent() {
-        // TODO: implement Event deletion
     }
 }

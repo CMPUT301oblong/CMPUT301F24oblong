@@ -112,15 +112,21 @@ public class AdminUserEventArrayAdapter extends ArrayAdapter<Object> {
     private AlertDialog createDialog(Object object) {
         Log.d("AdminUserProfileView", "createDialog called");
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Are you sure you want to delete this user?");
+        if(object instanceof Event){
+            builder.setMessage("Are you sure you want to delete this event?");
+        } else if(object instanceof User){
+            builder.setMessage("Are you sure you want to delete this user?");
+        }
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                Database db = new Database();
                 if(object instanceof Event){
-                    // TODO: delete event
+                    Event event = (Event) object;
+
+                    db.deleteEvent(getContext(), event);
                 }
                 if(object instanceof User){
-                    Database db = new Database();
                     User user = (User) object;
 
                     Database.getCurrentUser(user_id -> {
@@ -137,7 +143,7 @@ public class AdminUserEventArrayAdapter extends ArrayAdapter<Object> {
         builder.setNeutralButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d(getContext().toString(), "User not deleted");
+                Log.d(getContext().toString(), "Deletion cancelled");
                 Toast.makeText(getContext(), "Deletion cancelled", Toast.LENGTH_SHORT).show();
             }
         });
