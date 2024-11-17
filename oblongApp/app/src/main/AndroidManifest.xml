@@ -21,14 +21,12 @@
         <activity
             android:name=".entrant.EntrantBaseActivity"
             android:exported="false" />
-        <activity
-            android:name=".admin.AdminProfileBrowserActivity"
+        <activity android:name=".admin.AdminUserProfileView"
+            android:exported="false" />
+        <activity android:name=".admin.AdminEventView"
             android:exported="false" />
         <activity
-            android:name=".admin.AdminEventBrowserActivity"
-            android:exported="false" />
-        <activity
-            android:name=".admin.AdminProfileActivity"
+            android:name=".admin.AdminBaseActivity"
             android:exported="false" />
         <activity
             android:name=".organizer.organizer_view_entrant_profile"
@@ -53,9 +51,6 @@
             android:exported="false" />
         <activity
             android:name=".entrant.EntrantEventDescriptionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".entrant.EntrantEventAcceptDescriptionActivity"
             android:exported="false" />
         <activity
             android:name=".entrant.EntrantEventListActivity"
