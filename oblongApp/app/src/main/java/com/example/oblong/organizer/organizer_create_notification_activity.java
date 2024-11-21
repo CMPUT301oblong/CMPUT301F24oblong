@@ -22,7 +22,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class organizer_create_notification_activity extends AppCompatActivity {
@@ -65,21 +67,71 @@ public class organizer_create_notification_activity extends AppCompatActivity {
             String content = newContentText.getText().toString();
             String targets = notificationTargetSpinner.getItemAtPosition(notificationTargetSpinner
                     .getSelectedItemPosition()).toString();
+            ArrayList<String> participantList = new ArrayList<String>();
             inputValidator validator = new inputValidator(this);
             if(validator.validateCreateNotification(label, content, targets)){
                 notif.put("event", eventID);
+                notif.put("target list", participantList);
                 switch (targets){
                     case "Waitlisted Entrants":
                         notif.put("targets", "waitlisted");
+                        db.collection("participants").whereEqualTo("event", eventID).whereEqualTo("status", "waitlisted").get().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String entrantID = document.getString("entrant");
+                                    if (entrantID != null) {
+                                        participantList.add(entrantID);
+                                    }
+                                }
+                            } else {
+                                Log.d("NotificationParticipantList", "Couldn't fetch waitlisted entrants");
+                            }
+                        });
                         break;
                     case "Selected Entrants":
                         notif.put("targets", "selected");
+                        db.collection("participants").whereEqualTo("event", eventID).whereEqualTo("status", "selected").get().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String entrantID = document.getString("entrant");
+                                    if (entrantID != null) {
+                                        participantList.add(entrantID);
+                                    }
+                                }
+                            } else {
+                                Log.d("NotificationParticipantList", "Couldn't fetch selected entrants");
+                            }
+                        });
                         break;
                     case "Cancelled Entrants":
                         notif.put("targets", "cancelled");
+                        db.collection("participants").whereEqualTo("event", eventID).whereEqualTo("status", "cancelled").get().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String entrantID = document.getString("entrant");
+                                    if (entrantID != null) {
+                                        participantList.add(entrantID);
+                                    }
+                                }
+                            } else {
+                                Log.d("NotificationParticipantList", "Couldn't fetch cancelled entrants");
+                            }
+                        });
                         break;
                     case "Accepted Entrants":
                         notif.put("targets", "attending");
+                        db.collection("participants").whereEqualTo("event", eventID).whereEqualTo("status", "attending").get().addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String entrantID = document.getString("entrant");
+                                    if (entrantID != null) {
+                                        participantList.add(entrantID);
+                                    }
+                                }
+                            } else {
+                                Log.d("NotificationParticipantList", "Couldn't fetch attending entrants");
+                            }
+                        });
                         break;
                 }
                 notif.put("text", content);
