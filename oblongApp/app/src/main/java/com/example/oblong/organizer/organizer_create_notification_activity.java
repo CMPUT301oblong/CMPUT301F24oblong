@@ -68,7 +68,20 @@ public class organizer_create_notification_activity extends AppCompatActivity {
             inputValidator validator = new inputValidator(this);
             if(validator.validateCreateNotification(label, content, targets)){
                 notif.put("event", eventID);
-                notif.put("targets", targets);
+                switch (targets){
+                    case "Waitlisted Entrants":
+                        notif.put("targets", "waitlisted");
+                        break;
+                    case "Selected Entrants":
+                        notif.put("targets", "selected");
+                        break;
+                    case "Cancelled Entrants":
+                        notif.put("targets", "cancelled");
+                        break;
+                    case "Accepted Entrants":
+                        notif.put("targets", "attending");
+                        break;
+                }
                 notif.put("text", content);
                 notif.put("title", label);
                 db.collection("notification").add(notif)
