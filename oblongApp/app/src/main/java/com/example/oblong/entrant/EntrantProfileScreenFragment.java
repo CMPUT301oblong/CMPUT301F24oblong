@@ -40,7 +40,7 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
     private TextView organizer_text;
     ImageButton editProfileButton;
     Button addFacilityButton;
-    private Database db;
+    private Database db = new Database();
     boolean isOrganizer;
 
     private final ActivityResultLauncher<Intent> editProfileLauncher =
@@ -79,7 +79,6 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
         addFacilityButton = view.findViewById(R.id.entrant_profile_create_facility);
         organizer_text = view.findViewById(R.id.become_an_organizer);
 
-        db = new Database();
         fetchUserProfileData();
 
         addFacilityButton.setOnClickListener(v -> {
@@ -160,21 +159,30 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
         // Generate UUID
         String facility_id = UUID.randomUUID().toString();
         db.addFacility(facility_id, email, name, (phone.isEmpty() ? null : phone), null);
-        db.addOrganizer(user_id, facility_id, user_id);
+        Database.getCurrentUser(
+                userId -> {
+                    if (userId != null) {
+                        this.user_id = userId;
+                        db.addOrganizer(user_id, facility_id, user_id);
 
-        // Change user entry
-        HashMap<String, Object> user_updates = new HashMap<>();
-        user_updates.put("type", "organizer");
-        db.updateDocument("users", user_id, user_updates, success -> {
-            if(success) {
-                Toast.makeText(getContext(), "You are now an organizer", Toast.LENGTH_SHORT).show();
-                Log.d("user", "User updated");
-            } else {
-                Toast.makeText(getContext(), "Failed to save changes", Toast.LENGTH_SHORT).show();
-                Log.d("user", "User not updated");
-            }
-        });
-        Intent intent = new Intent(getActivity(), organizer_base_activity.class);
-        startActivity(intent);
+                        // Change user entry
+                        HashMap<String, Object> user_updates = new HashMap<>();
+                        user_updates.put("type", "organizer");
+                        db.updateDocument("users", user_id, user_updates, success -> {
+                            if(success) {
+                                Toast.makeText(getContext(), "You are now an organizer", Toast.LENGTH_SHORT).show();
+                                Log.d("user", "User updated");
+                            } else {
+                                Toast.makeText(getContext(), "Failed to save changes", Toast.LENGTH_SHORT).show();
+                                Log.d("user", "User not updated");
+                            }
+                        });
+                        Intent intent = new Intent(getActivity(), organizer_base_activity.class);
+                        startActivity(intent);
+                    }
+                }
+        );
+
+
     }
 }
