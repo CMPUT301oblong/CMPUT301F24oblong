@@ -425,6 +425,7 @@ public class Database {
         FirebaseFirestore db = FirebaseFirestore.getInstance(); // Get rid of line if this still works (I moved this method from another file) - Mike
         String user_type = viewed_user.getUserType();
 
+        Log.d("user", "deleting " + user_type + " " + viewed_user.getName());
         // Delete user from roles
         db.collection("entrants").document(viewed_user.getId()).delete();
         if ("organizer".equals(user_type)) {
@@ -440,19 +441,21 @@ public class Database {
                                         snapshot.getReference().delete();
                                         db.collection("events").document(event_id).delete();
                                     }
+
+                                    // Delete user facility
+                                    if (facility_id != null) {
+                                        db.collection("facilities").document(facility_id).delete()
+                                                .addOnFailureListener(e -> Log.e("Firestore", "Failed to delete facility", e));
+                                    }
                                 })
                                 .addOnFailureListener(e -> Log.e("Firestore", "Failed to delete events", e));
 
-                        // Delete user facility
-                        if (facility_id != null) {
-                            db.collection("facilities").document(facility_id).delete()
-                                    .addOnFailureListener(e -> Log.e("Firestore", "Failed to delete facility", e));
-                        }
+                        db.collection("organizers").document(viewed_user.getId()).delete()
+                                .addOnSuccessListener(unused -> Log.d("Firestore", "Organizer deleted"))
+                                .addOnFailureListener(e -> Log.e("Firestore", "Failed to delete organizer", e));
                     })
                     .addOnFailureListener(e -> Log.e("Firestore", "Failed to get facility", e));
 
-            db.collection("organizers").document(viewed_user.getId()).delete()
-                    .addOnFailureListener(e -> Log.e("Firestore", "Failed to delete organizer", e));
         }
         // Delete user from participants
         db.collection("participants").whereEqualTo("entrant", viewed_user.getId()).get()

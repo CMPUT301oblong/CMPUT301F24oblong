@@ -90,7 +90,12 @@ public class AdminProfileBrowserActivity extends Fragment {
                 if (querySnapshots != null) {
                     userDataList.clear();
                     for (QueryDocumentSnapshot doc: querySnapshots) {
-                        User user = new User(doc.getId(), doc.getString("name"), doc.getString("phone"), doc.getString("email"), doc.getString("profilePicture"), doc.getString("type"));
+                        User user = new User(doc.getId(),
+                                doc.getString("name"),
+                                doc.getString("phone"),
+                                doc.getString("email"),
+                                doc.getString("profilePicture"),
+                                doc.getString("type"));
                         userDataList.add(user);
                     }
                     adapter.notifyDataSetChanged();
