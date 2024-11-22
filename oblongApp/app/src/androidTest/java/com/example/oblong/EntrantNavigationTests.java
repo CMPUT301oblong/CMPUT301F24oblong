@@ -24,7 +24,7 @@ public class EntrantNavigationTests {
             new ActivityScenarioRule<>(EntrantBaseActivity.class);
 
     @Test
-    public void testNavigation(){
+    public void testMyEvents(){
         //Check entrant profile info screen is displayed
         onView(withId(R.id.bottomNavigationView)).check(matches(isDisplayed()));
         onView(withId(R.id.entrant_profile_name)).check(matches(isDisplayed()));
@@ -34,9 +34,26 @@ public class EntrantNavigationTests {
         onView(withId(R.id.myEvents)).perform(click());
         onView(withId(R.id.my_events_banner)).check(matches(isDisplayed()));
 
+    }
+
+    @Test
+    public void testAllEvents() {
+        //Check entrant profile info screen is displayed
+        onView(withId(R.id.bottomNavigationView)).check(matches(isDisplayed()));
+        onView(withId(R.id.entrant_profile_name)).check(matches(isDisplayed()));
+        onView(withId(R.id.entrant_profile_email)).check(matches(isDisplayed()));
+
         //move to all events screen
         onView(withId(R.id.allEvents)).perform(click());
         onView(withId(R.id.activity_entrant_all_events_banner)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testProfileScreen() {
+        //Check entrant profile info screen is displayed
+        onView(withId(R.id.bottomNavigationView)).check(matches(isDisplayed()));
+        onView(withId(R.id.entrant_profile_name)).check(matches(isDisplayed()));
+        onView(withId(R.id.entrant_profile_email)).check(matches(isDisplayed()));
 
         //move back to profile screen
         onView(withId(R.id.profile)).perform(click());
