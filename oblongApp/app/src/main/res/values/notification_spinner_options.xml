@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="notification_target_array">
+        <item>Waitlisted Entrants</item>
         <item>Cancelled Entrants</item>
         <item>Selected Entrants</item>
-        <item>Waitlisted Entrants</item>
         <item>Accepted Entrants</item>
     </string-array>
 </resources>
