@@ -1,6 +1,9 @@
 package com.example.oblong;
 
+import static com.example.oblong.imageUtils.bitmapToBase64;
+
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -13,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.oblong.admin.AdminBaseActivity;
 import com.example.oblong.entrant.EntrantBaseActivity;
 import com.example.oblong.organizer.organizer_base_activity;
+
 
 /**
  * {@code RoleSelector} This class handles the role selection screen which is the first screen a user will see
@@ -94,7 +98,11 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.
      */
     @Override
     public void addUser(String name, String email, String phone) {
-        db.addUser(user_id, name, email, "entrant", (phone.isEmpty() ? null : phone), null);
+        Bitmap profilePicture = ProfilePicGenerator.generateProfilePic(name);
+
+        // Convert the Bitmap to a Base64 string
+        String profilePictureBase64 = bitmapToBase64(profilePicture);
+        db.addUser(user_id, name, email, "entrant", (phone.isEmpty() ? null : phone), profilePictureBase64);
         db.addEntrant(user_id, false, false, user_id);
         Intent intent = new Intent(this, EntrantBaseActivity.class);
         startActivity(intent);
