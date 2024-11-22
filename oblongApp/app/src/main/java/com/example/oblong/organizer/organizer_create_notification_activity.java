@@ -4,6 +4,7 @@ import static android.app.PendingIntent.getActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -42,8 +43,8 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         EditText newContentText = findViewById(R.id.organizer_new_notification_body_inputText);
         Spinner notificationTargetSpinner = findViewById(R.id.notification_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.notification_target_array, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        adapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+                R.array.notification_target_array, android.R.layout.simple_spinner_dropdown_item);//androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         notificationTargetSpinner.setAdapter(adapter);
         Button cancelButton = findViewById(R.id.organizer_notification_cancel_button);
         Button sendButton = findViewById(R.id.organizer_send_notification_button);
@@ -70,8 +71,6 @@ public class organizer_create_notification_activity extends AppCompatActivity {
             ArrayList<String> participantList = new ArrayList<String>();
             inputValidator validator = new inputValidator(this);
             if(validator.validateCreateNotification(label, content, targets)){
-                notif.put("event", eventID);
-                notif.put("target list", participantList);
                 switch (targets){
                     case "Waitlisted Entrants":
                         notif.put("targets", "waitlisted");
@@ -134,6 +133,9 @@ public class organizer_create_notification_activity extends AppCompatActivity {
                         });
                         break;
                 }
+                String participants = TextUtils.join(", ", participantList);
+                notif.put("event", eventID);
+                notif.put("target list", participants);
                 notif.put("text", content);
                 notif.put("title", label);
                 db.collection("notification").add(notif)

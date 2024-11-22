@@ -329,12 +329,15 @@ public class Database {
      * @param text
      * @param title
      */
-    public void addNotification(String id, String event, String text, String title){
+    public void addNotification(String id, String event, String text, String title, String target,
+                                String targetList){
         HashMap<String, String> notification = new HashMap<>();
         // create a new notification and store the id
         notification.put("event", event);
         notification.put("text", text);
         notification.put("title", title);
+        notification.put("target", target);
+        notification.put("target list", targetList);
         notifications.document(id).set(notification).addOnSuccessListener(aVoid -> Log.d("database", "User added successfully"))
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
