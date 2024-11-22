@@ -16,6 +16,7 @@ public class User implements Serializable {
         this.phone = phone;
         this.email = email;
         this.profilePicture = profilePicture;
+        this.userType = userType;
     }
     // Alternate 2
     public User(String id, String name, String phone, String email) {
