@@ -26,6 +26,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.oblong.Database;
+import com.example.oblong.ProfilePicGenerator;
 import com.example.oblong.R;
 import com.example.oblong.imageUtils;
 import com.example.oblong.inputValidator;
@@ -33,6 +34,7 @@ import com.example.oblong.inputValidator;
 import java.io.IOException;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Activity class for editing a user profile.
@@ -54,6 +56,8 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
     private Bitmap selectedProfilePicBitmap = null; // Store the selected profile picture bitmap
     private boolean isProfilePicChanged = false;    // Track if the profile picture has changed
     private Database db;
+    private Bitmap ProfilePicture;
+
 
     private static final int REQUEST_PERMISSION_READ_EXTERNAL_STORAGE = 100;
     private ActivityResultLauncher<Intent> imagePickerLauncher;
@@ -90,6 +94,9 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
         ImageView imageButton = findViewById(R.id.entrant_profile_edit_image_button);
         ImageView deleteProfileButton = findViewById(R.id.delete_profile_button);
 
+        // Deterministically generates a profile picture
+
+
         // TODO: Implement notification checkbox
         Button notificationCheckbox = findViewById(R.id.entrant_profile_edit_notification_checkbox);
 
@@ -119,20 +126,19 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
         // Pull and display all user Info here
         db = new Database();
         db.getCurrentUser(userId -> {
+
             if (userId != null) {
                 this.user_id = userId;
                 db.getUser(userId, user -> {
                     if (user != null) {
                         // Process data
 //                        profilePic.setImageResource(user.get("photo") == null ? R.drawable.image_placeholder : (int) user.get("photo"));
-                        if(user.get("profilePhoto") == null){
-                            profilePic.setImageResource(R.drawable.image_placeholder);
-                        }else{
-                            profilePic.setImageBitmap(imageUtils.base64ToBitmap((String)user.get("profilePhoto")));
-                        }
+                        profilePic.setImageBitmap(imageUtils.base64ToBitmap((String)user.get("profilePhoto")));
                         nameInput.setText((CharSequence) user.get("name"));
                         emailInput.setText((CharSequence) user.get("email"));
                         phoneInput.setText((CharSequence) (user.get("phone") == null ? "" : user.get("phone")));
+                        String name = Objects.requireNonNull(user.get("name")).toString();
+                        ProfilePicture = ProfilePicGenerator.generateProfilePic(name);
 
                         Log.d("Edit Activity", "Obtained all user info"); // print user's name to console
                     } else {
@@ -147,8 +153,8 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
         });
 
         deleteProfileButton.setOnClickListener(v -> {
-            profilePic.setImageResource(R.drawable.image_placeholder);
-            selectedProfilePicBitmap = null;
+            profilePic.setImageBitmap(ProfilePicture);
+            selectedProfilePicBitmap = ProfilePicture;
             isProfilePicChanged = true;
         });
 
