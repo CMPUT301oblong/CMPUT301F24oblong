@@ -100,7 +100,7 @@
             android:layout_height="48dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/drop_arrow_foreground"/>
+            android:src="@drawable/arrow_drop_down"/>
     </RelativeLayout>
 
 
