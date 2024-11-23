@@ -338,8 +338,14 @@ public class Database {
         notification.put("title", title);
         notification.put("target", target);
         notification.put("target list", targetList);
-        notifications.document(id).set(notification).addOnSuccessListener(aVoid -> Log.d("database", "User added successfully"))
-                .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
+        if(id == null){
+            notifications.add(notification).addOnSuccessListener(aVoid -> Log.d("database", "Notification added successfully"))
+                    .addOnFailureListener(e -> Log.w("database", "Error adding notification", e));
+        }else{
+            notifications.document(id).set(notification).addOnSuccessListener(aVoid -> Log.d("database", "Notification added successfully"))
+                    .addOnFailureListener(e -> Log.w("database", "Error adding notification", e));
+        }
+
     }
 
     /**

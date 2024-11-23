@@ -74,7 +74,6 @@ public class OrganizerNotificationTest {
         fdb.collection("participants").whereEqualTo("event", "OrganizerNotificationTestEvent")
                 .get().addOnSuccessListener(queryDocumentSnapshots -> {
                     ArrayList<String> participants= new ArrayList<String>();
-                    Log.d("test", "query success");
                     queryDocumentSnapshots.forEach(doc -> participants.add(doc.getString("entrant")));
                     String result = TextUtils.join(", ", participants);
                     assertTrue(expectedParticipants.contains(result));
@@ -183,7 +182,7 @@ public class OrganizerNotificationTest {
                         for(QueryDocumentSnapshot doc: value){
                             if(doc.get("entrant") != null){
                                 Map<String, Object> data = new HashMap<>();
-                                data.put("targetList", doc.get("entrant")+", ");
+                                data.put("target list", doc.get("entrant")+", ");
                                 fdb.collection("notifications").document(id)
                                         .set(data, SetOptions.merge());
                             }
@@ -192,7 +191,7 @@ public class OrganizerNotificationTest {
                 });
         TimeUnit.SECONDS.sleep(3);
         db.getNotification(id, n -> {
-            assertEquals("OrganizerNotificationTestEntrant1, ", n.get("targetList"));
+            assertEquals("OrganizerNotificationTestEntrant1, ", n.get("target list"));
         });
         TimeUnit.SECONDS.sleep(3);
     }
@@ -212,16 +211,16 @@ public class OrganizerNotificationTest {
                         for(QueryDocumentSnapshot doc: value){
                             if(doc.get("entrant") != null){
                                 Map<String, Object> data = new HashMap<>();
-                                data.put("targetList", doc.get("entrant")+", ");
+                                data.put("target list", doc.get("entrant")+", ");
                                 fdb.collection("notifications").document(id)
                                         .set(data, SetOptions.merge());
                             }
                         }
                     }
                 });
-        TimeUnit.SECONDS.sleep(3);
+        TimeUnit.SECONDS.sleep(5);
         db.getNotification(id, n -> {
-            assertEquals("OrganizerNotificationTestEntrant2, ", n.get("targetList"));
+            assertEquals("OrganizerNotificationTestEntrant2, ", n.get("target list"));
         });
         TimeUnit.SECONDS.sleep(3);
     }
@@ -241,7 +240,7 @@ public class OrganizerNotificationTest {
                         for(QueryDocumentSnapshot doc: value){
                             if(doc.get("entrant") != null){
                                 Map<String, Object> data = new HashMap<>();
-                                data.put("targetList", doc.get("entrant")+", ");
+                                data.put("target list", doc.get("entrant")+", ");
                                 fdb.collection("notifications").document(id)
                                         .set(data, SetOptions.merge());
                             }
@@ -250,7 +249,7 @@ public class OrganizerNotificationTest {
                 });
         TimeUnit.SECONDS.sleep(3);
         db.getNotification(id, n -> {
-            assertEquals("OrganizerNotificationTestEntrant4, ", n.get("targetList"));
+            assertEquals("OrganizerNotificationTestEntrant4, ", n.get("target list"));
         });
         TimeUnit.SECONDS.sleep(3);
     }
@@ -270,7 +269,7 @@ public class OrganizerNotificationTest {
                         for(QueryDocumentSnapshot doc: value){
                             if(doc.get("entrant") != null){
                                 Map<String, Object> data = new HashMap<>();
-                                data.put("targetList", doc.get("entrant")+", ");
+                                data.put("target list", doc.get("entrant")+", ");
                                 fdb.collection("notifications").document(id)
                                         .set(data, SetOptions.merge());
                             }
@@ -279,7 +278,7 @@ public class OrganizerNotificationTest {
                 });
         TimeUnit.SECONDS.sleep(3);
         db.getNotification(id, n -> {
-            assertEquals("OrganizerNotificationTestEntrant3, ", n.get("targetList") );
+            assertEquals("OrganizerNotificationTestEntrant3, ", n.get("target list") );
         });
         TimeUnit.SECONDS.sleep(3);
     }
