@@ -2,7 +2,6 @@ package com.example.oblong.organizer;
 
 import static android.app.PendingIntent.getActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,22 +15,26 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.oblong.Database;
 import com.example.oblong.Event;
 import com.example.oblong.R;
 import com.example.oblong.inputValidator;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 
 public class organizer_create_notification_activity extends AppCompatActivity {
     private String eventID;
-    private HashMap<String, Object> notif = new HashMap<>();;
-    private FirebaseFirestore db;
+    //private HashMap<String, Object> notif = new HashMap<>();
+    private ArrayList<Map<String, Object>> participantDocs = new ArrayList<Map<String, Object>>();
+    private ArrayList<String> participantList = new ArrayList<String>();
+    private FirebaseFirestore fdb;
+    private Database db = new Database();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +51,11 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         notificationTargetSpinner.setAdapter(adapter);
         Button cancelButton = findViewById(R.id.organizer_notification_cancel_button);
         Button sendButton = findViewById(R.id.organizer_send_notification_button);
-        db = FirebaseFirestore.getInstance();
+        fdb = FirebaseFirestore.getInstance();
 
-        //Get eventID
+        //Get eventID and participants to event
         getEventID();
+        getParticipants();
 
         //Clicking Cancel button ends create notification activity, should move back to view event screen
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -66,91 +70,31 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         sendButton.setOnClickListener(view -> {
             String label = newLabelText.getText().toString();
             String content = newContentText.getText().toString();
-            String targets = notificationTargetSpinner.getItemAtPosition(notificationTargetSpinner
+            String option = notificationTargetSpinner.getItemAtPosition(notificationTargetSpinner
                     .getSelectedItemPosition()).toString();
-            ArrayList<String> participantList = new ArrayList<String>();
+            String target = null;
             inputValidator validator = new inputValidator(this);
-            if(validator.validateCreateNotification(label, content, targets)){
-                switch (targets){
+            if(validator.validateCreateNotification(label, content, option)){
+                switch (option){
                     case "Waitlisted Entrants":
-                        notif.put("targets", "waitlisted");
-                        db.collection("participants").whereEqualTo("event", eventID).whereEqualTo("status", "waitlisted").get().addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    String entrantID = document.getString("entrant");
-                                    if (entrantID != null) {
-                                        participantList.add(entrantID);
-                                    }
-                                }
-                            } else {
-                                Log.d("NotificationParticipantList", "Couldn't fetch waitlisted entrants");
-                            }
-                        });
+                        target = "waitlisted";
+                        setParticipantList(target);
                         break;
                     case "Selected Entrants":
-                        notif.put("targets", "selected");
-                        db.collection("participants").whereEqualTo("event", eventID).whereEqualTo("status", "selected").get().addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    String entrantID = document.getString("entrant");
-                                    if (entrantID != null) {
-                                        participantList.add(entrantID);
-                                    }
-                                }
-                            } else {
-                                Log.d("NotificationParticipantList", "Couldn't fetch selected entrants");
-                            }
-                        });
+                        target = "selected";
+                        setParticipantList(target);
                         break;
                     case "Cancelled Entrants":
-                        notif.put("targets", "cancelled");
-                        db.collection("participants").whereEqualTo("event", eventID).whereEqualTo("status", "cancelled").get().addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    String entrantID = document.getString("entrant");
-                                    if (entrantID != null) {
-                                        participantList.add(entrantID);
-                                    }
-                                }
-                            } else {
-                                Log.d("NotificationParticipantList", "Couldn't fetch cancelled entrants");
-                            }
-                        });
+                        target = "cancelled";
+                        setParticipantList(target);
                         break;
                     case "Accepted Entrants":
-                        notif.put("targets", "attending");
-                        db.collection("participants").whereEqualTo("event", eventID).whereEqualTo("status", "attending").get().addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    String entrantID = document.getString("entrant");
-                                    if (entrantID != null) {
-                                        participantList.add(entrantID);
-                                    }
-                                }
-                            } else {
-                                Log.d("NotificationParticipantList", "Couldn't fetch attending entrants");
-                            }
-                        });
+                        target = "attending";
+                        setParticipantList(target);
                         break;
                 }
                 String participants = TextUtils.join(", ", participantList);
-                notif.put("event", eventID);
-                notif.put("target list", participants);
-                notif.put("text", content);
-                notif.put("title", label);
-                db.collection("notification").add(notif)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Log.d("adding notif", "DocumentSnapshot notification written with ID: " + documentReference.getId());
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w("adding notif", "Error adding notification document", e);
-                            }
-                        });
+                db.addNotification(null, eventID, content, label, target, participants);
             }
             finish();
         });
@@ -163,5 +107,32 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         eventID = event.getEventID();
     }
 
+    //gets participants to event from Firebase
+    private void getParticipants(){
+        fdb.collection("participants").whereEqualTo("event", eventID).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(QueryDocumentSnapshot doc : task.getResult()){
+                                participantDocs.add(doc.getData());
+                            }
+                        }
+                    }
+                });
+    }
+
+    //adds participants with status: "target" to participantList
+    private void setParticipantList(String target){
+        for (Map<String, Object> participant : participantDocs){
+            String name = (String) participant.get("entrant");
+            String status = (String) participant.get("status");
+            Log.d("checkStatus", "status is: "+status);
+            Log.d("checkName", "name is: "+name);
+            if (status.compareTo(target)==0){
+                participantList.add(name);
+            }
+        }
+    }
 
 }
