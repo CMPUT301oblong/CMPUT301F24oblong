@@ -5,11 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".RoleSelector">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:layout_marginEnd="42dp"
         android:gravity="center_horizontal|center_vertical"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -18,33 +21,95 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/greeting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="13dp"
+            android:fontFamily="@font/roboto"
+            android:text="Hello,\nYou!"
+            android:textColor="@color/white"
+            android:textSize="40dp" />
+
+        <TextView
+            android:id="@+id/introduction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/roboto"
             android:text="@string/role_selection_text"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
-        <Button
-            android:id="@+id/entrant_button"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/userName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Entrant" />
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/edit_text_background"
+            android:ems="10"
+            android:fontFamily="@font/kalam"
+            android:gravity="center_vertical"
+            android:hint="FirstName LastName"
+            android:inputType="text"
+            android:paddingStart="15dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/secondary_text" />
 
-        <Button
-            android:id="@+id/organizer_button"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/userEmail"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Organizer" />
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/edit_text_background"
+            android:ems="10"
+            android:fontFamily="@font/kalam"
+            android:gravity="center_vertical"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress"
+            android:paddingStart="15dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/secondary_text" />
 
-        <Button
-            android:id="@+id/admin_button"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/userPhone"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Admin" />
+            android:layout_marginBottom="60dp"
+            android:background="@drawable/edit_text_background"
+            android:ems="10"
+            android:fontFamily="@font/kalam"
+            android:gravity="center_vertical"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:paddingStart="15dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/secondary_text" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/continue_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:gravity="center|left"
+            android:text="CONTINUE"
+            android:textColor="@color/background"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/accent"
+            app:icon="@drawable/baseline_arrow_right_24"
+            app:iconGravity="textEnd"
+            app:iconTint="@color/background" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

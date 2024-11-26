@@ -20,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.oblong.AddNewUserDialog;
 import com.example.oblong.Database;
 import com.example.oblong.R;
 import com.example.oblong.entrant.EntrantProfileEditActivity;
