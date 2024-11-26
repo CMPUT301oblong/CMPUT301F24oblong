@@ -110,7 +110,7 @@ public class Event implements Serializable {
                 Random rand = new Random();
                 int selectedUser = rand.nextInt(amountOfWaitlisted);
                 String documentID = allWaitlisted.get(selectedUser).getId();
-                db.collection("participant").document(documentID).update("status", "accepted");
+                db.collection("participants").document(documentID).update("status", "selected");
             }
         });
     }

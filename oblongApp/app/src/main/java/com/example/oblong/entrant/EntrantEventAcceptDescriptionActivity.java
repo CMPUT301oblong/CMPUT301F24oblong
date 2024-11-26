@@ -171,7 +171,8 @@ public class EntrantEventAcceptDescriptionActivity extends AppCompatActivity {
                             // Update the status field to "cancelled" and draw another entrant from the waitlist if so.
                             participantRef.update("status", "cancelled").addOnSuccessListener(aVoid -> {
                                 Log.d("EntrantEventAcceptDescriptionActivity", "Status updated to cancelled");
-
+                                //Draw a new entrant once they cancelled
+                                event.drawOneEntrant();
                                 // finish after status is updated
                                 finish();
 
