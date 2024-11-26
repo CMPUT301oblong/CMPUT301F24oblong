@@ -6,12 +6,18 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Document;
 
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 public class Event implements Serializable {
     private String eventID;
@@ -92,6 +98,21 @@ public class Event implements Serializable {
 
         //this.eventCloseDate =  newEvent.get("dateAndTime").toDate();
         this.eventDescription = (String) data.get("description");
+    }
+
+    public void drawOneEntrant(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("participants").whereEqualTo("status", "waitlisted").get().addOnSuccessListener(task ->{
+            List<DocumentSnapshot> allWaitlisted = task.getDocuments();
+            if (allWaitlisted.size() != 0) {
+                int amountOfWaitlisted = task.getDocuments().size();
+                Random rand = new Random();
+                int selectedUser = rand.nextInt(amountOfWaitlisted);
+                String documentID = allWaitlisted.get(selectedUser).getId();
+                db.collection("participant").document(documentID).update("status", "accepted");
+            }
+        });
     }
 
     /**
