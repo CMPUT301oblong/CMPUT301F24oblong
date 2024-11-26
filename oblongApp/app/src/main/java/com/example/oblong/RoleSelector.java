@@ -5,7 +5,14 @@ import static com.example.oblong.imageUtils.bitmapToBase64;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.TypefaceSpan;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +29,8 @@ import com.example.oblong.organizer.organizer_base_activity;
  * {@code RoleSelector} This class handles the role selection screen which is the first screen a user will see
  * upon opening the app
  */
-public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.AddUserDialogListener {
+public class RoleSelector extends AppCompatActivity {
+
     private Database db = new Database();
     private String user_id;
 
@@ -42,6 +50,27 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        TextView greeting = findViewById(R.id.greeting);
+
+        Spannable text1 = new SpannableString("Hello,\n");
+        text1.setSpan(new ForegroundColorSpan(getColor(R.color.accent)), 0, text1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        greeting.setText(text1);
+
+        Spannable text2 = new SpannableString("You!");
+        text2.setSpan(new ForegroundColorSpan(getColor(R.color.white)), 0, text2.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        greeting.append(text2);
+
+        TextView introduction = findViewById(R.id.introduction);
+
+        Spannable text3 = new SpannableString("It must be your first time logging on!\nLet's get you started ");
+        text3.setSpan(new ForegroundColorSpan(getColor(R.color.white)), 0, text3.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        introduction.setText(text3);
+
+        Spannable text4 = new SpannableString("ASAP!");
+        text4.setSpan(new ForegroundColorSpan(getColor(R.color.accent)), 0, text4.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        introduction.append(text4);
+
 
         Database.getCurrentUser(user_id -> {
             if (user_id != null) {
@@ -84,9 +113,24 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.
                         break;
                     }
                 }
+                finish(); // Close this activity
             } else {
-                new AddNewUserDialog().show(getSupportFragmentManager(), "add_user");
+                handleNewUser();
             }
+        });
+    }
+
+    private void handleNewUser() {
+        Button ContinueButton = findViewById(R.id.continue_button);
+        EditText name = findViewById(R.id.userName);
+        EditText email = findViewById(R.id.userEmail);
+        EditText phone = findViewById(R.id.userPhone);
+        ContinueButton.setOnClickListener(v -> {
+            inputValidator validator = new inputValidator(this);
+            if (validator.validateUserProfile(name.getText().toString(), email.getText().toString(), phone.getText().toString())) {
+                this.addUser(name.getText().toString(), email.getText().toString(), phone.getText().toString());
+            }
+
         });
     }
 
@@ -96,7 +140,6 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.
      * @param email
      * @param phone
      */
-    @Override
     public void addUser(String name, String email, String phone) {
         Bitmap profilePicture = ProfilePicGenerator.generateProfilePic(name);
 
@@ -106,5 +149,6 @@ public class RoleSelector extends AppCompatActivity implements AddNewUserDialog.
         db.addEntrant(user_id, false, false, user_id);
         Intent intent = new Intent(this, EntrantBaseActivity.class);
         startActivity(intent);
+        finish(); // Close this activity
     }
 }
