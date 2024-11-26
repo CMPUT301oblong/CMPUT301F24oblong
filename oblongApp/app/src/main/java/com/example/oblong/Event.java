@@ -103,7 +103,7 @@ public class Event implements Serializable {
     public void drawOneEntrant(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("participants").whereEqualTo("status", "waitlisted").get().addOnSuccessListener(task ->{
+        db.collection("participants").whereEqualTo("event", eventID).whereEqualTo("status", "waitlisted").get().addOnSuccessListener(task ->{
             List<DocumentSnapshot> allWaitlisted = task.getDocuments();
             if (allWaitlisted.size() != 0) {
                 int amountOfWaitlisted = task.getDocuments().size();
