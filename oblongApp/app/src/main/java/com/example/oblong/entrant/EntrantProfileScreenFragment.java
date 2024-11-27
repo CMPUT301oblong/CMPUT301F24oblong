@@ -3,6 +3,7 @@ package com.example.oblong.entrant;
 import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import com.example.oblong.R;
 import com.example.oblong.organizer.AddNewFacilityDialog;
 import com.example.oblong.organizer.organizer_base_activity;
 import com.example.oblong.imageUtils;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -33,14 +35,16 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
 
     private String user_id;
     private TextView name;
-    private TextView email;
-    private TextView phone;
+    private TextView type;
+    private Button email;
+    private Button phone;
     private ImageView profilePic;
-    private TextView organizer_text;
+    private ImageView profilePicBackground;
     ImageButton editProfileButton;
     Button addFacilityButton;
     private Database db = new Database();
     boolean isOrganizer;
+
 
     private final ActivityResultLauncher<Intent> editProfileLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -71,12 +75,13 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
 
         // Initialize UI elements using the `view` object
         name = view.findViewById(R.id.entrant_profile_name);
+        type = view.findViewById(R.id.entrant_profile_type);
         email = view.findViewById(R.id.entrant_profile_email);
         phone = view.findViewById(R.id.entrant_profile_phone);
         profilePic = view.findViewById(R.id.entrant_profile_picture);
+        profilePicBackground = view.findViewById(R.id.entrant_profile_picture_background);
         editProfileButton = view.findViewById(R.id.entrant_profile_edit_button);
         addFacilityButton = view.findViewById(R.id.entrant_profile_create_facility);
-        organizer_text = view.findViewById(R.id.become_an_organizer);
 
         fetchUserProfileData();
 
@@ -91,6 +96,7 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
             }
         });
 
+        // TODO: Implement functionality for clicking on email/phone to call or email the user (if there's time)
 
         // Pull and display all user Info here
 
@@ -117,10 +123,19 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
 //                        profilePic.setImageResource(user.get("photo") == null ? R.drawable.image_placeholder :  user.get("profilePhoto"));
                         if(user.get("profilePhoto") == null){
                             profilePic.setImageResource(R.drawable.image_placeholder);
+                            // No background for no image
                         }else{
-                            profilePic.setImageBitmap(imageUtils.base64ToBitmap((String)user.get("profilePhoto")));
+                            Bitmap profileBitmap = imageUtils.base64ToBitmap((String) user.get("profilePhoto"));
+                            if (profileBitmap != null) {
+                                profilePic.setImageBitmap(profileBitmap);
+//                                profilePicBackground.setImageBitmap(profileBitmap);
+
+                                profilePicBackground.setImageBitmap(imageUtils.fastblur(profileBitmap, 0.1f, 10));
+                            }
+
                         }
                         name.setText((CharSequence) user.get("name"));
+                        type.setText(user.get("type").toString().toUpperCase());
                         email.setText((CharSequence) user.get("email"));
                         phone.setText((CharSequence) (user.get("phone") == null ? "No Phone # Provided" : user.get("phone")));
 
@@ -133,7 +148,6 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
                     if (organizer != null) {
                         isOrganizer = true;
 
-                        organizer_text.setVisibility(View.GONE);
                         addFacilityButton.setText("Organizer View");
                     } else {
                         isOrganizer = false;
@@ -181,7 +195,6 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
                     }
                 }
         );
-
-
     }
+
 }

@@ -95,6 +95,7 @@
             android:textColor="@color/white"
             android:textColorHint="@color/secondary_text" />
 
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/continue_button"
             android:layout_width="match_parent"
