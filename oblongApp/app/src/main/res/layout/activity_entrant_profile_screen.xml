@@ -4,59 +4,115 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageButton
-        android:id="@+id/entrant_profile_edit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="#00FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
     <ImageView
-        android:id="@+id/entrant_profile_picture"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="96dp"
+        android:id="@+id/entrant_profile_picture_background"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
 
+    <ImageButton
+        android:id="@+id/entrant_profile_edit_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="#00FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/entrant_profile_picture_background"
+        app:srcCompat="@drawable/edit_icon" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="97dp"
+        app:cardCornerRadius="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/background"
+        app:strokeWidth="5dp">
+
+        <ImageView
+            android:id="@+id/entrant_profile_picture"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+    </com.google.android.material.card.MaterialCardView>
+
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/entrant_profile_picture">
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
 
         <TextView
             android:id="@+id/entrant_profile_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="sample name"
+            android:fontFamily="@font/roboto"
+            android:text="FirstName LastName"
             android:textAlignment="center"
-            android:textSize="24sp" />
+            android:textColor="@color/white"
+            android:textSize="28sp" />
 
         <TextView
+            android:id="@+id/entrant_profile_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:text="type"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/entrant_profile_email"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="sample email"
-            android:textAlignment="center" />
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/roboto"
+            android:gravity="center|left"
+            android:text="email@gmail.com"
+            android:textColor="@color/background"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/accent"
+            app:icon="@android:drawable/ic_dialog_email"
+            app:iconGravity="start"
+            app:iconTint="@color/background" />
 
-        <TextView
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/entrant_profile_phone"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:gravity="left|center_vertical"
             android:text="780-xxx-xxxx"
-            android:textAlignment="center" />
+            android:textColor="@color/background"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/accent"
+            app:icon="@android:drawable/stat_sys_phone_call"
+            app:iconGravity="start"
+            app:iconTint="@color/background" />
 
     </LinearLayout>
 
@@ -70,18 +126,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-        <TextView
-            android:id="@+id/become_an_organizer"
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/entrant_profile_create_facility"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Become an organizer:"
-            android:textAlignment="center" />
-
-        <Button
-            android:id="@+id/entrant_profile_create_facility"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create a facility" />
+            android:fontFamily="@font/roboto"
+            android:gravity="center|left"
+            android:text="BECOME AN ORGANIZER"
+            android:textColor="@color/background"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/accent"
+            app:icon="@drawable/baseline_arrow_right_24"
+            app:iconGravity="textEnd"
+            app:iconTint="@color/background" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

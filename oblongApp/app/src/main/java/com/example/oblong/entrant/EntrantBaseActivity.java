@@ -10,6 +10,7 @@ import com.example.oblong.R;
 import com.example.oblong.qr_scanner;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 /**
  * The main activity for the entrant's section of the app.
@@ -37,17 +38,39 @@ public class EntrantBaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setOnNavigationItemSelectedListener((BottomNavigationView.OnNavigationItemSelectedListener) navListener);
+        ChipNavigationBar bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        // Set up listener for navigation bar
+        bottomNavigationView.setOnItemSelectedListener(id -> {
+            Fragment selectedFragment = null;
+
+            // TODO: Change MYevents and allevents to the same fragment eventually
+            if (id == R.id.MyEvents) {
+                selectedFragment = new EntrantMyEventsFragment();
+            } else if (id == R.id.AllEvents) {
+                selectedFragment = new EntrantUpcomingEventsFragment();
+            } else if (id == R.id.Camera) {
+                startActivity(new Intent(this, qr_scanner.class));
+                return; // Avoid replacing fragment after starting activity
+            } else if (id == R.id.Profile) {
+                selectedFragment = new EntrantProfileScreenFragment();
+            }
+
+            // Replace the current fragment with the selected one
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, selectedFragment)
+                        .commit();
+            }
+        });
 
         // Load the default fragment on startup
         if (savedInstanceState == null) {
+            bottomNavigationView.setItemSelected(R.id.profile, true);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new EntrantProfileScreenFragment())
                     .commit();
         }
-        // Set the selected item in the BottomNavigationView
-        bottomNavigationView.setSelectedItemId(R.id.profile);
     }
 
     private final NavigationBarView.OnItemSelectedListener navListener =

@@ -167,7 +167,7 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
                 newUser.put("email", emailInput.getText().toString());
                 String phoneIn = phoneInput.getText().toString();
                 if (phoneIn.isEmpty()){
-                    phoneIn = "";
+                    phoneIn = null;
                 }
                 newUser.put("phone", phoneIn);
                 Log.d("user", "newusername: " + newUser);
