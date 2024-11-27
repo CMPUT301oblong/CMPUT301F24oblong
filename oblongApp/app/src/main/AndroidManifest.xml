@@ -18,6 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Oblong"
         tools:targetApi="31">
+<!--        changes camera orientation to portrait-->
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="portrait"
+            tools:replace="android:screenOrientation"
+            android:stateNotNeeded="true"/>
         <activity
             android:name=".entrant.EntrantBaseActivity"
             android:exported="false" />

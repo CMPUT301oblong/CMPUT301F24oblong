@@ -66,7 +66,7 @@ public class EntrantBaseActivity extends AppCompatActivity {
 
         // Load the default fragment on startup
         if (savedInstanceState == null) {
-            bottomNavigationView.setItemSelected(R.id.profile, true);
+            bottomNavigationView.setItemSelected(R.id.Profile, true);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new EntrantProfileScreenFragment())
                     .commit();
