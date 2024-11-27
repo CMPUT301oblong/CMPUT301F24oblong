@@ -49,9 +49,8 @@ public class organizer_view_event_screen extends AppCompatActivity {
     private ImageView poster;
     private Event event;
     private Button notificationButton;
-
     private Button waitlistButton;
-
+    private Button attendeesButton;
     private Button drawButton;
     private ImageView uploadPosterButton;
     private String eventId;
@@ -69,7 +68,6 @@ public class organizer_view_event_screen extends AppCompatActivity {
             return insets;
         });
 
-        //yaya remove this when push
         eventNameDisplay = findViewById(R.id.organizer_view_event_name);
         uploadPosterButton = findViewById(R.id.activity_organizer_view_event_event_description_upload_icon);
         eventDescriptionDisplay = findViewById(R.id.activity_organizer_view_event_event_description_text);
@@ -78,8 +76,9 @@ public class organizer_view_event_screen extends AppCompatActivity {
         qrCode = findViewById(R.id.activity_organizer_view_event_event_description_qr_code_display);
         poster = findViewById(R.id.activity_organizer_viewevent_event_description_poster);
         notificationButton = findViewById(R.id.activity_organizer_view_event_event_description_setup_notification_button);
-
         waitlistButton = findViewById(R.id.activity_organizer_view_event_event_description_view_waitlist_button);
+        attendeesButton = findViewById(R.id.activity_organizer_view_event_event_description_view_attendees_button);
+
 
         drawButton = findViewById(R.id.draw_button);
 
@@ -109,7 +108,6 @@ public class organizer_view_event_screen extends AppCompatActivity {
             }
         });
 
-
         waitlistButton.setOnClickListener(v -> {
             Intent intentWaitlist = new Intent(organizer_view_event_screen.this, EventWaitingList.class);
             Bundle bundle = new Bundle();
@@ -117,6 +115,15 @@ public class organizer_view_event_screen extends AppCompatActivity {
             intentWaitlist.putExtras(bundle);
 
             startActivity(intentWaitlist);
+        });
+
+        attendeesButton.setOnClickListener(v -> {
+            Intent intentAttendees = new Intent(organizer_view_event_screen.this, EventViewAttendees.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("EVENT", event);
+            intentAttendees.putExtras(bundle);
+
+            startActivity(intentAttendees);
         });
 
         drawButton.setOnClickListener(new View.OnClickListener() {
