@@ -4,14 +4,22 @@
 
     <item android:id="@+id/MyEvents"
         android:icon="@drawable/calendar_nav_icon"
-        android:title="My Events" />
+        android:title="My Events"
+        app:cnb_iconColor="@color/white"
+        app:cnb_backgroundColor="@color/accent"/>
     <item android:id="@+id/AllEvents"
         android:icon="@drawable/calendar_nav_icon"
-        android:title="All Events" />
+        android:title="All Events"
+        app:cnb_iconColor="@color/white"
+        app:cnb_backgroundColor="@color/accent"/>
     <item android:id="@+id/Camera"
         android:icon="@drawable/camera_nav_icon"
-        android:title="Camera" />
+        android:title="Camera"
+        app:cnb_iconColor="@color/white"
+        app:cnb_backgroundColor="@color/accent"/>
     <item android:id="@+id/Profile"
         android:icon="@drawable/profile_nav_icon"
-        android:title="Profile" />
+        android:title="Profile"
+        app:cnb_iconColor="@color/white"
+        app:cnb_backgroundColor="@color/accent"/>
 </menu>
