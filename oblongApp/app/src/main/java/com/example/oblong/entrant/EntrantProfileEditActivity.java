@@ -30,6 +30,7 @@ import com.example.oblong.ProfilePicGenerator;
 import com.example.oblong.R;
 import com.example.oblong.imageUtils;
 import com.example.oblong.inputValidator;
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 import java.io.IOException;
 
@@ -93,14 +94,9 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
         Button cancelButton = findViewById(R.id.entrant_profile_edit_cancel_button);
         ImageView imageButton = findViewById(R.id.entrant_profile_edit_image_button);
         ImageView deleteProfileButton = findViewById(R.id.delete_profile_button);
+        MaterialSwitch notificationCheckbox = findViewById(R.id.entrant_profile_edit_notification_checkbox);
 
         // Deterministically generates a profile picture
-
-
-        // TODO: Implement notification checkbox
-        Button notificationCheckbox = findViewById(R.id.entrant_profile_edit_notification_checkbox);
-
-
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -140,9 +136,16 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
                         String name = Objects.requireNonNull(user.get("name")).toString();
                         ProfilePicture = ProfilePicGenerator.generateProfilePic(name);
 
-                        Log.d("Edit Activity", "Obtained all user info"); // print user's name to console
+                        db.getEntrant(userId, entrant -> {
+                            if (entrant != null) {
+                                notificationCheckbox.setChecked((boolean) entrant.get("notificationsEnabled"));
+                                Log.d("Edit Activity", "Obtained all user info");
+                            } else {
+                                Log.d("Edit Activity", "User not found or an error occurred.");
+                            }
+                        });
                     } else {
-                        Log.d("Edit Activity", "User not found or an error occurred.");
+                        Log.d("Edit Activity", "Unable to fetch user info");
                     }
                 });
             }
@@ -183,17 +186,23 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
                 }
                 Log.d("user", "User updated: " + newUser);
 
-                db.updateDocument("users", user_id, newUser, success -> {
-                    if(success) {
-                        Log.d("user", "User updated");
-                        Toast.makeText(this, "Changes saved", Toast.LENGTH_SHORT).show();
-                        setResult(RESULT_OK);
-                        finish();
-                    } else {
-                        Log.d("user", "User not updated");
-                        Toast.makeText(this, "Failed to save changes", Toast.LENGTH_SHORT).show();
-                    }
+                HashMap<String, Object> newEntrant = new HashMap<>();
+                newEntrant.put("notificationsEnabled", notificationCheckbox.isChecked());
+
+                db.updateDocument("users", user_id, newUser, success1 -> {
+                    db.updateDocument("entrants", user_id, newEntrant, success2 -> {
+                        if(success1 && success2) {
+                            Log.d("user", "User updated");
+                            Toast.makeText(this, "Changes saved", Toast.LENGTH_SHORT).show();
+                            setResult(RESULT_OK);
+                            finish();
+                        } else {
+                            Log.d("user", "User not updated");
+                            Toast.makeText(this, "Failed to save changes", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 });
+
             }
         });
 

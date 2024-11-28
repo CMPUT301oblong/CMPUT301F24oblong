@@ -75,7 +75,7 @@
             android:paddingEnd="15dp"
             android:paddingBottom="10dp"
             android:textColor="@color/white"
-            android:textColorHint="@color/secondary_text" />
+            android:textColorHint="@color/secondary_text"/>
 
         <EditText
             android:id="@+id/userPhone"
@@ -93,7 +93,7 @@
             android:paddingEnd="15dp"
             android:paddingBottom="10dp"
             android:textColor="@color/white"
-            android:textColorHint="@color/secondary_text" />
+            android:textColorHint="@color/secondary_text"/>
 
 
         <com.google.android.material.button.MaterialButton
