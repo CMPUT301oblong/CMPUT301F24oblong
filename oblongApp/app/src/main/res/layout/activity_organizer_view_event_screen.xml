@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
@@ -98,10 +97,7 @@
                     app:srcCompat="@android:drawable/ic_menu_gallery" />
             </LinearLayout>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+
 
             <ImageView
                 android:id="@+id/activity_organizer_view_event_event_description_upload_icon"
@@ -161,7 +157,7 @@
         <LinearLayout
             android:id="@+id/activity_organizer_view_event_event_description_qr_code_layout"
             android:layout_width="match_parent"
-            android:layout_height="95dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginBottom="22dp"
             android:gravity="center_vertical"
@@ -171,21 +167,39 @@
                 android:id="@+id/activity_organizer_view_event_event_description_qr_code_display"
                 android:layout_width="95dp"
                 android:layout_height="95dp"
-                android:layout_marginEnd="3dp"
+                android:layout_marginEnd="10dp"
                 android:contentDescription="Displays the generated QR code"
                 android:scaleType="fitXY"
                 android:src="@android:drawable/ic_dialog_dialer" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="95dp"
+                android:layout_weight="1" />
 
-            <Button
-                android:id="@+id/draw_button"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_weight="1"
-                android:text="Draw Entrants"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp" />
+                android:orientation="vertical">
 
+                <Button
+                    android:id="@+id/draw_button"
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_weight="1"
+                    android:text="Draw Entrants"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <Button
+                    android:id="@+id/cancel_entrants_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center"
+                    android:text="Cancel Entrants"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
         </LinearLayout>
 
