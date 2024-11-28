@@ -93,7 +93,8 @@ public class organizer_create_notification_activity extends AppCompatActivity {
                         setParticipantList(target);
                         break;
                 }
-                String participants = TextUtils.join(", ", participantList);
+                //String participants = TextUtils.join(", ", participantList);
+                String[] participants = participantList.toArray(new String[participantList.size()]);
                 db.addNotification(null, eventID, content, label, target, participants);
             }
             finish();

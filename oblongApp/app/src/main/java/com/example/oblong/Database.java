@@ -17,6 +17,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.installations.FirebaseInstallations;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -330,14 +331,14 @@ public class Database {
      * @param title
      */
     public void addNotification(String id, String event, String text, String title, String target,
-                                String targetList){
-        HashMap<String, String> notification = new HashMap<>();
+                                String[] targetList){
+        HashMap<String, Object> notification = new HashMap<>();
         // create a new notification and store the id
         notification.put("event", event);
         notification.put("text", text);
         notification.put("title", title);
         notification.put("target", target);
-        notification.put("target list", targetList);
+        notification.put("target list", Arrays.asList(targetList));
         if(id == null){
             notifications.add(notification).addOnSuccessListener(aVoid -> Log.d("database", "Notification added successfully"))
                     .addOnFailureListener(e -> Log.w("database", "Error adding notification", e));
