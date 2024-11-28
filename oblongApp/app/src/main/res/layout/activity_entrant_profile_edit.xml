@@ -5,167 +5,177 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00FFFFFF"
+    android:background="@color/background"
     android:padding="0dp"
     tools:context=".entrant.EntrantProfileEditActivity">
 
-    <ImageView
-        android:id="@+id/activity_entrant_profile_edit_profile_picture"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-
-    <ImageButton
-        android:id="@+id/delete_profile_button"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_margin="4dp"
-        android:background="@null"
-        android:contentDescription="Delete Profile Picture"
-        app:layout_constraintEnd_toEndOf="@id/activity_entrant_profile_edit_profile_picture"
-        app:layout_constraintTop_toTopOf="@id/activity_entrant_profile_edit_profile_picture"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
     <LinearLayout
         android:id="@+id/linearLayout4"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginEnd="44dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_entrant_profile_edit_profile_picture">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardView"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                app:cardCornerRadius="100dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:strokeColor="@color/background"
+                app:strokeWidth="0dp">
+
+                <ImageView
+                    android:id="@+id/activity_entrant_profile_edit_profile_picture"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:srcCompat="@tools:sample/avatars" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <ImageButton
+                android:id="@+id/entrant_profile_edit_image_button"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:background="@null"
+                app:layout_constraintBottom_toBottomOf="@+id/cardView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/edit_icon" />
+
+            <ImageButton
+                android:id="@+id/delete_profile_button"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="4dp"
+                android:background="@null"
+                android:contentDescription="Delete Profile Picture"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/cardView"
+                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <EditText
+            android:id="@+id/entrant_profile_edit_name_input"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:orientation="vertical">
+            android:background="@drawable/edit_text_background"
+            android:ems="10"
+            android:fontFamily="@font/kalam"
+            android:gravity="center_vertical"
+            android:hint="FirstName LastName"
+            android:inputType="text"
+            android:paddingStart="15dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/secondary_text" />
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Name:" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/entrant_event_description"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/entrant_profile_edit_name_input"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:ems="10"
-                    android:hint="Name"
-                    android:inputType="text" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/entrant_profile_edit_email_input"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:orientation="vertical">
+            android:background="@drawable/edit_text_background"
+            android:ems="10"
+            android:fontFamily="@font/kalam"
+            android:gravity="center_vertical"
+            android:hint="Email Address"
+            android:inputType="textEmailAddress"
+            android:paddingStart="15dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/secondary_text" />
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Email:" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/entrant_event_description"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/entrant_profile_edit_email_input"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:ems="10"
-                    android:hint="Email"
-                    android:inputType="textEmailAddress" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/entrant_profile_edit_phone_input"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/edit_text_background"
+            android:ems="10"
+            android:fontFamily="@font/kalam"
+            android:gravity="center_vertical"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:paddingStart="15dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/secondary_text" />
 
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Phone (Optional):" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/entrant_event_description"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/entrant_profile_edit_phone_input"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:ems="10"
-                    android:hint="Phone"
-                    android:inputType="phone" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <CheckBox
+        <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/entrant_profile_edit_notification_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:layout_marginBottom="20dp"
-            android:text="Notifications from Organizers and Admins" />
+            android:fontFamily="@font/roboto"
+            android:layoutDirection="rtl"
+            android:text="In-app Notifications"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/entrant_profile_edit_save_changes_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save Changes" />
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingTop="12dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="12dp"
+            android:text="SAVE CHANGES"
+            android:textColor="@color/background"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/accent"
+            app:icon="@drawable/baseline_arrow_right_24"
+            app:iconGravity="textEnd"
+            app:iconTint="@color/background" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/entrant_profile_edit_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="Cancel" />
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingTop="12dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="12dp"
+            android:text="CANCEL"
+            android:textColor="@color/background"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/accent"
+            app:icon="@drawable/baseline_arrow_right_24"
+            app:iconGravity="textEnd"
+            app:iconTint="@color/background" />
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/entrant_profile_edit_image_button"
-        android:layout_width="60dp"
-        android:layout_height="50dp"
-        android:background="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/activity_entrant_profile_edit_profile_picture"
-        app:layout_constraintEnd_toEndOf="@+id/activity_entrant_profile_edit_profile_picture"
-        app:layout_constraintStart_toEndOf="@+id/activity_entrant_profile_edit_profile_picture"
-        app:layout_constraintTop_toTopOf="@+id/activity_entrant_profile_edit_profile_picture"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
