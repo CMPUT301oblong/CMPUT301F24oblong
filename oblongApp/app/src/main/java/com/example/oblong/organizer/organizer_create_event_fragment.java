@@ -94,7 +94,7 @@ public class organizer_create_event_fragment extends Fragment {
                     }
                 }
 
-                if(maxWaitlistCapacityInput.getText().toString() == ""){
+                if(maxWaitlistCapacityInput.getText().toString().isEmpty()){
                     waitlistMaxCapacity = -1L;
                 }else{
                     waitlistMaxCapacity = Long.parseLong(maxWaitlistCapacityInput.getText().toString());
@@ -114,7 +114,9 @@ public class organizer_create_event_fragment extends Fragment {
                 qr_generator qr_gen = new qr_generator();
 
                 event.put("capacity", maxCapacity);
-                event.put("waitlistCapacity", waitlistMaxCapacity);
+                if(waitlistMaxCapacity != -1) {
+                    event.put("waitlistCapacity", waitlistMaxCapacity);
+                }
                 event.put("dateAndTime", FieldValue.serverTimestamp());
                 event.put("description", eventDescription);
                 event.put("drawDate", FieldValue.serverTimestamp());
