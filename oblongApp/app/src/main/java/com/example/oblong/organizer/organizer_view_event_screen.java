@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.oblong.Database;
 import com.example.oblong.Event;
 import com.example.oblong.R;
+import com.example.oblong.entrant.EntrantBaseActivity;
 import com.example.oblong.entrant.EntrantEventDescriptionActivity;
 import com.example.oblong.entrant.EntrantProfileEditActivity;
 import com.example.oblong.imageUtils;
@@ -81,6 +83,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
 
 
         drawButton = findViewById(R.id.draw_button);
+
 
 
         Intent intent = getIntent();

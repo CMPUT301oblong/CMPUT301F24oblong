@@ -74,7 +74,7 @@ public class organizer_create_notification_activity extends AppCompatActivity {
                     .getSelectedItemPosition()).toString();
             String target = null;
             inputValidator validator = new inputValidator(this);
-            if(validator.validateCreateNotification(label, content, option)){
+            if(validator.validateCreateNotification(label, content)){
                 switch (option){
                     case "Waitlisted Entrants":
                         target = "waitlisted";
@@ -96,6 +96,8 @@ public class organizer_create_notification_activity extends AppCompatActivity {
                 //String participants = TextUtils.join(", ", participantList);
                 String[] participants = participantList.toArray(new String[participantList.size()]);
                 db.addNotification(null, eventID, content, label, target, participants);
+            }else{
+
             }
             finish();
         });

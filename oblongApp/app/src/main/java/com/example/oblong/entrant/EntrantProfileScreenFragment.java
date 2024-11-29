@@ -1,9 +1,18 @@
 package com.example.oblong.entrant;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.NOTIFICATION_SERVICE;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,16 +28,26 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.oblong.Database;
+import com.example.oblong.Notification;
 import com.example.oblong.R;
 import com.example.oblong.organizer.AddNewFacilityDialog;
 import com.example.oblong.organizer.organizer_base_activity;
 import com.example.oblong.imageUtils;
-import com.google.android.material.button.MaterialButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 public class EntrantProfileScreenFragment extends Fragment implements AddNewFacilityDialog.AddFacilityDialogListener {
@@ -44,7 +63,8 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
     Button addFacilityButton;
     private Database db = new Database();
     boolean isOrganizer;
-
+    private static final String CHANNEL_ID = "oblong_channel_id";
+    private static final int NOTIFICATION_ID = 1001;
 
     private final ActivityResultLauncher<Intent> editProfileLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -84,6 +104,7 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
         addFacilityButton = view.findViewById(R.id.entrant_profile_create_facility);
 
         fetchUserProfileData();
+
 
         addFacilityButton.setOnClickListener(v -> {
             if (isOrganizer) {
@@ -196,5 +217,4 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
                 }
         );
     }
-
 }
