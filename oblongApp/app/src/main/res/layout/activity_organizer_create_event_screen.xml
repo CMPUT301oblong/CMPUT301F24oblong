@@ -36,7 +36,7 @@
     <EditText
         android:id="@+id/event_description_entry"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="184dp"
         android:ems="10"
         android:gravity="start|top"
         android:hint="Enter your description..."
@@ -55,15 +55,30 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Max Capacity (optional)" />
+        android:text="Max Draw Capacity" />
 
     <EditText
         android:id="@+id/capacity_dropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Max Capacity (Optional)"
-        android:inputType="number"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:hint="Max Draw Capacity"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/max_capacity_textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Max Capacity (optional)" />
+
+    <EditText
+        android:id="@+id/waitlist_capacity_dropdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Max Waitlist Capacity (Optional)"
+        android:inputType="number" />
 
     <LinearLayout
         android:layout_width="match_parent"
