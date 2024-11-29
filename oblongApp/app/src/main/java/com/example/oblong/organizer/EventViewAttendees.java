@@ -74,7 +74,7 @@ public class EventViewAttendees extends AppCompatActivity{
     }
     private void fetchAttendees() {
         // check participants are a part of event and their status is selected or accepted
-        db.collection("participants").whereEqualTo("event", eventID).whereIn("status", Arrays.asList("accepted", "selected", "attending")).get().addOnCompleteListener(task -> {
+        db.collection("participants").whereEqualTo("event", eventID).whereIn("status", Arrays.asList("selected", "attending")).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     String entrantName = document.getString("entrant");

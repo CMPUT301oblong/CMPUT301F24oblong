@@ -60,6 +60,12 @@ public class AdminEventView extends AppCompatActivity {
             dialog.show();
         });
 
+        // implement delete event facility stuff here
+        deleteEventFacilityButton.setOnClickListener(v -> {
+            AlertDialog dialog = createDialog();
+            dialog.show();
+        });
+
     }
 
     // Delete Event Dialog
