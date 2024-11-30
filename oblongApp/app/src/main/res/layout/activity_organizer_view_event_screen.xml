@@ -4,281 +4,281 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout
-
-    android:background="#FFFFFF"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
     <LinearLayout
-        android:layout_width="match_parent"
+
+        android:background="#FFFFFF"
         android:orientation="vertical"
-        android:layout_height="match_parent">
-
-        <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/activity_organizer_view_event_banner"
+        android:layout_height="match_parent">
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="113dp"
-            android:layout_marginHorizontal="17dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="90dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                app:srcCompat="@drawable/back_arrow" />
-
-            <TextView
-                android:id="@+id/organizer_view_event_name"
+            android:layout_height="match_parent">
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="EVENT NAME"
-                android:textColor="#000000"
-                android:textSize="32sp" />
+                android:orientation="vertical"
+                android:layout_height="match_parent">
 
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/activity_organizer_view_event_event_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="43dp"
-            android:layout_marginBottom="9dp"
-            android:text="Event Description"
-            android:textColor="#1E1E1E"
-            android:textSize="16sp" />
-
-        <LinearLayout
-            android:id="@+id/activity_organizer_view_event_event_description_layout"
-            android:layout_width="match_parent"
-            android:layout_height="92dp"
-            android:layout_marginHorizontal="42dp"
-            android:layout_marginBottom="25dp"
-            android:background="@drawable/border_outline_grey"
-            android:orientation="vertical"
-            android:paddingHorizontal="17dp"
-            android:paddingTop="17dp"
-
-            >
-
-            <TextView
-                android:id="@+id/activity_organizer_view_event_event_description_text"
-                android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:text="Description..."
-                android:textColor="#1E1E1E"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/activity_organizer_view_event_event_description_poster_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:layout_marginHorizontal="25dp"
-            android:layout_marginBottom="30dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:id="@+id/activity_organizer_view_event_event_description_poster_image_layout"
-                android:layout_width="98dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/activity_organizer_viewevent_event_description_poster"
-                    android:contentDescription="The poster for the event will be displayed here"
-                    android:layout_width="98dp"
-                    android:layout_height="100dp"
-                    app:srcCompat="@android:drawable/ic_menu_gallery" />
-            </LinearLayout>
-
-
-
-            <ImageView
-                android:id="@+id/activity_organizer_view_event_event_description_upload_icon"
-                android:contentDescription="Allows users to upload poster when clicked"
-                android:layout_width="56dp"
-                android:layout_height="52dp"
-                android:layout_gravity="center_vertical"
-                android:clickable="true"
-                android:scaleType="fitXY"
-                android:src="@android:drawable/ic_menu_upload" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/activity_organizer_view_event_event_description_poster_prompt"
-                android:layout_width="160dp"
-                android:layout_height="62dp"
-                android:text="Click to upload a new poster"
-                android:textColor="#1E1E1E"
-                android:layout_gravity="center_vertical"
-                android:textSize="24sp" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/activity_organizer_view_event_event_description_capacity_dropdown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="42dp"
-            android:layout_marginBottom="11dp"
-            android:text="Max Capacity "
-            android:textColor="#1E1E1E"
-            android:textSize="16sp" />
-
-        <LinearLayout
-            android:id="@+id/activity_organizer_view_event_event_description_max_capacity_layout"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:layout_marginHorizontal="41dp"
-            android:layout_marginBottom="22dp"
-            android:background="@drawable/border_outline_grey"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="12dp">
-
-            <TextView
-                android:id="@+id/activity_organizer_view_event_event_description_max_capacity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="200"
-                android:textColor="#1E1E1E"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/activity_organizer_view_event_event_description_qr_code_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="22dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/activity_organizer_view_event_event_description_qr_code_display"
-                android:layout_width="95dp"
-                android:layout_height="95dp"
-                android:layout_marginEnd="10dp"
-                android:contentDescription="Displays the generated QR code"
-                android:scaleType="fitXY"
-                android:src="@android:drawable/ic_dialog_dialer" />
-            <View
-                android:layout_width="0dp"
-                android:layout_height="95dp"
-                android:layout_weight="1" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/draw_button"
-                    android:layout_width="260dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_weight="1"
-                    android:text="Draw Entrants"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp" />
-
-                <Button
-                    android:id="@+id/cancel_entrants_button"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center"
-                    android:text="Cancel Entrants"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/activity_organizer_view_event_banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="113dp"
+                        android:layout_marginHorizontal="17dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            app:srcCompat="@drawable/back_arrow" />
+
+                        <TextView
+                            android:id="@+id/organizer_view_event_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="EVENT NAME"
+                            android:textColor="#000000"
+                            android:textSize="32sp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/activity_organizer_view_event_event_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="43dp"
+                        android:layout_marginBottom="9dp"
+                        android:text="Event Description"
+                        android:textColor="#1E1E1E"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:id="@+id/activity_organizer_view_event_event_description_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="92dp"
+                        android:layout_marginHorizontal="42dp"
+                        android:layout_marginBottom="25dp"
+                        android:background="@drawable/border_outline_grey"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="17dp"
+                        android:paddingTop="17dp"
+
+                        >
+
+                        <TextView
+                            android:id="@+id/activity_organizer_view_event_event_description_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="42dp"
+                            android:text="Description..."
+                            android:textColor="#1E1E1E"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/activity_organizer_view_event_event_description_poster_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="100dp"
+                        android:layout_marginHorizontal="25dp"
+                        android:layout_marginBottom="30dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/activity_organizer_view_event_event_description_poster_image_layout"
+                            android:layout_width="98dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/activity_organizer_viewevent_event_description_poster"
+                                android:contentDescription="The poster for the event will be displayed here"
+                                android:layout_width="98dp"
+                                android:layout_height="100dp"
+                                app:srcCompat="@android:drawable/ic_menu_gallery" />
+                        </LinearLayout>
+
+
+
+                        <ImageView
+                            android:id="@+id/activity_organizer_view_event_event_description_upload_icon"
+                            android:contentDescription="Allows users to upload poster when clicked"
+                            android:layout_width="56dp"
+                            android:layout_height="52dp"
+                            android:layout_gravity="center_vertical"
+                            android:clickable="true"
+                            android:scaleType="fitXY"
+                            android:src="@android:drawable/ic_menu_upload" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/activity_organizer_view_event_event_description_poster_prompt"
+                            android:layout_width="160dp"
+                            android:layout_height="62dp"
+                            android:text="Click to upload a new poster"
+                            android:textColor="#1E1E1E"
+                            android:layout_gravity="center_vertical"
+                            android:textSize="24sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/activity_organizer_view_event_event_description_capacity_dropdown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="42dp"
+                        android:layout_marginBottom="11dp"
+                        android:text="Max Capacity "
+                        android:textColor="#1E1E1E"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:id="@+id/activity_organizer_view_event_event_description_max_capacity_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:layout_marginHorizontal="41dp"
+                        android:layout_marginBottom="22dp"
+                        android:background="@drawable/border_outline_grey"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:id="@+id/activity_organizer_view_event_event_description_max_capacity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="200"
+                            android:textColor="#1E1E1E"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/activity_organizer_view_event_event_description_qr_code_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginBottom="22dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/activity_organizer_view_event_event_description_qr_code_display"
+                            android:layout_width="95dp"
+                            android:layout_height="95dp"
+                            android:layout_marginEnd="10dp"
+                            android:contentDescription="Displays the generated QR code"
+                            android:scaleType="fitXY"
+                            android:src="@android:drawable/ic_dialog_dialer" />
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="95dp"
+                            android:layout_weight="1" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <Button
+                                android:id="@+id/draw_button"
+                                android:layout_width="260dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:layout_weight="1"
+                                android:text="Draw Entrants"
+                                android:textColor="#FFFFFF"
+                                android:textSize="14sp" />
+
+                            <Button
+                                android:id="@+id/cancel_entrants_button"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center"
+                                android:text="Cancel Entrants"
+                                android:textColor="#FFFFFF"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/activity_organizer_view_event_event_description_button_layout_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="54dp"
+                        android:layout_marginHorizontal="20dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+
+                        <Button
+                            android:id="@+id/activity_organizer_view_event_event_description_setup_notification_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:text="Setup Notification"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp" />
+
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+
+                        <Button
+                            android:id="@+id/activity_organizer_view_event_event_description_view_map_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:text="View Map"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/activity_organizer_view_event_event_description_button_layout_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+
+                        <Button
+                            android:id="@+id/activity_organizer_view_event_event_description_view_attendees_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:text="View Attendees"
+                            android:textSize="14sp" />
+
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <Button
+                            android:id="@+id/activity_organizer_view_event_event_description_view_waitlist_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:text="View Waitlist"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/activity_organizer_view_event_event_description_button_layout_1"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
-            android:layout_marginHorizontal="20dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-
-            <Button
-                android:id="@+id/activity_organizer_view_event_event_description_setup_notification_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:text="Setup Notification"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp" />
-
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-
-            <Button
-                android:id="@+id/activity_organizer_view_event_event_description_view_map_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:text="View Map"
-                android:textColor="#FFFFFF"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/activity_organizer_view_event_event_description_button_layout_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-
-            <Button
-                android:id="@+id/activity_organizer_view_event_event_description_view_attendees_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:text="View Attendees"
-                android:textSize="14sp" />
-
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/activity_organizer_view_event_event_description_view_waitlist_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:text="View Waitlist"
-                android:textSize="14sp" />
-        </LinearLayout>
+        </ScrollView>
     </LinearLayout>
-    </LinearLayout>
-        
-    </ScrollView>
-</LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
