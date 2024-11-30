@@ -25,6 +25,7 @@ public class Event implements Serializable {
     private String eventDescription;
     private Date eventCloseDate;
     private Long eventCapacity;
+    private Long eventWaitlistCapacity;
     private String poster;
     private String attendingStatus;
 
@@ -53,6 +54,12 @@ public class Event implements Serializable {
 
             this.eventName = (String) data.getString("name");
             Log.d("event name", this.eventName);
+
+            if(data.contains("waitlistCapacity")){
+                this.eventWaitlistCapacity = data.getLong("waitlistCapacity");
+            }else {
+                this.eventWaitlistCapacity = null;
+            }
 
             Timestamp timestamp = (Timestamp) data.getTimestamp("dateAndTime");
             Date date = timestamp.toDate();

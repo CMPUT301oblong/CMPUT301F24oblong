@@ -32,6 +32,7 @@ import com.example.oblong.imageUtils;
 import com.example.oblong.qr_generator;
 import com.example.oblong.Database;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,9 +55,11 @@ public class organizer_view_event_screen extends AppCompatActivity {
     private Button waitlistButton;
     private Button attendeesButton;
     private Button drawButton;
+    private Button cancelButton;
     private ImageView uploadPosterButton;
     private String eventId;
     private final Database db = new Database();
+    private FirebaseFirestore fdb;
 
 
     @Override
@@ -70,6 +73,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
             return insets;
         });
 
+        fdb = FirebaseFirestore.getInstance();
         eventNameDisplay = findViewById(R.id.organizer_view_event_name);
         uploadPosterButton = findViewById(R.id.activity_organizer_view_event_event_description_upload_icon);
         eventDescriptionDisplay = findViewById(R.id.activity_organizer_view_event_event_description_text);
@@ -80,9 +84,8 @@ public class organizer_view_event_screen extends AppCompatActivity {
         notificationButton = findViewById(R.id.activity_organizer_view_event_event_description_setup_notification_button);
         waitlistButton = findViewById(R.id.activity_organizer_view_event_event_description_view_waitlist_button);
         attendeesButton = findViewById(R.id.activity_organizer_view_event_event_description_view_attendees_button);
-
-
         drawButton = findViewById(R.id.draw_button);
+        cancelButton = findViewById(R.id.cancel_entrants_button);
 
 
 
@@ -136,6 +139,13 @@ public class organizer_view_event_screen extends AppCompatActivity {
             }
         });
 
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelEntrants(eventId);
+            }
+        });
+
         uploadPosterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,6 +179,20 @@ public class organizer_view_event_screen extends AppCompatActivity {
             }
         });
 
+    }
+    private void cancelEntrants(String eventId) {
+
+        // query for participants from specific event with either "selected" or "waitlisted" status
+        fdb.collection("participants").whereEqualTo("event", eventId).whereIn("status", Arrays.asList( "selected", "waitlisted")).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    String documentId = document.getId();
+
+                    // Update the status to "cancelled"
+                    fdb.collection("participants").document(documentId).update("status", "cancelled");
+                }
+            }
+        });
     }
 
     private void initializeData(Intent intent){
