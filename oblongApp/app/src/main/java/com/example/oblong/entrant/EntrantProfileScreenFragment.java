@@ -2,6 +2,7 @@ package com.example.oblong.entrant;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.NOTIFICATION_SERVICE;
+import static android.icu.number.NumberRangeFormatter.with;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
@@ -31,6 +32,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.oblong.Database;
@@ -104,6 +106,30 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
         addFacilityButton = view.findViewById(R.id.entrant_profile_create_facility);
 
         fetchUserProfileData();
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationManager notificationManager = getContext().getSystemService(NotificationManager.class);
+            CharSequence name = "oblong_channel";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        NotificationManager notificationManager = getContext().getSystemService(NotificationManager.class);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getContext(), CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentTitle("Test notification")
+                .setContentText("Test notification text")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setAutoCancel(true);
+
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
+            builder.setChannelId(null);
+        }
+        Log.d("notificationManager", "nM is: "+notificationManager);
+        Log.d("notification", builder.toString());
+        Log.d("notifsAllowed?", String.valueOf(notificationManager.areNotificationsEnabled()));
+        notificationManager.notify(1, builder.build());
 
 
         addFacilityButton.setOnClickListener(v -> {

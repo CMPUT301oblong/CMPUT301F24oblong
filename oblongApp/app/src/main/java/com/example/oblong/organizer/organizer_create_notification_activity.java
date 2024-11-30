@@ -21,19 +21,23 @@ import com.example.oblong.R;
 import com.example.oblong.inputValidator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 public class organizer_create_notification_activity extends AppCompatActivity {
     private String eventID;
-    //private HashMap<String, Object> notif = new HashMap<>();
     private ArrayList<Map<String, Object>> participantDocs = new ArrayList<Map<String, Object>>();
     private ArrayList<String> participantList = new ArrayList<String>();
     private FirebaseFirestore fdb;
+    private CollectionReference notifications = FirebaseFirestore.getInstance().collection("notifications");
     private Database db = new Database();
 
     @Override
@@ -93,13 +97,18 @@ public class organizer_create_notification_activity extends AppCompatActivity {
                         setParticipantList(target);
                         break;
                 }
-                //String participants = TextUtils.join(", ", participantList);
                 String[] participants = participantList.toArray(new String[participantList.size()]);
-                db.addNotification(null, eventID, content, label, target, participants);
-            }else{
-
+                String newNotifID = notifications.document().getId();
+                db.addNotification(newNotifID, eventID, content, label, target, participants);
+                for(Map<String, Object> p : participantDocs){
+                    p.put("notificationList", Arrays.asList(newNotifID));
+                    fdb.collection("participants").document((String) p.get("id"))
+                            .update("notificationsList", FieldValue.arrayUnion(newNotifID))
+                            .addOnSuccessListener(a -> Log.d("participantUpdate", "updated notificationsList"))
+                            .addOnFailureListener(a -> Log.d("participantUpdate", "failed to update notificationsList"));
+                }
+                finish();
             }
-            finish();
         });
     }
 
@@ -118,7 +127,9 @@ public class organizer_create_notification_activity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
                             for(QueryDocumentSnapshot doc : task.getResult()){
-                                participantDocs.add(doc.getData());
+                                Map<String, Object> d = new HashMap<>(doc.getData());
+                                d.put("id", doc.getId());
+                                participantDocs.add(d);
                             }
                         }
                     }

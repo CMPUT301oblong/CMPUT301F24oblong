@@ -2,8 +2,13 @@ package com.example.oblong;
 
 import static com.example.oblong.imageUtils.bitmapToBase64;
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -16,6 +21,8 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -33,6 +40,7 @@ public class RoleSelector extends AppCompatActivity {
 
     private Database db = new Database();
     private String user_id;
+    private static final String CHANNEL_ID = "oblong_channel_id";
 
     /**
      * The {@code onCreate} method populates the screen and UI elements
@@ -43,6 +51,7 @@ public class RoleSelector extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_role_selector);
+
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -71,6 +80,14 @@ public class RoleSelector extends AppCompatActivity {
         text4.setSpan(new ForegroundColorSpan(getColor(R.color.accent)), 0, text4.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         introduction.append(text4);
 
+        //this code required for Android System Notifications to appear
+        //User MUST ALLOW for system notifications to appear
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1);
+            }
+        }
 
         Database.getCurrentUser(user_id -> {
             if (user_id != null) {

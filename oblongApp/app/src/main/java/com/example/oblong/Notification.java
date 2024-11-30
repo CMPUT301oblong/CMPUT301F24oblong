@@ -20,13 +20,6 @@ public class Notification {
     private ArrayList<String> targetList;
     private String eventID;
 
-    /*
-    public Notification(String label, String content, String target) {
-        this.label = label;
-        this.content = content;
-        this.target = target;
-    }*/
-
     /**
      * The {@code Notification} method retrieves notification data belonging to an eventID
      * @param eventID
