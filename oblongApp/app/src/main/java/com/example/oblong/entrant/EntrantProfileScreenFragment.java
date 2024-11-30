@@ -6,12 +6,10 @@ import static android.icu.number.NumberRangeFormatter.with;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
-import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,32 +27,19 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.oblong.Database;
-import com.example.oblong.Notification;
 import com.example.oblong.R;
 import com.example.oblong.organizer.AddNewFacilityDialog;
 import com.example.oblong.organizer.organizer_base_activity;
 import com.example.oblong.imageUtils;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class EntrantProfileScreenFragment extends Fragment implements AddNewFacilityDialog.AddFacilityDialogListener {
 
@@ -69,9 +54,7 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
     Button addFacilityButton;
     private Database db = new Database();
     boolean isOrganizer;
-    private FirebaseFirestore fdb = FirebaseFirestore.getInstance();
     private static final String CHANNEL_ID = "oblong_channel_id2";
-    //private static final int NOTIFICATION_ID = 1001;
     private Context context;
 
     private final ActivityResultLauncher<Intent> editProfileLauncher =
@@ -150,6 +133,7 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
     /**
      * {@code onViewCreated} is called after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
      * fetches data from the Firebase for the users profile data
+     * fetches data from the Firebase to build notifications
      */
     private void fetchUserProfileData() {
         db.getCurrentUser(userId -> {
@@ -191,7 +175,7 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
                         isOrganizer = false;
                     }
                 });
-                //this code retrieves and builds android notifications of all of the notifications
+                //this code retrieves and builds android notifications for all of the notifications
                 //sent to this entrant
                 db.getEntrant(user_id, entrant -> {
                     List<String> notifications = (List<String>) entrant.get("notificationsList");

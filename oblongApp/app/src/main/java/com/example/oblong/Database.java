@@ -329,6 +329,8 @@ public class Database {
      * @param event
      * @param text
      * @param title
+     * @param target
+     * @param targetList
      */
     public void addNotification(String id, String event, String text, String title, String target,
                                 String[] targetList){
@@ -341,8 +343,6 @@ public class Database {
         notification.put("target list", Arrays.asList(targetList));
         notifications.document(id).set(notification).addOnSuccessListener(aVoid -> Log.d("database", "Notification added successfully"))
                 .addOnFailureListener(e -> Log.w("database", "Error adding notification", e));
-
-
     }
 
     /**

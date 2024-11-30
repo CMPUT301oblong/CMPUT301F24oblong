@@ -17,6 +17,7 @@ public class Notification {
     private String content;
     private String target;
     private ArrayList<String> targetList;
+    private String eventID;
     private String notifID;
 
     /**
@@ -43,6 +44,9 @@ public class Notification {
      * @param data
      */
     private void setNotifInformation(HashMap<String, Object> data){
+        this.eventID = (String) data.get("event");
+        Log.d("notif event", this.eventID);
+
         this.label = (String) data.get("title");
         Log.d("notif title", this.label);
 
@@ -111,4 +115,16 @@ public class Notification {
      * @param notifID
      */
     public void setNotifID(String notifID) { this.notifID = notifID; }
+
+    /**
+     * The {@code getEventID} method returns the eventID of the notification
+     * @return
+     */
+    public String getEventID(){ return  eventID; }
+
+    /**
+     * The {@code setEventID} method sets the eventID of the notification
+     * @param eventID
+     */
+    public void setEventID(String eventID){ this.eventID = eventID; }
 }

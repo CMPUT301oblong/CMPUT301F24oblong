@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -25,12 +23,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.oblong.Database;
 import com.example.oblong.Event;
 import com.example.oblong.R;
-import com.example.oblong.entrant.EntrantBaseActivity;
-import com.example.oblong.entrant.EntrantEventDescriptionActivity;
-import com.example.oblong.entrant.EntrantProfileEditActivity;
 import com.example.oblong.imageUtils;
 import com.example.oblong.qr_generator;
-import com.example.oblong.Database;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -86,7 +80,6 @@ public class organizer_view_event_screen extends AppCompatActivity {
         attendeesButton = findViewById(R.id.activity_organizer_view_event_event_description_view_attendees_button);
         drawButton = findViewById(R.id.draw_button);
         cancelButton = findViewById(R.id.cancel_entrants_button);
-
 
 
         Intent intent = getIntent();

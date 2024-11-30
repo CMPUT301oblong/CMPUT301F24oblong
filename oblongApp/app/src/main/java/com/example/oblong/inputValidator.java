@@ -93,7 +93,7 @@ public class inputValidator {
      */
     public boolean validateCreateNotification(String label, String content){
         if(label.isEmpty() || content.isEmpty()){
-            Toast.makeText(context, "Please fill in label and content fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please fill in label and body fields", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

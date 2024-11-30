@@ -3,8 +3,6 @@ package com.example.oblong;
 import static com.example.oblong.imageUtils.bitmapToBase64;
 
 import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,7 +11,6 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.TypefaceSpan;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,7 +50,6 @@ public class RoleSelector extends AppCompatActivity {
         setContentView(R.layout.activity_role_selector);
 
 
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -80,7 +76,7 @@ public class RoleSelector extends AppCompatActivity {
         text4.setSpan(new ForegroundColorSpan(getColor(R.color.accent)), 0, text4.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         introduction.append(text4);
 
-        //this code required for Android System Notifications to appear
+        //this code required for Android System Notifications to appear (API >= 33)
         //User MUST ALLOW for system notifications to appear
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
