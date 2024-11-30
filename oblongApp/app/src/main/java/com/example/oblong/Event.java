@@ -189,7 +189,7 @@ public class Event implements Serializable {
     }
 
     /**
-     * The {@code getEventID} method gets the event ID
+     * The {@code getNotifID} method gets the event ID
      * @return
      */
     public String getEventID() {
@@ -197,7 +197,7 @@ public class Event implements Serializable {
     }
 
     /**
-     * The {@code setEventID} method sets the event ID
+     * The {@code setNotifID} method sets the event ID
      * @param eventID
      */
     public void setEventID(String eventID) {

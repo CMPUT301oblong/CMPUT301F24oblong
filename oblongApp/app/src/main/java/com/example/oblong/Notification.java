@@ -4,7 +4,6 @@ package com.example.oblong;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,22 +17,22 @@ public class Notification {
     private String content;
     private String target;
     private ArrayList<String> targetList;
-    private String eventID;
+    private String notifID;
 
     /**
-     * The {@code Notification} method retrieves notification data belonging to an eventID
-     * @param eventID
+     * The {@code Notification} method retrieves notification data belonging to an notifID
+     * @param notifID
      */
-    public Notification(String eventID){
-        this.eventID = eventID;
+    public Notification(String notifID){
+        this.notifID = notifID;
         Database db = new Database();
-        db.getNotification(eventID, data -> {
+        db.getNotification(notifID, data -> {
             if(data!=null) {
                 Log.d("notif label", (String) data.get("title"));
                 setNotifInformation(data);
             }
             else{
-                Log.d("event", "event not found");
+                Log.d("notification", "notification not found");
             }
         });
     }
@@ -102,14 +101,14 @@ public class Notification {
     public void setTarget(String target){ this.target = target; }
 
     /**
-     * The {@code getEventID} method returns the eventID of the notification
+     * The {@code getNotifID} method returns the notifID of the notification
      * @return
      */
-    public String getEventID(){ return eventID; }
+    public String getNotifID(){ return notifID; }
 
     /**
-     * The {@code setEventID} method sets the eventID of the notification
-     * @param eventID
+     * The {@code setNotifID} method sets the notifID of the notification
+     * @param notifID
      */
-    public void setEventID(String eventID) { this.eventID = eventID; }
+    public void setNotifID(String notifID) { this.notifID = notifID; }
 }
