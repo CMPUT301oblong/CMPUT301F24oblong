@@ -37,7 +37,6 @@ public class RoleSelector extends AppCompatActivity {
 
     private Database db = new Database();
     private String user_id;
-    private static final String CHANNEL_ID = "oblong_channel_id";
 
     /**
      * The {@code onCreate} method populates the screen and UI elements

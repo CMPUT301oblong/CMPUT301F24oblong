@@ -120,7 +120,7 @@ public class Notification {
      * The {@code getEventID} method returns the eventID of the notification
      * @return
      */
-    public String getEventID(){ return  eventID; }
+    public String getEventID(){ return eventID; }
 
     /**
      * The {@code setEventID} method sets the eventID of the notification
