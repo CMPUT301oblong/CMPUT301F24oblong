@@ -29,15 +29,6 @@ public class Event implements Serializable {
     private String poster;
     private String attendingStatus;
 
-
-    /*public Event(String eventID, String eventName, String eventDescription, Date eventCloseDate, Long eventCapacity ) {
-        this.eventID = eventID;
-        this.eventName = eventName;
-        this.eventDescription = eventDescription;
-        this.eventCloseDate = eventCloseDate;
-        this.eventCapacity = eventCapacity;
-    }*/
-
     /**
      * The {@code Event} method retrieves an event data from Firebase
      * @param eventID
@@ -72,19 +63,6 @@ public class Event implements Serializable {
 
             this.eventID = eventID;
         });
-
-
-
-        /*db.getEvent(eventID,data -> {
-            if(data!=null) {
-                Log.d("event name", (String) data.get("name"));
-                setEventInformation(data);
-            }
-            else{
-                Log.d("event", "event not found");
-            }
-        });*/
-
     }
 
 
@@ -189,7 +167,7 @@ public class Event implements Serializable {
     }
 
     /**
-     * The {@code getNotifID} method gets the event ID
+     * The {@code getEventID} method gets the event ID
      * @return
      */
     public String getEventID() {
@@ -197,7 +175,7 @@ public class Event implements Serializable {
     }
 
     /**
-     * The {@code setNotifID} method sets the event ID
+     * The {@code setEventID} method sets the event ID
      * @param eventID
      */
     public void setEventID(String eventID) {
