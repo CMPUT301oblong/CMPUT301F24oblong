@@ -9,98 +9,104 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="30dp">
-
-    <TextView
-        android:id="@+id/new_event_textView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="New Event:"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/new_event_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="New Event:"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/event_name_entry"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="ENTER EVENT NAME"
-        android:inputType="text" />
+            <EditText
+                android:id="@+id/event_name_entry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="ENTER EVENT NAME"
+                android:inputType="text" />
 
-    <TextView
-        android:id="@+id/event_description_textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Event Description" />
+            <TextView
+                android:id="@+id/event_description_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="Event Description" />
 
-    <EditText
-        android:id="@+id/event_description_entry"
-        android:layout_width="match_parent"
-        android:layout_height="184dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="Enter your description..."
-        android:inputType="textMultiLine" />
+            <EditText
+                android:id="@+id/event_description_entry"
+                android:layout_width="match_parent"
+                android:layout_height="184dp"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="Enter your description..."
+                android:inputType="textMultiLine" />
 
-    <Button
-        android:id="@+id/upload_button"
-        style="@style/Widget.Material3.Button.Icon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Click to upload a poster"
-        app:icon="@drawable/baseline_arrow_circle_up_24" />
+            <Button
+                android:id="@+id/upload_button"
+                style="@style/Widget.Material3.Button.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Click to upload a poster"
+                app:icon="@drawable/baseline_arrow_circle_up_24" />
 
-    <TextView
-        android:id="@+id/max_capacity_textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Max Draw Capacity" />
+            <TextView
+                android:id="@+id/max_capacity_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Max Draw Capacity" />
 
-    <EditText
-        android:id="@+id/capacity_dropdown"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="Max Draw Capacity"
-        android:inputType="number" />
+            <EditText
+                android:id="@+id/capacity_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Max Draw Capacity"
+                android:inputType="number" />
 
-    <TextView
-        android:id="@+id/max_capacity_textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Max Capacity (optional)" />
+            <TextView
+                android:id="@+id/max_capacity_textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Max Capacity (optional)" />
 
-    <EditText
-        android:id="@+id/waitlist_capacity_dropdown"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="Max Waitlist Capacity (Optional)"
-        android:inputType="number" />
+            <EditText
+                android:id="@+id/waitlist_capacity_dropdown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Max Waitlist Capacity (Optional)"
+                android:inputType="number" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/create_event_button"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_weight="1"
-            android:text="Create Event" />
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/event_creation_cancel_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:layout_weight="1"
-            android:text="Cancel" />
-    </LinearLayout>
+            <Button
+                android:id="@+id/create_event_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:text="Create Event" />
 
-
+            <Button
+                android:id="@+id/event_creation_cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:text="Cancel" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
