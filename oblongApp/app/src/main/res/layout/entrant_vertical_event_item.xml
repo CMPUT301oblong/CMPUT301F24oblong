@@ -1,0 +1,98 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/event_card_background"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/event_card_background"
+        android:orientation="horizontal"
+        android:clipToOutline="true">
+
+        <ImageView
+            android:id="@+id/entrant_event_list_item_poster"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_gravity="end|center_vertical"
+            android:contentDescription="The poster correspoinding to the event will be here"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ic_launcher_background" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/entrant_event_list_item_event_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Event Title lorem ipsum"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="13dp"
+            android:orientation="horizontal"
+            android:paddingStart="11dp"
+            android:paddingEnd="11dp">
+
+            <ImageView
+                android:id="@+id/entrant_event_list_item_calender"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="start|top"
+                android:contentDescription="Calender Image for design purposes"
+                app:tint="#676FFF"
+                app:srcCompat="@drawable/calendar_nav_icon" />
+
+            <TextView
+                android:id="@+id/drawDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="6dp"
+                android:paddingEnd="19dp"
+                android:text="dd mont year"
+                android:textColor="#8B8B8B"
+                android:textSize="16dp" />
+
+            <ImageView
+                android:id="@+id/entrant_event_list_item_clock"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="start|top"
+                android:contentDescription="Calender Image for design purposes"
+                app:tint="#676FFF"
+                app:srcCompat="@drawable/clock" />
+
+            <TextView
+                android:id="@+id/drawTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="6dp"
+                android:text="X:XX pm"
+                android:textColor="#8B8B8B"
+                android:textSize="16dp" />
+        </LinearLayout>
+
+        <!--Relative Layout allows for button to be layered on top of on another, and only the
+        relevant button is shown using android:visibility="gone" to hide the unused one-->
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

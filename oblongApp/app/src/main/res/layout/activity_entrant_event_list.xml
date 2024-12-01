@@ -5,18 +5,41 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/background"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/activity_entrant_all_events_banner"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:gravity="center"
-        android:paddingTop="4dp"
-        android:text="Upcoming Events"
-        android:textColor="#000000"
-        android:textSize="40dp" />
+        android:layout_marginBottom="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/interestedEvents"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto"
+            android:paddingStart="20dp"
+            android:paddingTop="25dp"
+            android:paddingRight="20dp"
+            android:text="INTERESTED EVENTS"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/interestedEventsViewAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:paddingStart="20dp"
+            android:paddingTop="25dp"
+            android:paddingRight="20dp"
+            android:text="View All"
+            android:textColor="#8B8B8B"
+            android:textSize="16sp" />
+    </LinearLayout>
 
 
     <ListView

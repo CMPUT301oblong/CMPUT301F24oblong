@@ -157,6 +157,12 @@ public class Event implements Serializable {
         return closeDateFormat.format(this.eventCloseDate);
     }
 
+    public String getEventCloseTime() {
+        String timePattern = "HH:mm";
+        DateFormat closeTimeFormat = new SimpleDateFormat(timePattern);
+        return closeTimeFormat.format(this.eventCloseDate);
+    }
+
     /**
      * The {@code setEventCloseDate} method sets the event close date
      * @param eventCloseDate
