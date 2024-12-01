@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,7 @@ public class organizer_create_event_fragment extends Fragment {
     private EditText maxWaitlistCapacityInput;
     private Button createEventButton;
     private Button cancelButton;
+    private Switch locationSwitch;
 
     private Bitmap imageBitmap = null;
 
@@ -69,6 +71,7 @@ public class organizer_create_event_fragment extends Fragment {
         createEventButton = view.findViewById(R.id.create_event_button);
         cancelButton = view.findViewById(R.id.event_creation_cancel_button);
         maxWaitlistCapacityInput = view.findViewById(R.id.waitlist_capacity_dropdown);
+        locationSwitch = view.findViewById(R.id.loaction_required);
 
         createEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +125,12 @@ public class organizer_create_event_fragment extends Fragment {
                 event.put("drawDate", FieldValue.serverTimestamp());
                 event.put("location", new GeoPoint(0,0));
                 event.put("name", eventName);
+
+                if (locationSwitch.isChecked()){
+                    event.put("locationRequired", "1");
+                }else{
+                    event.put("locationRequired", "0");
+                }
 
                 if (imageBitmap != null) {
                     String imageBase64 = imageUtils.bitmapToBase64(imageBitmap);
