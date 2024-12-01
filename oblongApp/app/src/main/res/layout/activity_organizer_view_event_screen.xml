@@ -236,7 +236,7 @@
 
 
                         <Button
-                            android:id="@+id/activity_organizer_view_event_event_description_view_map_button"
+                            android:id="@+id/view_map"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
