@@ -59,6 +59,7 @@ public class qr_scanner extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
         } else {
             initQRCodeScanner();
+            finish();
         }
     }
 
@@ -164,6 +165,7 @@ public class qr_scanner extends AppCompatActivity {
         if (requestCode == PERMISSION_REQUEST_CAMERA) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 initQRCodeScanner();
+                finish();
             } else {
                 Toast.makeText(this, "Camera permission is required", Toast.LENGTH_LONG).show();
                 finish();

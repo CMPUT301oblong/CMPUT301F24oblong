@@ -148,7 +148,7 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
                     if (organizer != null) {
                         isOrganizer = true;
 
-                        addFacilityButton.setText("Organizer View");
+                        addFacilityButton.setText("ORGANIZER VIEW");
                     } else {
                         isOrganizer = false;
                     }

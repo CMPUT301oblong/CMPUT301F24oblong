@@ -50,6 +50,10 @@ public class EntrantBaseActivity extends AppCompatActivity {
             } else if (id == R.id.AllEvents) {
                 selectedFragment = new EntrantUpcomingEventsFragment();
             } else if (id == R.id.Camera) {
+                // Set item selected to null
+                bottomNavigationView.setItemSelected(R.id.Camera, false);
+//                bottomNavigationView.setItemSelected(R.id.Profile, true);
+//                selectedFragment = new EntrantProfileScreenFragment();
                 startActivity(new Intent(this, qr_scanner.class));
                 return; // Avoid replacing fragment after starting activity
             } else if (id == R.id.Profile) {
@@ -73,26 +77,4 @@ public class EntrantBaseActivity extends AppCompatActivity {
         }
     }
 
-    private final NavigationBarView.OnItemSelectedListener navListener =
-            (BottomNavigationView.OnNavigationItemSelectedListener) item -> {
-                Fragment selectedFragment = null;
-
-                int itemId = item.getItemId();
-                if (itemId == R.id.myEvents) {
-                    selectedFragment = new EntrantMyEventsFragment();
-                } else if (itemId == R.id.allEvents) {
-                    selectedFragment = new EntrantUpcomingEventsFragment();
-                } else if (itemId == R.id.camera) {
-                    startActivity(new Intent(this, qr_scanner.class));
-                } else if (itemId == R.id.profile) {
-                    selectedFragment = new EntrantProfileScreenFragment();
-                }
-
-                // Replace the current fragment with the selected one
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, selectedFragment)
-                        .commit();
-
-                return true;
-            };
 }

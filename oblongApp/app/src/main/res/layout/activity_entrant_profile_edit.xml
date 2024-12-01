@@ -60,14 +60,14 @@
 
             <ImageButton
                 android:id="@+id/delete_profile_button"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_margin="4dp"
                 android:background="@null"
                 android:contentDescription="Delete Profile Picture"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/cardView"
-                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+                app:srcCompat="@drawable/x_square" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
