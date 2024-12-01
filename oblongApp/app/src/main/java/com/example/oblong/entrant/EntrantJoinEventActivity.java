@@ -1,6 +1,9 @@
 package com.example.oblong.entrant;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -9,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -17,6 +21,9 @@ import com.example.oblong.Database;
 import com.example.oblong.Event;
 import com.example.oblong.R;
 import com.example.oblong.imageUtils;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.GeoPoint;
 
@@ -31,6 +38,9 @@ import java.util.Objects;
  * and poster image, and provides the option for the user to join the event or cancel the action.</p>
  */
 public class EntrantJoinEventActivity extends AppCompatActivity {
+    private FusedLocationProviderClient fusedLocationClient;
+    GeoPoint entrantLocation = new GeoPoint(9, 9);
+
     /**
      * Initializes the activity, sets up the UI, and handles user interactions.
      *
@@ -62,6 +72,8 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
         TextView date = findViewById(R.id.join_event_draw_date);
         ImageView poster = findViewById(R.id.join_event_imageView);
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -71,6 +83,26 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
         desc.setText((String) event.get("description"));
         Timestamp fireDate = (Timestamp) event.get("dateAndTime");
         String img = (String) event.get("poster");
+
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1 );
+        }
+
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            // Logic to handle location object
+                            double lat = (location.getLatitude());
+
+                            double lng = (location.getLongitude());
+                            entrantLocation = new GeoPoint(lat, lng);
+
+                        }
+                    }
+                });
 
         date.setText(fireDate.toDate().toString());
         if(Objects.equals(img, "image")){
@@ -91,13 +123,16 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
             db.getCurrentUser(userId -> {
                 // once userid is retrieved add participant
                 String participantId = userId + event_id;
-                GeoPoint location = new GeoPoint(0, 0);
+
                 String status = "waitlisted";
 
+
                 // add user as a participant
-                db.addParticipant(participantId, userId, event_id, location, status);
+                db.addParticipant(participantId, userId, event_id, entrantLocation, status);
                 startActivity(new Intent(EntrantJoinEventActivity.this, EntrantBaseActivity.class));
             });
         });
+
+
     }
 }
