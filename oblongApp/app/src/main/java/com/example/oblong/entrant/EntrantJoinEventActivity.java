@@ -89,12 +89,12 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
         String img = (String) event.get("poster");
 
         //TODO: check if location is required
-//        if (event.get("locationRequired") != null && event.get("locationRequired").equals("1")){
-//            locationRequired = true;
-//            Toast.makeText(this, "Location permissions are required to join this event", Toast.LENGTH_SHORT).show();
-//        } else {
+        if (event.get("locationRequired") != null && event.get("locationRequired").equals("1")){
+            locationRequired = true;
+            Toast.makeText(this, "Location permissions are required to join this event", Toast.LENGTH_SHORT).show();
+        } else {
         locationRequired = false;
-//        }
+        }
 
         date.setText(fireDate.toDate().toString());
         if(Objects.equals(img, "image")){

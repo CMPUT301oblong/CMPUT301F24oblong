@@ -4,132 +4,134 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
-        android:background="#FFFFFF"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-            <LinearLayout
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/activity_join_event_banner_1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:paddingTop="16dp"
+                android:text="Join:"
+
+                android:textColor="@color/white"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/activity_join_event_banner_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_weight="1"
+                android:text="EVENT NAME"
+                android:textColor="@color/white"
+                android:textSize="45sp" />
+
+            <LinearLayout
+                android:id="@+id/join_event_imageView_layout"
+                android:layout_width="match_parent"
+                android:layout_height="134dp"
+                android:layout_marginHorizontal="110dp"
+                android:layout_marginBottom="20dp"
+                android:background="#FFFFFF"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/join_event_imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@android:drawable/ic_menu_gallery" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/join_event_draw_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:text="Draw Date: Sep 9, 2024"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/join_event_event_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="47dp"
+                android:layout_marginBottom="9dp"
+                android:text="Event Description"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:id="@+id/event_description_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="42dp"
+                android:layout_marginBottom="22dp"
+                android:background="@drawable/edit_text_background"
                 android:orientation="vertical"
-               >
+                android:paddingHorizontal="16dp"
+                android:paddingTop="17dp"
+
+                android:paddingBottom="240dp">
 
                 <TextView
-                    android:id="@+id/activity_join_event_banner_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:paddingTop="16dp"
-                    android:text="Join:"
-
-                    android:textColor="#000000"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:id="@+id/activity_join_event_banner_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="24dp"
-                    android:layout_weight="1"
-                    android:text="EVENT NAME"
-                    android:textColor="#000000"
-                    android:textSize="45sp" />
-
-                <LinearLayout
-                    android:id="@+id/join_event_imageView_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="134dp"
-                    android:background="#FFFFFF"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginHorizontal="110dp"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/join_event_imageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:srcCompat="@android:drawable/ic_menu_gallery" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/join_event_draw_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:gravity="center"
-                    android:text="Draw Date: Sep 9, 2024"
-                    android:textAlignment="center"
-                    android:textColor="#000000"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:id="@+id/join_event_event_description"
-                    android:textColor="#1E1E1E"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="9dp"
-                    android:layout_marginStart="47dp"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/activity_join_event_event_description"
                     android:layout_width="wrap_content"
-                    android:text="Event Description"
-                    />
-
-                <LinearLayout
-                    android:id="@+id/event_description_box"
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="42dp"
-                    android:layout_marginBottom="22dp"
-                    android:background="@drawable/border_outline_grey"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="16dp"
-                    android:paddingTop="17dp"
+                    android:text="Sample Text."
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
-                    android:paddingBottom="240dp">
+            <LinearLayout
+                android:id="@+id/join_event_buttons_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="42dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="40dp">
 
-                    <TextView
-                        android:id="@+id/activity_join_event_event_description"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sample Text."
-                        android:textColor="#1E1E1E"
-                        android:textSize="16sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/join_event_buttons_layout"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/join_event_join_button"
+                    android:layout_width="163dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="42dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingBottom="40dp">
+                    android:backgroundTint="#676FFF"
+                    android:gravity="center"
+                    android:paddingVertical="14dp"
+                    android:text="Join"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
 
-                    <Button
-                        android:id="@+id/join_event_join_button"
-                        android:layout_width="163dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:paddingVertical="14dp"
-                        android:text="Join"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <Button
-                        android:id="@+id/join_event_cancel_button"
-                        android:layout_width="161dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:paddingVertical="14dp"
-                        android:text="Cancel"
-                        android:textColor="#FFFFFF"
-                        android:textSize="14sp" />
-                </LinearLayout>
+                <Button
+                    android:id="@+id/join_event_cancel_button"
+                    android:layout_width="161dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#676FFF"
+                    android:gravity="center"
+                    android:paddingVertical="14dp"
+                    android:text="Cancel"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
             </LinearLayout>
-            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
