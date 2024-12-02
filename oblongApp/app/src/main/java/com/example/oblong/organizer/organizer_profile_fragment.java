@@ -23,6 +23,7 @@ import com.example.oblong.Database;
 import com.example.oblong.R;
 import com.example.oblong.entrant.EntrantBaseActivity;
 import com.example.oblong.entrant.EntrantProfileEditActivity;
+import com.example.oblong.imageUtils;
 
 public class organizer_profile_fragment extends Fragment {
 
@@ -99,8 +100,11 @@ public class organizer_profile_fragment extends Fragment {
                 db.getUser(userId, user -> {
                     if (user != null) {
                         // Update the UI with user data
-                        profilePic.setImageResource(user.get("photo") == null ? R.drawable.image_placeholder : (int) user.get("photo"));
-                        name.setText((CharSequence) user.get("name"));
+                        if(user.get("profilePhoto") == null){
+                            profilePic.setImageResource(R.drawable.image_placeholder);
+                        }else{
+                            profilePic.setImageBitmap(imageUtils.base64ToBitmap((String)user.get("profilePhoto")));
+                        }                        name.setText((CharSequence) user.get("name"));
                         email.setText((CharSequence) user.get("email"));
                         phone.setText((CharSequence) (user.get("phone") == null ? "No Phone # Provided" : user.get("phone")));
 
