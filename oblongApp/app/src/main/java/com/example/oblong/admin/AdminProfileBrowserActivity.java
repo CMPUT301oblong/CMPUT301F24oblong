@@ -25,6 +25,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * Fragment for browsing user profiles in the admin panel.
+ */
 public class AdminProfileBrowserActivity extends Fragment {
 
     private ListView userList;
@@ -34,6 +37,14 @@ public class AdminProfileBrowserActivity extends Fragment {
     private FirebaseFirestore db;
     private CollectionReference userRef;
 
+    /**
+     * Inflates the layout for the profile browser fragment.
+     *
+     * @param inflater LayoutInflater to inflate the view.
+     * @param container Parent view that this fragment's UI will be attached to.
+     * @param savedInstanceState Saved state bundle for restoring the fragment.
+     * @return Inflated view for the fragment.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -41,6 +52,12 @@ public class AdminProfileBrowserActivity extends Fragment {
         return inflater.inflate(R.layout.admin_event_browser, container, false);
     }
 
+    /**
+     * Called immediately after the view is created. Initializes UI elements and data fetching.
+     *
+     * @param view The fragment's root view.
+     * @param savedInstanceState Saved state bundle for restoring the fragment.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -78,7 +95,9 @@ public class AdminProfileBrowserActivity extends Fragment {
         // Fetch Items from Firebase
         fetchUsers();
     }
-
+    /**
+     * Fetches user profiles from Firestore and updates the ListView.
+     */
     private void fetchUsers() {
         userRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override

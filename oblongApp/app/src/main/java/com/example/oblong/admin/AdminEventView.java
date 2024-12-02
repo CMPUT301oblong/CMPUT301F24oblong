@@ -24,11 +24,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 /**
- * Activity class for displaying a list of events.
+ * Activity class for managing events as an Administrator.
+ * Allows admins to view, delete and update event information
  */
 public class AdminEventView extends AppCompatActivity {
     private Event current_event;
 
+    /**
+     * Initializes the activity, setting up the UI components and event listeners.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
+     *                           this Bundle contains the data it most recently supplied in onSaveInstanceState.
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
@@ -92,7 +99,11 @@ public class AdminEventView extends AppCompatActivity {
     }
 
 
-    // Delete Event Dialog
+    /**
+     * Creates a confirmation dialog for deleting the event.
+     *
+     * @return The created AlertDialog instance.
+     */
     private AlertDialog createDialog() {
         Log.d("AdminEventView", "createDialog called");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -115,11 +126,17 @@ public class AdminEventView extends AppCompatActivity {
 
         return builder.create();
     }
+    /**
+     * Creates a confirmation dialog for deleting the QR code.
+     *
+     * @return The created AlertDialog instance.
+     */
     private AlertDialog createDialogQRCode() {
         Log.d("AdminEventView", "createDialog called");
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Are you sure you want to deactivate this QR code?\n" +
-                "This will make it so that scanning the QR code will no longer take the user to the event page");
+                "This will make it so that scanning the QR code will no longer take the user to the event page\n" +
+        "However, a new unique qr Code will be generated for this event in place of the old one");
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

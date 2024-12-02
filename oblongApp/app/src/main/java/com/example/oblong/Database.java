@@ -430,6 +430,13 @@ public class Database {
      * Completely remove user from the database.
      * That includes: as a participant, organizer/entrant, their facility, and their events.
      */
+
+    /**
+     * Deletes a user from the database along with associated data.
+     *
+     * @param context     The context from which this method is called.
+     * @param viewed_user The {@link User} object representing the user to delete.
+     */
     public void deleteUser(Context context, User viewed_user) {
         FirebaseFirestore db = FirebaseFirestore.getInstance(); // Get rid of line if this still works (I moved this method from another file) - Mike
         String user_type = viewed_user.getUserType();
@@ -482,8 +489,11 @@ public class Database {
                 .addOnFailureListener(e -> Log.e("Firestore", "Failed to delete user", e));
     }
 
-    /*
-     * Completely remove event from the database.
+    /**
+     * Completely removes an event and its associated data from the database.
+     *
+     * @param context The context from which this method is called.
+     * @param event   The {@link Event} object representing the event to delete.
      */
     public void deleteEvent(Context context, Event event) {
         // Delete event from the "created" collection
@@ -515,6 +525,12 @@ public class Database {
         });
     }
 
+    /**
+     * Updates the QR code of an event by generating a new UUID.
+     *
+     * @param context The context from which this method is called.
+     * @param event   The {@link Event} object representing the event to update.
+     */
     public void deleteQR(Context context, Event event){
         String newUUID = UUID.randomUUID().toString();
         // Update the event document with the new qrID

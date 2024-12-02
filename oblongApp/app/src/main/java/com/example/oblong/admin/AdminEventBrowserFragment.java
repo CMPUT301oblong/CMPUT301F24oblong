@@ -25,6 +25,17 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * The {@code AdminEventBrowserFragment} class is responsible for displaying a list of events
+ * in the admin interface. It fetches event data from a Firebase Firestore database and displays
+ * it in a {@link ListView}. Administrators can click on individual events to view detailed
+ * information about them in a new activity.
+ * <p>
+ * This fragment uses a custom adapter {@link AdminUserEventArrayAdapter} to bind the event data
+ * to the list view and implements a Firebase snapshot listener to update the event list
+ * dynamically when changes occur in the database.
+ * </p>
+ */
 public class AdminEventBrowserFragment extends Fragment {
 
     private ListView eventList;
@@ -33,6 +44,14 @@ public class AdminEventBrowserFragment extends Fragment {
     private FirebaseFirestore db;
     private CollectionReference eventsRef;
 
+    /**
+     * Inflates the layout for this fragment.
+     *
+     * @param inflater           The LayoutInflater used to inflate the fragment's view.
+     * @param container          The parent view that this fragment will be attached to.
+     * @param savedInstanceState Saved state from a previous instance of this fragment (if any).
+     * @return The inflated View for the fragment.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -40,6 +59,13 @@ public class AdminEventBrowserFragment extends Fragment {
         return inflater.inflate(R.layout.admin_event_browser, container, false);
     }
 
+    /**
+     * Called after the fragment's view has been created. Sets up the ListView, initializes
+     * Firebase components, and starts listening for changes in the "events" collection.
+     *
+     * @param view               The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState Saved state from a previous instance of this fragment (if any).
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -76,7 +102,10 @@ public class AdminEventBrowserFragment extends Fragment {
         // Fetch Items from Firebase
         fetchEvents();
     }
-
+    /**
+     * Fetches event data from the "events" collection in the database. Updates the event list
+     * dynamically when changes occur in the database.
+     */
     private void fetchEvents() {
         eventsRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override

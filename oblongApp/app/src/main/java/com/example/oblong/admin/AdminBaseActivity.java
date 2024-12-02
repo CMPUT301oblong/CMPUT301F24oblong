@@ -11,8 +11,35 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
+/**
+ * The {@code AdminBaseActivity} class serves as the base activity for the administrator interface
+ * of the application. It provides navigation functionality using a bottom navigation bar to
+ * switch between different fragments: Admin Profile Browser, Admin Event Browser, and Admin Image Browser.
+ * <p>
+ * This activity uses a {@link ChipNavigationBar} for navigation, allowing the administrator
+ * to browse and manage entrants, events, and images. On app launch, it defaults to loading
+ * the Admin Profile Fragment.
+ * </p>
+ * <p>
+ * Fragments loaded by this activity include:
+ * <ul>
+ *     <li>{@link AdminProfileBrowserActivity} - For browsing all entrants.</li>
+ *     <li>{@link AdminEventBrowserFragment} - For managing and viewing all events.</li>
+ *     <li>{@link AdminImageBrowserFragment} - For managing and viewing uploaded images.</li>
+ * </ul>
+ * </p>
+ */
 public class AdminBaseActivity extends AppCompatActivity {
 
+    /**
+     * Called when the activity is created. Initializes the bottom navigation bar and sets up
+     * listeners for navigation events to switch between fragments. If no state is saved, it
+     * defaults to loading the Admin Profile Fragment.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after being shut down
+     *                           or closed, this parameter contains the data most recently supplied
+     *                           in {@link #onSaveInstanceState(Bundle)}. Otherwise, it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
