@@ -176,24 +176,34 @@ public class qr_scanner extends AppCompatActivity {
 
         db.getEvent(event, results -> {
             if (!isAssociated){
-                //Check to see if the event hasn't met the waitlist capacity
+                //Check to see if the event hasn't met the waitlist capacity and we haven't past deadline
+
+                Date currentDate = new Date();
+
                 FirebaseFirestore datab = FirebaseFirestore.getInstance();
                 datab.collection("events").document(event).get().addOnSuccessListener(eventData->{
                     Long eventWaitlistCapacity;
+                    Timestamp eventTimestamp;
                     if(eventData.contains("waitlistCapacity")){
                         eventWaitlistCapacity = eventData.getLong("waitlistCapacity");
+                        eventTimestamp = eventData.getTimestamp("dateAndTime");
                     }else{
                         eventWaitlistCapacity = null;
+                        eventTimestamp = eventData.getTimestamp("dateAndTime");
                     }
                     datab.collection("participants").whereEqualTo("event", event).whereEqualTo("status", "waitlisted").get().addOnSuccessListener(task ->{
                         List allWaitlistedUsers = task.getDocuments();
-                        if(eventWaitlistCapacity == null || allWaitlistedUsers.size()+1 <= eventWaitlistCapacity){
+                        if((eventWaitlistCapacity == null || allWaitlistedUsers.size()+1 <= eventWaitlistCapacity) && (currentDate.compareTo(eventTimestamp.toDate()) < 0)){
                             Intent intent = new Intent(this, EntrantJoinEventActivity.class);
                             Log.d("qr_Scanner_event_id", event);
                             launchActivity(event, intent, results, eventData);
 
                         }else{
-                            Toast.makeText(getApplicationContext(), "Cannot join, max waitlist capacity", Toast.LENGTH_SHORT).show();
+                            if(currentDate.compareTo(eventTimestamp.toDate()) > 0){
+                                Toast.makeText(getApplicationContext(), "Cannot join, past deadline", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Cannot join, max waitlist capacity", Toast.LENGTH_SHORT).show();
+                            }
                             finish();
                         }
                     });

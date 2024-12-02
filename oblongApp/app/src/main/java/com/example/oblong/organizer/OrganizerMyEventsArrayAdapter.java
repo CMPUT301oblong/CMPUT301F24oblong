@@ -1,7 +1,5 @@
 package com.example.oblong.organizer;
 
-import static android.app.PendingIntent.getActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +17,8 @@ import androidx.annotation.Nullable;
 
 import com.example.oblong.Event;
 import com.example.oblong.R;
+import com.example.oblong.entrant.EntrantEventAcceptDescriptionActivity;
+import com.example.oblong.entrant.EntrantEventDescriptionActivity;
 import com.example.oblong.imageUtils;
 
 import java.util.ArrayList;
@@ -30,6 +30,15 @@ import java.util.ArrayList;
  * draw date, and options to view or accept the event invite. It handles the click actions
  * for the buttons that navigate to detailed event description activities.</p>
  */
+/**
+ * Custom ArrayAdapter for displaying a list of events in the organizer's "My Events" section.
+ *
+ * <p>This adapter binds event data to a custom list item layout and provides click functionality
+ * for viewing event details and accepting events. It uses the {@link Event} class for event data.</p>
+ *
+ * <p>Each list item displays the event poster, name, and draw date, along with buttons for viewing
+ * or interacting with the event.</p>
+ */
 public class OrganizerMyEventsArrayAdapter extends ArrayAdapter<Event> {
     private ArrayList<Event> events;
     private Context context;
@@ -39,6 +48,12 @@ public class OrganizerMyEventsArrayAdapter extends ArrayAdapter<Event> {
      *
      * @param context The context in which the adapter is being used.
      * @param events  The list of Event objects to be displayed.
+     */
+    /**
+     * Constructor for the custom adapter.
+     *
+     * @param context The context in which the adapter is being used.
+     * @param events  The list of {@link Event} objects to display in the adapter.
      */
     public OrganizerMyEventsArrayAdapter(Context context, ArrayList<Event> events){
         super(context,0, events);
@@ -57,6 +72,18 @@ public class OrganizerMyEventsArrayAdapter extends ArrayAdapter<Event> {
      * @param parent      The parent ViewGroup that this view will eventually be attached to.
      * @return The View corresponding to the data at the specified position.
      */
+    /**
+     * Provides a view for an adapter's item at a specific position.
+     *
+     * <p>This method inflates a custom layout for each event item in the list and sets the event data,
+     * such as the poster, name, and draw date. It also defines click listeners for buttons to view
+     * and interact with the event.</p>
+     *
+     * @param position    The position of the item within the adapter's data set.
+     * @param convertView The old view to reuse, if possible.
+     * @param parent      The parent that this view will eventually be attached to.
+     * @return A {@link View} corresponding to the data at the specified position.
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -68,6 +95,7 @@ public class OrganizerMyEventsArrayAdapter extends ArrayAdapter<Event> {
         }
 
         Event event = events.get(position);
+
 
 
         // Set the event name

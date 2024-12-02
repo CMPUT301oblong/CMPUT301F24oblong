@@ -126,8 +126,8 @@ public class organizer_profile_edit extends AppCompatActivity {
                         db.getFacility(facility_id, facility -> {
                             if (facility != null) {
                                 // Process data
-                                // FIXME: Picture decoding not working. crashes when opening activity. (below)
-//                                profilePic.setImageResource(facility.get("photo") == null ? R.drawable.image_placeholder : (int) user.get("photo"));
+
+                                // profilePic.setImageResource(facility.get("photo") == null ? R.drawable.image_placeholder : (int) user.get("photo"));
                                 facilityNameInput.setText((CharSequence) facility.get("name"));
                                 facilityEmailInput.setText((CharSequence) facility.get("email"));
                                 facilityPhoneInput.setText((CharSequence) (facility.get("phone") == null ? "" : facility.get("phone")));

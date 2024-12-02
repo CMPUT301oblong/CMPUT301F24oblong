@@ -51,6 +51,10 @@ public class organizer_profile_fragment extends Fragment {
     Button entrantViewButton;
     private Database db;
 
+    /**
+     * Launcher to handle the result of editing the profile or facility information.
+     * Updates the user profile data if changes are made.
+     */
     private final ActivityResultLauncher<Intent> editProfileLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK) {

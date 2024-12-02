@@ -2,6 +2,7 @@ package com.example.oblong.organizer;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.app.DatePickerDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,7 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +31,9 @@ import com.example.oblong.Database;
 import com.example.oblong.R;
 import com.example.oblong.imageUtils;
 import com.example.oblong.qr_generator;
+import com.google.android.material.button.MaterialButton;
+import com.google.firebase.Firebase;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -35,25 +41,52 @@ import com.google.firebase.firestore.GeoPoint;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Fragment for creating events as an organizer
+ * Handles user inputs, validation, image upload, and saving the event to the database
+ */
 public class organizer_create_event_fragment extends Fragment {
 
+    // UI Components
     private EditText eventNameInput;
     private EditText eventDescriptionInput;
-    private Button uploadImageButton;
+    private MaterialButton uploadImageButton;
     private EditText maxCapacityInput;
+    private MaterialButton deadlineButton;
+    private ImageView displayImage;
     private EditText maxWaitlistCapacityInput;
     private Button createEventButton;
+    private TextView displayDeadline;
     private Button cancelButton;
     private Switch locationSwitch;
+
+    // Event specific details
     private String qrID;
     private Bitmap imageBitmap = null;
 
+    private Date deadlineDate;
+    private Calendar calendar = Calendar.getInstance();
+    private int year = calendar.get(Calendar.YEAR);
+    private int month = calendar.get(Calendar.MONTH);
+    private int day = calendar.get(Calendar.DAY_OF_MONTH);
 
 
+
+    /**
+     * Inflates the fragment's layout for the event creation screen.
+     *
+     * @param inflater           LayoutInflater to inflate the layout
+     * @param container          Parent view that the fragment's UI should be attached to
+     * @param savedInstanceState Saved instance state
+     * @return The inflated view
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -66,18 +99,34 @@ public class organizer_create_event_fragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         // TODO: Set up any views or logic here
 
+
         eventNameInput = view.findViewById(R.id.event_name_entry);
-        eventDescriptionInput = view.findViewById(R.id.event_description_entry);
+        eventDescriptionInput = view.findViewById(R.id.new_event_description_entry);
         uploadImageButton = view.findViewById(R.id.upload_button);
+        displayImage = view.findViewById(R.id.new_event_display_image);
         maxCapacityInput = view.findViewById(R.id.capacity_dropdown);
         createEventButton = view.findViewById(R.id.create_event_button);
         cancelButton = view.findViewById(R.id.event_creation_cancel_button);
         maxWaitlistCapacityInput = view.findViewById(R.id.waitlist_capacity_dropdown);
         locationSwitch = view.findViewById(R.id.loaction_required);
+        deadlineButton = view.findViewById(R.id.new_event_choose_date_time);
+        displayDeadline = view.findViewById(R.id.new_event_display_deadline);
+
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 23);
+        calendar.set(Calendar.SECOND, 23);
+        calendar.set(Calendar.MILLISECOND, 0);
+        deadlineDate = calendar.getTime();
+
+        updateDateDisplay();
 
         createEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Set calendar
+
+
+
                 //Get all info user entered:
                 String eventName = eventNameInput.getText().toString();
                 if(eventName.isEmpty()){
@@ -112,10 +161,6 @@ public class organizer_create_event_fragment extends Fragment {
                 // Generate random QR ID
                 qrID = UUID.randomUUID().toString();
 
-
-
-
-
                 //When we click this we want to take all this info and put it into database
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -127,7 +172,7 @@ public class organizer_create_event_fragment extends Fragment {
                 if(waitlistMaxCapacity != -1) {
                     event.put("waitlistCapacity", waitlistMaxCapacity);
                 }
-                event.put("dateAndTime", FieldValue.serverTimestamp());
+                event.put("dateAndTime", new Timestamp(deadlineDate));
                 event.put("description", eventDescription);
                 event.put("drawDate", FieldValue.serverTimestamp());
                 event.put("location", new GeoPoint(0,0));
@@ -188,8 +233,63 @@ public class organizer_create_event_fragment extends Fragment {
             }
         });
 
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeFragment();
+            }
+        });
+
+        deadlineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                askForDeadline();
+            }
+        });
+
     }
 
+    private void updateDateDisplay(){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String newDateText = dateFormat.format(deadlineDate);
+        displayDeadline.setText(newDateText);
+
+    }
+
+    private void askForDeadline(){
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                getContext(),
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    // check that date is valid
+                    Calendar sampleCalendar = Calendar.getInstance();
+                    sampleCalendar.set(selectedYear, selectedMonth, selectedDay, 23, 59, 59);
+                    Date futureDate = sampleCalendar.getTime();
+
+                    Date currentDate = new Date();
+                    Log.d("date shown", currentDate.toString());
+                    Log.d("date shown", futureDate.toString());
+
+                    if(currentDate.compareTo(futureDate) > 0){
+                        Toast.makeText(getContext(), "You cannot choose an earlier date for deadline.", Toast.LENGTH_SHORT).show();
+                    }else{
+                        deadlineDate = futureDate;
+                        updateDateDisplay();
+                    }
+                },
+                year,
+                month,
+                day
+        );
+        datePickerDialog.show();
+    }
+    private void closeFragment(){
+        getFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, new organizer_profile_fragment())
+                .commit();
+    }
+    /**
+     * Launches an intent to allow the user to select an image from their device.
+     */
     private void askForImage(){
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -200,6 +300,13 @@ public class organizer_create_event_fragment extends Fragment {
 
     }
 
+    /**
+     * Handles the result of the image selection intent.
+     *
+     * @param requestCode Request code for the activity result
+     * @param resultCode  Result code of the activity
+     * @param data        Intent data containing the selected image
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
