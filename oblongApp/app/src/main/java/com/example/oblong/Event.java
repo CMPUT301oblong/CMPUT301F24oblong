@@ -123,7 +123,7 @@ public class Event implements Serializable {
 
                 //get new selected entrant 
                 String entrant = (String) db.collection("participants").document(documentID).get().getResult().get("entrant");
-
+                
                 //create selected notification
                 Database tempD = new Database();
                 String newNotifIDSelected = db.collection("notifications").document().getId();
@@ -131,7 +131,7 @@ public class Event implements Serializable {
                 String content = "Congratulations on being selected to attend our event! Please accept your invitation " +
                         "by visiting your \"Events\" tab and viewing the details for our event.";
                 tempD.addNotification(newNotifIDSelected, this.eventID, content, label, "Selected", Arrays.asList(entrant).toArray(new String[0]));
-
+                
                 //add selected notification to entrant notificationsList
                 HashMap<String, Object> entrantUpdate = new HashMap<>();
                 entrantUpdate.put("notificationsList", FieldValue.arrayUnion(newNotifIDSelected));
