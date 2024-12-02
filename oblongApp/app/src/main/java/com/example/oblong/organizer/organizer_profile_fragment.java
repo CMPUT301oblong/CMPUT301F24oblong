@@ -26,6 +26,11 @@ import com.example.oblong.entrant.EntrantBaseActivity;
 import com.example.oblong.entrant.EntrantProfileEditActivity;
 import com.example.oblong.imageUtils;
 
+/**
+ * The {@code organizer_profile_fragment} class represents a Fragment that displays
+ * the profile information of an organizer, including personal details and associated facility information.
+ * The fragment allows editing both the user's profile and facility details.
+ */
 public class organizer_profile_fragment extends Fragment {
 
     private String user_id;
@@ -42,6 +47,10 @@ public class organizer_profile_fragment extends Fragment {
     Button entrantViewButton;
     private Database db;
 
+    /**
+     * Launcher to handle the result of editing the profile or facility information.
+     * Updates the user profile data if changes are made.
+     */
     private final ActivityResultLauncher<Intent> editProfileLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK) {
@@ -50,6 +59,14 @@ public class organizer_profile_fragment extends Fragment {
                 }
             });
 
+    /**
+     * Inflates the layout for this fragment.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate views in the fragment.
+     * @param container          The parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState The saved instance state.
+     * @return The View for the fragment's UI.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -93,7 +110,10 @@ public class organizer_profile_fragment extends Fragment {
         return view;
     }
 
-
+    /**
+     * Fetches the profile data of the current user and updates the UI with the retrieved information.
+     * This method retrieves both user and facility information from the database.
+     */
     private void fetchUserProfileData() {
         Database.getCurrentUser(userId -> {
             if (userId != null) {

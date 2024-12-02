@@ -38,8 +38,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Fragment for creating events as an organizer
+ * Handles user inputs, validation, image upload, and saving the event to the database
+ */
 public class organizer_create_event_fragment extends Fragment {
 
+    // UI Components
     private EditText eventNameInput;
     private EditText eventDescriptionInput;
     private Button uploadImageButton;
@@ -48,11 +53,20 @@ public class organizer_create_event_fragment extends Fragment {
     private Button createEventButton;
     private Button cancelButton;
     private Switch locationSwitch;
+
+    // Event specific details
     private String qrID;
     private Bitmap imageBitmap = null;
 
 
-
+    /**
+     * Inflates the fragment's layout for the event creation screen.
+     *
+     * @param inflater           LayoutInflater to inflate the layout
+     * @param container          Parent view that the fragment's UI should be attached to
+     * @param savedInstanceState Saved instance state
+     * @return The inflated view
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -110,10 +124,6 @@ public class organizer_create_event_fragment extends Fragment {
 
                 // Generate random QR ID
                 qrID = UUID.randomUUID().toString();
-
-
-
-
 
                 //When we click this we want to take all this info and put it into database
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -188,7 +198,9 @@ public class organizer_create_event_fragment extends Fragment {
         });
 
     }
-
+    /**
+     * Launches an intent to allow the user to select an image from their device.
+     */
     private void askForImage(){
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -199,6 +211,13 @@ public class organizer_create_event_fragment extends Fragment {
 
     }
 
+    /**
+     * Handles the result of the image selection intent.
+     *
+     * @param requestCode Request code for the activity result
+     * @param resultCode  Result code of the activity
+     * @param data        Intent data containing the selected image
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

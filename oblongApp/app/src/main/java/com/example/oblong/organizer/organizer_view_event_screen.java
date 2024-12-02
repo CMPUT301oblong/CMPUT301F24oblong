@@ -38,7 +38,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
+/**
+ * This activity allows an organizer to view detailed information about an event and perform various actions,
+ * such as uploading a poster, sending notifications, selecting participants, cancelling participants,
+ * and navigating to related activities like waitlist, attendees, and cancelled attendees screens.
+ *
+ * <p>The activity uses data from the Firestore database to populate event details and manage associated functionalities.
+ * It includes QR code generation and allows uploading a poster image for the event.</p>
+ *
+ * <p>Dependencies:</p>
+ * <ul>
+ *   <li>{@link Database}</li>
+ *   <li>{@link Event}</li>
+ *   <li>{@link com.example.oblong.imageUtils}</li>
+ *   <li>{@link com.example.oblong.qr_generator}</li>
+ * </ul>
+ */
 public class organizer_view_event_screen extends AppCompatActivity {
 
     private TextView eventNameDisplay;
@@ -62,6 +77,11 @@ public class organizer_view_event_screen extends AppCompatActivity {
     private FirebaseFirestore fdb;
 
 
+    /**
+     * Initializes the activity and sets up UI components, event listeners, and data fetching for the event.
+     *
+     * @param savedInstanceState The state of the activity saved from a previous session, if any.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -173,7 +193,14 @@ public class organizer_view_event_screen extends AppCompatActivity {
         });
 
     }
-
+    /**
+     * Handles the logic for selecting participants for the event.
+     * Participants are chosen randomly from the waitlist.
+     *
+     * <p>Selected participants are notified, and their status is updated in the database.</p>
+     *
+     * @param eventId The unique ID of the event for which participants are being selected.
+     */
     private void chooseParticipants(String eventId){
         HashMap<String, Object> conditions = new HashMap<>();
         conditions.put("event", eventId);
@@ -232,6 +259,12 @@ public class organizer_view_event_screen extends AppCompatActivity {
         });
 
     }
+    /**
+     * Cancels all participants for the event who are either "selected" or "waitlisted".
+     * Updates their status to "cancelled" in the database and notifies them.
+     *
+     * @param eventId The unique ID of the event for which participants are being cancelled.
+     */
     private void cancelEntrants(String eventId) {
         List<String> cancelledList = new ArrayList<>();
 
@@ -266,6 +299,11 @@ public class organizer_view_event_screen extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initializes event data from the passed intent and displays it in the UI.
+     *
+     * @param intent The intent containing event data passed from the previous activity.
+     */
     private void initializeData(Intent intent){
         Bundle bundle = getIntent().getExtras();
         event = (Event) bundle.get("EVENT");
@@ -282,6 +320,9 @@ public class organizer_view_event_screen extends AppCompatActivity {
         qrCode.setImageBitmap(code);
     }
 
+    /**
+     * Prompts the organizer to select an image file to upload as the event's poster.
+     */
     private void askForImage(){
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -292,6 +333,14 @@ public class organizer_view_event_screen extends AppCompatActivity {
 
     }
 
+    /**
+     * Handles the result of activities launched from this activity, such as selecting an image for the poster.
+     * Updates the event's poster in the database and displays it in the UI.
+     *
+     * @param requestCode The request code identifying the launched activity.
+     * @param resultCode  The result code returned by the launched activity.
+     * @param data        The intent containing result data from the launched activity.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -334,6 +383,12 @@ public class organizer_view_event_screen extends AppCompatActivity {
         }
     }
 
+    /**
+     * Provides the base context for the activity.
+     * Used internally for resolving context-related tasks.
+     *
+     * @return The base context of the activity.
+     */
     private Context requireContext() {
         return getBaseContext();
     }

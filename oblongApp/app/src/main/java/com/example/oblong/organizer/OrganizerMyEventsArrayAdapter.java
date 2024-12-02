@@ -23,17 +23,43 @@ import com.example.oblong.imageUtils;
 
 import java.util.ArrayList;
 
+/**
+ * Custom ArrayAdapter for displaying a list of events in the organizer's "My Events" section.
+ *
+ * <p>This adapter binds event data to a custom list item layout and provides click functionality
+ * for viewing event details and accepting events. It uses the {@link Event} class for event data.</p>
+ *
+ * <p>Each list item displays the event poster, name, and draw date, along with buttons for viewing
+ * or interacting with the event.</p>
+ */
 public class OrganizerMyEventsArrayAdapter extends ArrayAdapter<Event> {
     private ArrayList<Event> events;
     private Context context;
 
+    /**
+     * Constructor for the custom adapter.
+     *
+     * @param context The context in which the adapter is being used.
+     * @param events  The list of {@link Event} objects to display in the adapter.
+     */
     public OrganizerMyEventsArrayAdapter(Context context, ArrayList<Event> events){
         super(context,0, events);
         this.events = events;
         this.context = context;
     }
 
-
+    /**
+     * Provides a view for an adapter's item at a specific position.
+     *
+     * <p>This method inflates a custom layout for each event item in the list and sets the event data,
+     * such as the poster, name, and draw date. It also defines click listeners for buttons to view
+     * and interact with the event.</p>
+     *
+     * @param position    The position of the item within the adapter's data set.
+     * @param convertView The old view to reuse, if possible.
+     * @param parent      The parent that this view will eventually be attached to.
+     * @return A {@link View} corresponding to the data at the specified position.
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -46,7 +72,7 @@ public class OrganizerMyEventsArrayAdapter extends ArrayAdapter<Event> {
 
         Event event = events.get(position);
 
-        //TODO: Get the event images
+
 
         // Set the event name
         ImageView eventPoster = view.findViewById(R.id.entrant_event_list_item_poster);
@@ -88,7 +114,7 @@ public class OrganizerMyEventsArrayAdapter extends ArrayAdapter<Event> {
         });
 
 
-        //TODO: implement images
+
         if(!(event.getPoster() == null)) {
             eventPoster.setImageBitmap(imageUtils.base64ToBitmap(event.getPoster()));
         }
