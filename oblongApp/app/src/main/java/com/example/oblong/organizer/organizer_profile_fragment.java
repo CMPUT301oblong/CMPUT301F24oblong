@@ -3,6 +3,7 @@ package com.example.oblong.organizer;
 import static android.app.Activity.RESULT_OK;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -100,34 +101,38 @@ public class organizer_profile_fragment extends Fragment {
                 db.getUser(userId, user -> {
                     if (user != null) {
                         // Update the UI with user data
-                        if(user.get("profilePhoto") == null){
+                        if (user.get("profilePhoto") == null) {
                             profilePic.setImageResource(R.drawable.image_placeholder);
-                        }else{
-                            profilePic.setImageBitmap(imageUtils.base64ToBitmap((String)user.get("profilePhoto")));
-                        }                        name.setText((CharSequence) user.get("name"));
-                        email.setText((CharSequence) user.get("email"));
-                        phone.setText((CharSequence) (user.get("phone") == null ? "No Phone # Provided" : user.get("phone")));
+                        } else {
+                            Bitmap profileBitmap = imageUtils.base64ToBitmap((String) user.get("profilePhoto"));
+                            if (profileBitmap != null) {
+                                profilePic.setImageBitmap(profileBitmap);
+                                name.setText((CharSequence) user.get("name"));
+                                email.setText((CharSequence) user.get("email"));
+                                phone.setText((CharSequence) (user.get("phone") == null ? "No Phone # Provided" : user.get("phone")));
 
-                        Log.d("user", "User Name: " + user.get("name"));
-                    } else {
-                        Log.d("user", "User not found or an error occurred.");
-                    }
-                });
-                // Get Facility Information
-                db.getOrganizer(userId, organizer -> {
-                    if (organizer != null) {
-                        // Process data
-                        String facility_id = (String) organizer.get("facility");
-                        db.getFacility(facility_id, facility -> {
-                            if (facility != null) {
-                                // Process data
-                                facility_name.setText((CharSequence) facility.get("name"));
-                                facility_email.setText((CharSequence) facility.get("email"));
-                                facility_phoneno.setText((CharSequence) (facility.get("phone") == null ? "No Phone # Provided" : facility.get("phone")));
-
-                                Log.d("Facility", "Obtained all facility info"); // print user's name to console
+                                Log.d("user", "User Name: " + user.get("name"));
                             } else {
-                                Log.d("Facility", "facility not found or an error occurred.");
+                                Log.d("user", "User not found or an error occurred.");
+                            }
+                        }
+                        // Get Facility Information
+                        db.getOrganizer(userId, organizer -> {
+                            if (organizer != null) {
+                                // Process data
+                                String facility_id = (String) organizer.get("facility");
+                                db.getFacility(facility_id, facility -> {
+                                    if (facility != null) {
+                                        // Process data
+                                        facility_name.setText((CharSequence) facility.get("name"));
+                                        facility_email.setText((CharSequence) facility.get("email"));
+                                        facility_phoneno.setText((CharSequence) (facility.get("phone") == null ? "No Phone # Provided" : facility.get("phone")));
+
+                                        Log.d("Facility", "Obtained all facility info"); // print user's name to console
+                                    } else {
+                                        Log.d("Facility", "facility not found or an error occurred.");
+                                    }
+                                });
                             }
                         });
                     }
@@ -135,5 +140,5 @@ public class organizer_profile_fragment extends Fragment {
             }
         });
     }
-
 }
+
