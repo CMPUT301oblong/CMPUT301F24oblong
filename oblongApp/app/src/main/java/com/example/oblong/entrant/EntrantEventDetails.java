@@ -35,6 +35,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.HashMap;
 
+/**
+ * This class represents the event details screen for an entrant.
+ * It displays the event details, allows the entrant to join, leave, or interact with the event,
+ * and provides location-based functionality if required.
+ */
 public class EntrantEventDetails extends AppCompatActivity {
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -46,6 +51,13 @@ public class EntrantEventDetails extends AppCompatActivity {
     private Button proceedButton;
     private Database db;
 
+    /**
+     * Called when the activity is first created.
+     * Initializes the UI elements, sets up the bottom sheet, and fetches event details.
+     *
+     * @param savedInstanceState If the activity is being reinitialized after previously being shut down,
+     *                           this Bundle contains the data it most recently supplied.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +74,10 @@ public class EntrantEventDetails extends AppCompatActivity {
 
     }
 
+    /**
+     * Sets up the bottom sheet behavior, adjusts the image height dynamically,
+     * and listens for state changes in the bottom sheet.
+     */
     private void setUpBottomSheet() {
         View bottomSheet = findViewById(R.id.bottomSheet);
         ImageView imageView = findViewById(R.id.eventDetailsPoster);
@@ -114,6 +130,10 @@ public class EntrantEventDetails extends AppCompatActivity {
     }
 
     // Literally don't touch cuz this is holding on by a thread and I have no idea what's keeping it together
+    /**
+     * Fetches event details from the database and populates the UI with the retrieved data.
+     * Also sets up button click listeners to handle participant actions.
+     */
     private void fetchEventDetails() {
 
         // FIXME: SOMETHING IN HERE IS BROKEN
@@ -316,7 +336,9 @@ public class EntrantEventDetails extends AppCompatActivity {
             finish();
         });
     }
-
+    /**
+     * Requests location permissions and attempts to join the event.
+     */
     private void getPermissionAndJoin() {
         // request permissions every time
 
