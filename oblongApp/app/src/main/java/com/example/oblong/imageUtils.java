@@ -27,7 +27,7 @@ import java.io.IOException;
  */
 public class imageUtils {
 
-    private static final long MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
+    private static final long MAX_IMAGE_SIZE = 25 * 1024 * 1024; // 25 MB
 
     /**
      * Converts a Bitmap image to a Base64-encoded string.
