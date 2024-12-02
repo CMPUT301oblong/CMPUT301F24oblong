@@ -27,6 +27,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * Activity class for creating displaying an organizers events.
+ *
+ * <p>This activity retrieves a list of an organizer's events, using Firebase to fetch relevant data.
+ * It then populates a ListView with these events for display.</p>
+ */
 public class organizer_my_events_fragment extends Fragment {
 
     private ListView eventList;
@@ -37,6 +43,14 @@ public class organizer_my_events_fragment extends Fragment {
     private CollectionReference createdRef;
     private String user_id;
 
+    /**
+     * Inflates the fragment's layout.
+     *
+     * @param inflater The LayoutInflater object used to inflate views.
+     * @param container The parent view that the fragment's UI should be attached to.
+     * @param savedInstanceState Bundle containing the fragment's previously saved state, if any.
+     * @return The View for the fragment's UI.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -45,7 +59,16 @@ public class organizer_my_events_fragment extends Fragment {
         return inflater.inflate(R.layout.activity_my_events, container, false);
     }
 
-
+    /**
+     * Called immediately after {@link #onCreateView} has returned.
+     *
+     * <p>This method initializes Firebase Firestore references and sets up
+     * the ListView adapter for displaying events. It also retrieves the current user's ID
+     * to fetch the organizer's events.</p>
+     *
+     * @param view The View returned by {@link #onCreateView}.
+     * @param savedInstanceState The saved instance state bundle.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -75,6 +98,15 @@ public class organizer_my_events_fragment extends Fragment {
 
     }
 
+    /**
+     * Fetches the organizer's events from Firestore.
+     *
+     * <p>This method queries the "organizers" collection to find the user id to query the "created"
+     * collection to check if the organizer has created any events. If the organizer has created any events,
+     * then the eventsDataList is cleared of any previous data. For each event, a new Event object is created
+     * and populated with the event information from Firebase, then the object is added to the eventDataList
+     * and the adapter is notified.</p>
+     */
     private void fetchEvents(String user_id) {
         // TODO: Fetch events the organizer has created
         organizersRef.whereEqualTo("user", user_id)
@@ -116,6 +148,11 @@ public class organizer_my_events_fragment extends Fragment {
         });
     }
 
+    /**
+     * Called when the fragment is visible to the user and actively running.
+     *
+     * <p>This method fetches the organizer's events using their user id.</p>
+     */
     @Override
     public void onResume() {
         super.onResume();
