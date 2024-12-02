@@ -42,6 +42,7 @@ public class EntrantEventDescriptionActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private CollectionReference participantsRef;
     private CollectionReference eventsRef;
+    private Database myDb;
 
 
     /**
@@ -68,6 +69,7 @@ public class EntrantEventDescriptionActivity extends AppCompatActivity {
     backButton = findViewById(R.id.entrant_event_description_back_button);
     leaveButton = findViewById(R.id.entrant_event_description_leave_button);
     date = findViewById(R.id.textView3);
+    myDb = new Database();
 
      //Get Data from Intent
      Intent intent = getIntent();
@@ -116,7 +118,7 @@ public class EntrantEventDescriptionActivity extends AppCompatActivity {
      */
     private void userLeft(){
         //TO DO
-        //remove participant relation from database
+        // mark user as cancelled in db
         //kick user back to their events
 
         //FIND PARTICIPANT RELATION WITH BOTH USERID AND EVENTID
@@ -141,7 +143,7 @@ public class EntrantEventDescriptionActivity extends AppCompatActivity {
                         .addOnSuccessListener(queryDocumentSnapshots -> {
                             if(!queryDocumentSnapshots.isEmpty()){
                                 DocumentSnapshot doc = queryDocumentSnapshots.getDocuments().get(0);
-                                doc.getReference().delete();
+                                doc.getReference().update("status", "cancelled");
                             }
                                 }
                                 );
