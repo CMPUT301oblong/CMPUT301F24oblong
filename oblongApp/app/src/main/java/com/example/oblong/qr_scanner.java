@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.oblong.entrant.EntrantBaseActivity;
 import com.example.oblong.entrant.EntrantEventDescriptionActivity;
+import com.example.oblong.entrant.EntrantEventDetails;
 import com.example.oblong.entrant.EntrantJoinEventActivity;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -70,7 +71,6 @@ public class qr_scanner extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
         } else {
             initQRCodeScanner();
-            finish();
         }
     }
 
@@ -156,8 +156,8 @@ public class qr_scanner extends AppCompatActivity {
                     datab.collection("participants").whereEqualTo("event", event).whereEqualTo("status", "waitlisted").get().addOnSuccessListener(task ->{
                         List allWaitlistedUsers = task.getDocuments();
                         if(eventWaitlistCapacity == null || allWaitlistedUsers.size()+1 <= eventWaitlistCapacity){
-                            Intent intent = new Intent(this, EntrantJoinEventActivity.class);
-                            launchActivity(event, intent, results);
+                            Intent intent = new Intent(this, EntrantEventDetails.class);
+                            launchActivity(event, intent, results, eventData);
 
                         }else{
                             Toast.makeText(getApplicationContext(), "Cannot join, max waitlist capacity", Toast.LENGTH_SHORT).show();
@@ -185,9 +185,19 @@ public class qr_scanner extends AppCompatActivity {
         });
     }
 
-    private void launchActivity(String event, Intent intent, HashMap<String, Object> results){
+    private void launchActivity(String event, Intent intent, HashMap<String, Object> results, DocumentSnapshot eventData){
+
+        Event eventObject = new Event(eventData.getId());
+        eventObject.setEventName(eventData.getString("name"));
+        eventObject.setEventCloseDate(eventData.getDate("dateAndTime"));
+        eventObject.setPoster(eventData.getString("poster"));
+        eventObject.setEventDescription(eventData.getString("description"));
+        eventObject.setStatus("NA");
+
+
         Bundle bundle = new Bundle();
         results.put("eventID", event);
+        bundle.putSerializable("EVENT", eventObject);
         bundle.putSerializable("event", results);
         intent.putExtras(bundle);
         if (results.containsKey("location")) {
@@ -217,7 +227,6 @@ public class qr_scanner extends AppCompatActivity {
         if (requestCode == PERMISSION_REQUEST_CAMERA) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 initQRCodeScanner();
-                finish();
             } else {
                 Toast.makeText(this, "Camera permission is required", Toast.LENGTH_LONG).show();
                 finish();

@@ -100,6 +100,7 @@ public class EntrantEventDetails extends AppCompatActivity {
         });
     }
 
+    // Literally don't touch cuz this is holding on by a thread and I have no idea what's keeping it together
     private void fetchEventDetails() {
 
         // FIXME: SOMETHING IN HERE IS BROKEN
@@ -134,29 +135,30 @@ public class EntrantEventDetails extends AppCompatActivity {
         cancelButton = findViewById(R.id.cancel_button);
 
         String status = event.getStatus();
-//         Setup Text in proceed Button
-        if(status == null) {
-            proceedButton.setText("JOIN EVENT");
-        }
-        switch (status) {
-            case "attending":
-                proceedButton.setText("LEAVE EVENT");
-                break;
-            case "waitlisted":
-                proceedButton.setText("LEAVE WAITLIST");
-                break;
-            case "selected":
-                proceedButton.setText("ACCEPT INVITE");
-                // Set CancelButton to be wide enough to fit text
-                ViewGroup.LayoutParams params = cancelButton.getLayoutParams();
-                params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-                cancelButton.setLayoutParams(params);
-                cancelButton.setText("REJECT INVITE");
 
-                break;
+//         Setup Text in proceed Button
+        if(status.equals("NA")) {
+            proceedButton.setText("JOIN EVENT");
+        } else if (status.equals("attending")) {
+            proceedButton.setText("LEAVE EVENT");
+        } else if (status.equals("waitlisted")) {
+            proceedButton.setText("LEAVE WAITLIST");
+        } else if (status.equals("selected")) {
+            proceedButton.setText("ACCEPT INVITE");
+            // Set CancelButton to be wide enough to fit text
+            ViewGroup.LayoutParams params = cancelButton.getLayoutParams();
+            params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            cancelButton.setLayoutParams(params);
+            cancelButton.setText("REJECT INVITE");
         }
 
         proceedButton.setOnClickListener(v -> {
+            // If NA, then Join Event
+            if(status.equals("NA")) {
+                Log.d("button", "NA button clicked");
+                // Handle join event
+            }
+
             // If Attending, then Leave Event
             if(status.equals("attending")) {
                 Log.d("button", "attending button clicked");
