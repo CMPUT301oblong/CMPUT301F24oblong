@@ -67,19 +67,59 @@ public class AdminEventView extends AppCompatActivity {
             dialog.show();
         });
 
-
-
         deleteEventFacilityButton.setOnClickListener(v -> {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            // sync up current event ID with event ID from created to match the facility that created it
+
+            // Query created collection where the event is linked to the current event
             db.collection("created").whereEqualTo("event", current_event.getEventID()).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        // fetch facility ID
+                        // Fetch facility ID
                         String facilityID = document.getString("facility");
+
                         if (facilityID != null) {
-                            // delete facility ID in facilities that matches the current event ID in created
-                            db.collection("facilities").document(facilityID).delete();
+                            // Query all events linked to this facility in the "created" collection
+                            db.collection("created").whereEqualTo("facility", facilityID).get().addOnCompleteListener(task1 -> {
+                                if (task1.isSuccessful()) {
+                                    for (QueryDocumentSnapshot eventDoc : task1.getResult()) {
+                                        String eventID = eventDoc.getString("event");
+
+                                        if (eventID != null) {
+                                            // Delete the event in the events collection
+                                            db.collection("events").document(eventID).delete();
+                                        }
+                                    }
+
+                                    // delete the facility
+                                    db.collection("facilities").document(facilityID).delete().addOnSuccessListener(aVoid -> {
+                                        Log.d("AdminEventView", "Facility deleted: " + facilityID);
+
+                                        // query and delete from organizers collection
+                                        db.collection("organizers").whereEqualTo("facility", facilityID).get().addOnCompleteListener(task2 -> {
+
+                                            if (task2.isSuccessful()) {
+                                                for (QueryDocumentSnapshot organizerDoc : task2.getResult()) {
+                                                    // Delete the document in the organizers collection
+                                                    String userID = organizerDoc.getString("user");
+                                                    db.collection("organizers").document(organizerDoc.getId()).delete();
+
+                                                    if (userID != null) {
+                                                        db.collection("users").document(userID).update("type", "entrant");
+                                                    } else {
+                                                        Log.e("AdminEventView", "User ID is null");
+                                                    }
+
+                                                }
+                                            } else {
+                                                Log.e("AdminEventView", "Error querying organizers collection");
+                                            }
+                                        });
+                                    });
+
+                                } else {
+                                    Log.e("AdminEventView", "Error querying events for facility");
+                                }
+                            });
                         } else {
                             Log.d("AdminEventView", "Facility is null");
                         }
@@ -90,7 +130,6 @@ public class AdminEventView extends AppCompatActivity {
             });
         });
     }
-
 
     // Delete Event Dialog
     private AlertDialog createDialog() {
