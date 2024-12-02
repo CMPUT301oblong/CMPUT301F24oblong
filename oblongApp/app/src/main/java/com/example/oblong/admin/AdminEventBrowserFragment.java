@@ -88,13 +88,17 @@ public class AdminEventBrowserFragment extends Fragment {
                 if (querySnapshots != null) {
                     eventDataList.clear();
                     for (QueryDocumentSnapshot doc: querySnapshots) {
-                        String eventId = doc.getId();
-                        String eventName = doc.getString("name");
-                        Log.d("Firestore", String.format("event(%s, %s) fetched", eventId, eventName));
-                        Event event = new Event(eventId);
-                        event.setEventName(eventName);
-                        event.setEventCloseDate(doc.getDate("dateAndTime"));;
-                        eventDataList.add(event);
+                        try {
+                            String eventId = doc.getId();
+                            String eventName = doc.getString("name");
+                            Log.d("Firestore", String.format("event(%s, %s) fetched", eventId, eventName));
+                            Event event = new Event(eventId);
+                            event.setEventName(eventName);
+                            event.setEventCloseDate(doc.getDate("dateAndTime"));
+                            eventDataList.add(event);
+                        } catch (Exception e) {
+                            ;
+                        }
                     }
                     adapter.notifyDataSetChanged();
                 }
