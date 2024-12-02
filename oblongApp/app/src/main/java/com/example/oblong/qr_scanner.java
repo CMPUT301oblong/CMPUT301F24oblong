@@ -188,7 +188,7 @@ public class qr_scanner extends AppCompatActivity {
                     datab.collection("participants").whereEqualTo("event", event).whereEqualTo("status", "waitlisted").get().addOnSuccessListener(task ->{
                         List allWaitlistedUsers = task.getDocuments();
                         if(eventWaitlistCapacity == null || allWaitlistedUsers.size()+1 <= eventWaitlistCapacity){
-                            Intent intent = new Intent(this, EntrantEventDetails.class);
+                            Intent intent = new Intent(this, EntrantJoinEventActivity.class);
                             Log.d("qr_Scanner_event_id", event);
                             launchActivity(event, intent, results, eventData);
 

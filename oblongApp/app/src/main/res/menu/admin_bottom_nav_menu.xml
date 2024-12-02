@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/admin_all_events_button"
         android:title="All events"
         android:icon="@drawable/admin_bottom_nav_events"
-        android:enabled="true" />
+        app:cnb_iconColor="@color/white"
+        app:cnb_backgroundColor="@color/accent"/>
     <item
         android:id="@+id/admin_all_images_button"
         android:title="All images"
         android:icon="@drawable/admin_bottom_nav_images"
-        android:enabled="true"/>
+        app:cnb_iconColor="@color/white"
+        app:cnb_backgroundColor="@color/accent"/>
     <item
         android:id="@+id/admin_all_entrants_button"
         android:title="All Entrants"
         android:icon="@drawable/admin_bottom_nav_entrants"
-        android:enabled="true"/>
+        app:cnb_iconColor="@color/white"
+        app:cnb_backgroundColor="@color/accent"/>
 </menu>
