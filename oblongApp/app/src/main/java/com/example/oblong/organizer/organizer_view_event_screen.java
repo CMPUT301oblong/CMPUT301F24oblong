@@ -6,7 +6,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,7 +39,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
+/**
+ * Activity class representing the screen displaying an organizer's event data.
+ *
+ * <p>This activity retrieves event information, using Firebase to fetch relevant data and populates views
+ * with this information for display. The user can choose to draw or cancel entrants, view waitlist, attending,
+ * and cancelled participants lists, add a poster, create a notification, or view a map of the locations of
+ * participants.</p>
+ */
 public class organizer_view_event_screen extends AppCompatActivity {
 
     private TextView eventNameDisplay;
@@ -59,7 +68,15 @@ public class organizer_view_event_screen extends AppCompatActivity {
     private final Database db = new Database();
     private FirebaseFirestore fdb;
 
-
+    /**
+     * Called when the activity is first created.
+     *
+     * <p>This method initializes the view components, retrieves the event data from Firebase,
+     * and sets up button listeners.</p>
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
+     *                           this Bundle contains the most recent data supplied by onSaveInstanceState.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,6 +189,16 @@ public class organizer_view_event_screen extends AppCompatActivity {
 
     }
 
+    /**
+     * {@code chooseParticipants} is called in {@link #onCreate(Bundle)}
+     * fetches data from the Firebase for the participant's data and their entrant data
+     *
+     * <p>This method randomly selects at most, eventCapacity participants and sets their status
+     * to "selected" and sends selected and non-selected participants a notification.
+     * String Arrays of the selected and non-selected participants are created,
+     * and the corresponding notifications are added to the database. The participant and their entrant
+     * document are updated with the new status and notification id.</p>
+     */
     private void chooseParticipants(String eventId){
         HashMap<String, Object> conditions = new HashMap<>();
         conditions.put("event", eventId);
@@ -201,6 +228,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
             String label2 = event.getEventName()+": Sorry! You weren't selected!";
             String content2 = "Unfortunately, you were not selected to attend our event. But don't fret! " +
                     "You may have a chance to be selected if someone declines their invitation!";
+            //Use set subtraction to get list of participants not selected
             Set<String> selectedSet = new HashSet<String>(selectedParticipants);
             Set<String> notSelectedSet = new HashSet<>(entrantPool);
             notSelectedSet.removeAll(selectedSet);
@@ -230,6 +258,14 @@ public class organizer_view_event_screen extends AppCompatActivity {
         });
 
     }
+    /**
+     * {@code cancelEntrants} is called in {@link #onCreate(Bundle)}
+     * fetches data from the Firebase for the participant's data and their entrant data
+     *
+     * <p>This method selects all participants whose status is "waitlisted" or "selected" and updates their
+     * status to "cancelled". A notification is created and added to the database, and a String Array of the
+     * cancelled entrants is created. The participants' entrant documents are updated with the notification id</p>
+     */
     private void cancelEntrants(String eventId) {
         List<String> cancelledList = new ArrayList<>();
 
@@ -264,6 +300,14 @@ public class organizer_view_event_screen extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initializes event data from the Intent.
+     *
+     * <p>This method retrieves the event object from the Intent's extras, and sets the event
+     * name, description, max capacity, poster, and QR Code in the corresponding Views.</p>
+     *
+     * @param intent The Intent containing the event data passed from the previous activity.
+     */
     private void initializeData(Intent intent){
         Bundle bundle = getIntent().getExtras();
         event = (Event) bundle.get("EVENT");
