@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * The {@code Notification} class handles the notifications that the organizer sends to users
- * Also retreives and stores the notification data within the Firebase using the evntID
+ * Also retrieves and stores the notification data within the Firebase using the notifID
  */
 
 public class Notification {
@@ -21,7 +21,7 @@ public class Notification {
     private String notifID;
 
     /**
-     * The {@code Notification} method retrieves notification data belonging to an notifID
+     * The {@code Notification} constructor retrieves notification data belonging to an notifID
      * @param notifID
      */
     public Notification(String notifID){
@@ -41,7 +41,7 @@ public class Notification {
     /**
      * The {@code setNotifInformation} method sets the notification data to the instance variables
      * in the Firebase
-     * @param data
+     * @param data HashMap object containing the notification data
      */
     private void setNotifInformation(HashMap<String, Object> data){
         this.eventID = (String) data.get("event");
@@ -70,14 +70,14 @@ public class Notification {
 
     /**
      * The {@code setLabel} method sets the label of the notification
-     * @param label
+     * @param label String containing text for the title of a notification
      */
     public void setLabel(String label) {
         this.label = label;
     }
 
     /**
-     * The {@code getContent} method returns the content of the notification
+     * The {@code getContent} method returns the content of a notification
      * @return
      */
     public String getContent() {
@@ -86,7 +86,7 @@ public class Notification {
 
     /**
      * The {@code setContent} method sets the content of the notification
-     * @param content
+     * @param content String containing text for the content of a notification
      */
     public void setContent(String content) {
         this.content = content;
@@ -100,7 +100,7 @@ public class Notification {
 
     /**
      * The {@code setTarget} method sets the target of the notification
-     * @param target
+     * @param target String containing the target status of a notification
      */
     public void setTarget(String target){ this.target = target; }
 
@@ -118,7 +118,7 @@ public class Notification {
 
     /**
      * The {@code setEventID} method sets the eventID of the notification
-     * @param eventID
+     * @param eventID String containing the eventID of the eevent associated with a notification
      */
     public void setEventID(String eventID){ this.eventID = eventID; }
 
@@ -132,7 +132,7 @@ public class Notification {
 
     /**
      * The {@code getTargetList} method sets the targetList of the notification
-     * @param targetList
+     * @param targetList ArrayList of entrantIDs
      */
     public void setTargetList(ArrayList<String> targetList) {
         this.targetList = targetList;

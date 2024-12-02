@@ -17,8 +17,19 @@ import com.example.oblong.R;
 import com.example.oblong.entrant.EntrantProfileScreenFragment;
 import com.example.oblong.inputValidator;
 
-
+/**
+ * Dialog fragment for adding a facility to a user profile.
+ * <p>
+ * This fragment allows the user to add their facility information, including
+ * name, email, and phone number.
+ * <p>
+ * Facility data is saved to the database when the user inputs valid data and adds the facility.
+ */
 public class AddNewFacilityDialog extends DialogFragment {
+    /**
+     * The {@code setListener} sets the AddFacilityDialog listener on the EntrantProfileScreenFragment
+     * @param entrantProfileScreenFragment
+     */
     public void setListener(EntrantProfileScreenFragment entrantProfileScreenFragment) {
         this.listener = entrantProfileScreenFragment;
     }
@@ -34,6 +45,13 @@ public class AddNewFacilityDialog extends DialogFragment {
         super.onAttach(context);
     }
 
+    /**
+     * {@code onCreateDialog} is called to have the fragment instantiate its user AddFacilityDialog fragment.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return dialog to be hosted in the fragment
+     */
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
