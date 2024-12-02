@@ -45,7 +45,7 @@ public class AdminEventView extends AppCompatActivity {
         Button deleteQRCodeButton = findViewById(R.id.create_event_button2);
         Button deleteEventFacilityButton = findViewById(R.id.event_creation_cancel_button);
 
-        // TODO: set up Qr Code Deletion
+
         // TODO: set up Event Facility Deletion
 
         Event event = (Event) getIntent().getSerializableExtra("event");
@@ -57,6 +57,11 @@ public class AdminEventView extends AppCompatActivity {
 
         deleteButton.setOnClickListener(v -> {
             AlertDialog dialog = createDialog();
+            dialog.show();
+        });
+
+        deleteQRCodeButton.setOnClickListener(v -> {
+            AlertDialog dialog = createDialogQRCode();
             dialog.show();
         });
 
@@ -78,6 +83,29 @@ public class AdminEventView extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 Database db = new Database();
                 db.deleteEvent(AdminEventView.this, current_event);
+                finish();
+            }
+        });
+        builder.setNeutralButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d("AdminEventView", "Event not deleted");
+                Toast.makeText(AdminEventView.this, "Deletion cancelled", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        return builder.create();
+    }
+    private AlertDialog createDialogQRCode() {
+        Log.d("AdminEventView", "createDialog called");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure you want to deactivate this QR code?\n" +
+                "This will make it so that scanning the QR code will no longer take the user to the event page");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Database db = new Database();
+                db.deleteQR(AdminEventView.this, current_event);
                 finish();
             }
         });
