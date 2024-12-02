@@ -132,11 +132,11 @@ public class OrganizerNavigationTest {
         onView(withId(R.id.facility_edit_button)).check(matches(isDisplayed()));
 
         // Verify changes are displayed
-        onView(withId(R.id.facility_name_textView))
+        onView(withId(R.id.facility_name))
                 .check(matches(withText("facilityTest")));
-        onView(withId(R.id.facility_phone_textView))
+        onView(withId(R.id.facility_phoneno))
                 .check(matches(withText("7801111111")));
-        onView(withId(R.id.facility_email_textView))
+        onView(withId(R.id.facility_email))
                 .check(matches(withText("testfacility@gmail.com")));
     }
 

@@ -29,7 +29,7 @@ public class AdminNavigationTest {
         onView(withId(R.id.admin_all_entrants_button)).perform(click());
 
         //see if AdminProfileBrowserActivity is launched
-        onView(withId(R.id.admin_entrant_browser_title)).check(matches(isDisplayed()));
+        onView(withId(R.id.admin_event_browser_title)).check(matches(isDisplayed()));
     }
 
     @Test
