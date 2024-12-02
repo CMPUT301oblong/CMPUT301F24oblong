@@ -42,6 +42,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Fragment class for displaying user profile data.
+ *
+ * <p>This fragment retrieves user profile information and received notifications,
+ * using Firebase to fetch relevant data. It then populates views with this information
+ * for display, and builds and displays Android System Notifications.</p>
+ */
 public class EntrantProfileScreenFragment extends Fragment implements AddNewFacilityDialog.AddFacilityDialogListener {
 
     private String user_id;
@@ -132,9 +139,10 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
     }
 
     /**
-     * {@code onViewCreated} is called after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
+     * {@code fetchUserProfileData} is called in {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
      * fetches data from the Firebase for the users profile data
      * fetches data from the Firebase to build notifications
+     * builds Android System Notifications using NotificationManager and NotificationCompat
      */
     private void fetchUserProfileData() {
         db.getCurrentUser(userId -> {
@@ -189,7 +197,6 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
                                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                                         .setSmallIcon(R.mipmap.ic_launcher_round)
                                         .setContentTitle(title)
-                                        //.setContentText(content)
                                         .setStyle(new NotificationCompat.BigTextStyle()
                                                 .bigText(content))
                                         .setPriority(NotificationCompat.PRIORITY_MAX)

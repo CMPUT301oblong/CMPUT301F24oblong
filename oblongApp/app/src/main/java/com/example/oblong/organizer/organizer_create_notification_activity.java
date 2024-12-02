@@ -29,6 +29,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Activity class for creating custom notifications to send to certain participants associated with an event.
+ *
+ * <p>This activity retrieves a list of participants to an event where their status is marked as "waitlisted",
+ * "selected", "attending", or "cancelled", using Firebase to fetch relevant data. When the user clicks to send the
+ * notification, the text input is validated, a participant list is populated, a notification is added to the
+ * database, and the notification id is added to each participant's entrant data in the database</p>
+ */
 public class organizer_create_notification_activity extends AppCompatActivity {
     private String eventID;
     private Event eventData;
@@ -38,6 +46,16 @@ public class organizer_create_notification_activity extends AppCompatActivity {
     private CollectionReference notifications = FirebaseFirestore.getInstance().collection("notifications");
     private Database db = new Database();
 
+    /**
+     * Inflates the activity's layout.
+     *
+     *<p>This method {@code onCreate} initializes Firebase Firestore references and sets up the targetSpinnerAdapter
+     * for displaying participant status options. It calls methods for fetching the eventID and participant data
+     * and sets button listeners. It takes user input and stores the notification in Firebase. The notification id
+     * is sent to each participant notificationsList</p>
+     *
+     * @param savedInstanceState Bundle containing the fragment's previously saved state, if any.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +133,9 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         });
     }
 
+    /**
+     * {@code getEventID} Fetches eventID from bundle, sent from organizer view event screen
+     */
     //gets event id from bundle
     private void getEventID(){
         Bundle bundle = getIntent().getExtras();
@@ -123,6 +144,14 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         eventData = new Event(eventID);
     }
 
+    /**
+     * {@code getParticipants} Fetches participants from Firestore where the participants' event field is the same as
+     * the current eventID and if the entrant has notifications enabled.
+     *
+     * <p>This method queries the "participants" collection to find documents where the
+     * event field matches the current event ID and then fetches the corresponding entrant data. If the entrant
+     * has notifications enabled, then the participant document is added to a list.</p>
+     */
     //gets participants to event from Firebase
     private void getParticipants(){
         fdb.collection("participants").whereEqualTo("event", eventID).get()
@@ -146,6 +175,9 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         });
     }
 
+    /**
+     * {@code setParticipantList} Fetches the entrant name and status from each participant document and adds them to a list
+     */
     //adds participant names with status: "target" to participantList
     private void setParticipantList(String target){
         for (Map<String, Object> participant : participantDocs){

@@ -25,6 +25,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Activity class for displaying the attendees to an event.
+ *
+ * <p>This activity retrieves a list of participants to an event where their status is marked as selected
+ * or attending, using Firebase to fetch relevant data. It then populates a list view
+ * with these participants for display.</p>
+ */
 public class EventViewAttendees extends AppCompatActivity{
     private String eventID;
     private TextView eventName;
@@ -37,6 +44,15 @@ public class EventViewAttendees extends AppCompatActivity{
     private String combined_name;
     private Database myDb;
 
+    /**
+     * Inflates the activity's layout.
+     *
+     * <p>This method initializes Firebase Firestore references and sets up
+     * the ListView adapter for displaying attendees. It calls method for fetching participant data
+     * and sets button listener.</p>
+     *
+     * @param savedInstanceState Bundle containing the fragment's previously saved state, if any.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +90,16 @@ public class EventViewAttendees extends AppCompatActivity{
             }
         });
     }
+
+    /**
+     * Fetches participants from Firestore where the participants' event field is the same as the current eventID and
+     * their status is "selected" or "attending".
+     *
+     * <p>This method queries the "participants" collection to find documents where the
+     * event field matches the current event ID and the status is "attending" or "selected". For each
+     * participant document, it fetches the corresponding user and adds the participants name and status
+     * to the list.</p>
+     */
     private void fetchAttendees() {
         // check participants are a part of event and their status is selected or accepted
         db.collection("participants").whereEqualTo("event", eventID).whereIn("status", Arrays.asList("selected", "attending")).get().addOnCompleteListener(task -> {
