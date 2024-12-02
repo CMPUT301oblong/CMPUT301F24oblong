@@ -82,6 +82,7 @@ public class EventViewAttendees extends AppCompatActivity{
                     String entrantId = document.getString("entrant");
                     String status = document.getString("status");
 
+                    
                     myDb.getUser(entrantId, participantResult->{
                         if (participantResult != null) {
                             String entrantName = (String) participantResult.get("name");

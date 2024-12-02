@@ -97,6 +97,7 @@ public class EventWaitingList extends AppCompatActivity {
                                 waitListedEntrants.add(entrantName);
                                 waitListAdapter.notifyDataSetChanged();
 
+
                             }
                         }else{
                             Log.d("a", "AWFAWFAWFAWFAWFA: USER does NOT EXIST");
