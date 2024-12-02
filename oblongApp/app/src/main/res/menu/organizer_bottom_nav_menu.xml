@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:title="Add Event"
         android:icon="@android:drawable/ic_menu_add"
-        android:id="@+id/addEvent"/>
+        android:id="@+id/addEvent"
+        app:cnb_iconColor="@color/white"
+        app:cnb_backgroundColor="@color/accent"/>
     <item android:title="My Events"
         android:icon="@android:drawable/ic_menu_agenda"
-        android:id="@+id/myEvents"/>
+        android:id="@+id/myEvents"
+        app:cnb_iconColor="@color/white"
+        app:cnb_backgroundColor="@color/accent"/>
     <item android:title="Profile"
         android:icon="@drawable/baseline_person_24"
-        android:id="@+id/profile"/>
+        android:id="@+id/profile"
+        app:cnb_iconColor="@color/white"
+        app:cnb_backgroundColor="@color/accent"/>
 </menu>

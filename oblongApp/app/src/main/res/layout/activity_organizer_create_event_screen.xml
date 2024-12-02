@@ -1,26 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    tools:context=".organizer.organizer_create_event_fragment"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical"
-    android:padding="30dp">
+    android:padding="30dp"
+    tools:context=".organizer.organizer_create_event_fragment">
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/new_event_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:text="New Event:"
+                android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -28,90 +34,212 @@
                 android:id="@+id/event_name_entry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/edit_text_background"
                 android:ems="10"
-                android:hint="ENTER EVENT NAME"
-                android:inputType="text" />
-
-            <TextView
-                android:id="@+id/event_description_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="Event Description" />
+                android:fontFamily="@font/kalam"
+                android:gravity="center_vertical"
+                android:hint="Event Name"
+                android:inputType="text"
+                android:paddingStart="15dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/secondary_text" />
 
             <EditText
-                android:id="@+id/event_description_entry"
+                android:id="@+id/new_event_description_entry"
                 android:layout_width="match_parent"
-                android:layout_height="184dp"
+                android:layout_height="128dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/edit_text_background"
                 android:ems="10"
-                android:gravity="start|top"
-                android:hint="Enter your description..."
-                android:inputType="textMultiLine" />
+                android:fontFamily="@font/kalam"
+                android:gravity="center_vertical"
+                android:hint="Event Description"
+                android:inputType="text"
+                android:paddingStart="15dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/secondary_text" />
 
-            <Button
-                android:id="@+id/upload_button"
-                style="@style/Widget.Material3.Button.Icon"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Click to upload a poster"
-                app:icon="@drawable/baseline_arrow_circle_up_24" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/max_capacity_textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Max Draw Capacity" />
+                <ImageView
+                    android:id="@+id/new_event_display_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="52dp"
+                    android:layout_weight="1"
+                    tools:src="@drawable/image_placeholder" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/upload_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="12dp"
+                    android:text="Upload Image"
+                    android:textColor="@color/background"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/accent"
+                    app:iconGravity="textEnd"
+                    app:iconTint="@color/background" />
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/capacity_dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Max Draw Capacity"
-                android:inputType="number" />
-
-            <TextView
-                android:id="@+id/max_capacity_textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Max Capacity (optional)" />
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/edit_text_background"
+                android:ems="10"
+                android:fontFamily="@font/kalam"
+                android:gravity="center_vertical"
+                android:hint="Draw Amount (required)"
+                android:inputType="text"
+                android:paddingStart="15dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/secondary_text" />
 
             <EditText
                 android:id="@+id/waitlist_capacity_dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Max Waitlist Capacity (Optional)"
-                android:inputType="number" />
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/edit_text_background"
+                android:ems="10"
+                android:fontFamily="@font/kalam"
+                android:gravity="center_vertical"
+                android:hint="Waitlist Capacity (Optional)"
+                android:inputType="text"
+                android:paddingStart="15dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="15dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/secondary_text" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#434040"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/new_event_choose_date_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="12dp"
+                    android:text="Pick a Deadline"
+                    android:textColor="@color/background"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/accent"
+                    app:iconGravity="textEnd"
+                    app:iconTint="@color/background" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Users can enter up until:"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/new_event_display_deadline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Sample Text"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+            </LinearLayout>
 
             <Switch
                 android:id="@+id/loaction_required"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Record entrant signup location" />
+                android:fontFamily="@font/roboto"
+                android:text="Record entrant signup location"
+                android:textColor="@color/white" />
 
             <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/create_event_button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_weight="1"
-                android:text="Create Event" />
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/event_creation_cancel_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_weight="1"
-                android:text="Cancel" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/create_event_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="12dp"
+                    android:text="Create Event"
+                    android:textColor="@color/background"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/accent"
+                    app:icon="@drawable/baseline_arrow_right_24"
+                    app:iconGravity="textEnd"
+                    app:iconTint="@color/background" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/event_creation_cancel_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="center"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="12dp"
+                    android:paddingRight="16dp"
+                    android:paddingBottom="12dp"
+                    android:text="Cancel"
+                    android:textColor="@color/background"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/accent"
+                    app:iconGravity="textEnd"
+                    app:iconTint="@color/background" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

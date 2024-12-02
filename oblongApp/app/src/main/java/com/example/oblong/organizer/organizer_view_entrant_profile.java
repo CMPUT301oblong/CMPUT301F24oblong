@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.oblong.R;
 
 /**
- * Activity class for viewing an entrant's profile.
+ * Activity class for displaying an entrant's profile data.
  */
 public class organizer_view_entrant_profile extends AppCompatActivity {
 
