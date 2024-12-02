@@ -49,28 +49,31 @@ public class Event implements Serializable {
 
         eventDoc.get().addOnCompleteListener(task -> {
             DocumentSnapshot data = task.getResult();
-            this.eventCapacity = (Long) data.getLong("capacity");
-            Log.d("event cap", Long.toString(this.eventCapacity));
+            try {
+                this.eventCapacity = (Long) data.getLong("capacity");
 
-            this.eventName = (String) data.getString("name");
-            Log.d("event name", this.eventName);
+                this.eventName = (String) data.getString("name");
 
-            if(data.contains("waitlistCapacity")){
-                this.eventWaitlistCapacity = data.getLong("waitlistCapacity");
-            }else {
-                this.eventWaitlistCapacity = null;
+
+                if (data.contains("waitlistCapacity")) {
+                    this.eventWaitlistCapacity = data.getLong("waitlistCapacity");
+                } else {
+                    this.eventWaitlistCapacity = null;
+                }
+
+                Timestamp timestamp = (Timestamp) data.getTimestamp("dateAndTime");
+                Date date = timestamp.toDate();
+                this.eventCloseDate = date;
+
+                //this.eventCloseDate =  newEvent.get("dateAndTime").toDate();
+                this.eventDescription = (String) data.get("description");
+
+                setPoster(data.getString("poster"));
+
+                this.eventID = eventID;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
-
-            Timestamp timestamp = (Timestamp) data.getTimestamp("dateAndTime");
-            Date date = timestamp.toDate();
-            this.eventCloseDate = date;
-
-            //this.eventCloseDate =  newEvent.get("dateAndTime").toDate();
-            this.eventDescription = (String) data.get("description");
-
-            setPoster(data.getString("poster"));
-
-            this.eventID = eventID;
         });
 
 
