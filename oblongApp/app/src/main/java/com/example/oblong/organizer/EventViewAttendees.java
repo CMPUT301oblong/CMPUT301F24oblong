@@ -47,7 +47,7 @@ public class EventViewAttendees extends AppCompatActivity{
     /**
      * Inflates the activity's layout.
      *
-     *<p>This method initializes Firebase Firestore references and sets up
+     * <p>This method initializes Firebase Firestore references and sets up
      * the ListView adapter for displaying attendees. It calls method for fetching participant data
      * and sets button listener.</p>
      *

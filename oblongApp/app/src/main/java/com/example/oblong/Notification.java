@@ -22,7 +22,7 @@ public class Notification {
 
     /**
      * The {@code Notification} constructor retrieves notification data belonging to an notifID
-     * @param notifID
+     * @param notifID String containing the id of a notification
      */
     public Notification(String notifID){
         this.notifID = notifID;
