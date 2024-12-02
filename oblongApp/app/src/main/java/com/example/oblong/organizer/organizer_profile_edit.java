@@ -99,7 +99,7 @@ public class organizer_profile_edit extends AppCompatActivity {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                             if (imageUtils.isImageTooLarge(bitmap)){
                                 Toast.makeText(this, "Image is too large", Toast.LENGTH_LONG).show();
-                                bitmap = null;;
+
                             } else {
                                 // Update ImageView and set flags
                                 profilePic.setImageBitmap(bitmap);

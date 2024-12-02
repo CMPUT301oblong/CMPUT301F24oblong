@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -302,7 +303,20 @@ public class organizer_view_event_screen extends AppCompatActivity {
 
                     try {
                         Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageUri);
+
+
+                        String imagePath = imageUtils.getRealPathFromURI(this, imageUri);
+
+                        // Fix orientation using `handleImageRotation`
+                        Bitmap rotatedBitmap = imageUtils.handleImageRotation(imagePath, imageBitmap);
+                        if (imageUtils.isImageTooLarge(rotatedBitmap)){
+                            Toast.makeText(requireContext(), "Image is too large", Toast.LENGTH_LONG).show();
+
+                        } else {
+                            imageBitmap = rotatedBitmap;
+                        }
                         String imageBase64 = imageUtils.bitmapToBase64(imageBitmap);
+
                         event.setPoster(imageBase64);
 
                         //Update database
