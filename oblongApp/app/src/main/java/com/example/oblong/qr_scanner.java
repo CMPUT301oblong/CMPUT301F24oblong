@@ -1,9 +1,11 @@
 package com.example.oblong;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -14,13 +16,20 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.oblong.entrant.EntrantBaseActivity;
 import com.example.oblong.entrant.EntrantEventDescriptionActivity;
 import com.example.oblong.entrant.EntrantJoinEventActivity;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -36,6 +45,8 @@ public class qr_scanner extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_CAMERA = 1;
     private static final Database db = new Database();
+
+
 
     /**
      * Initializes the Firebase instances and checks for camera permissions.
@@ -107,12 +118,17 @@ public class qr_scanner extends AppCompatActivity {
             String participant = userId + event;
             // must be atomic since multiple "threads" could access at same time
             AtomicBoolean isAttending = new AtomicBoolean(false);
-            db.getParticipants(participant, results -> {
-                if (results != null && results.get("status") == "attending"){
-                    isAttending.set(true);
+            FirebaseFirestore datab = FirebaseFirestore.getInstance();
+            datab.collection("participants").whereEqualTo("event", event).whereEqualTo("entrant", userId).get().addOnSuccessListener(task ->{
+                List<DocumentSnapshot> results = task.getDocuments();
+                if (!results.isEmpty()) {
+                    if (Objects.equals(results.get(0).getString("status"), "attending") || Objects.equals(results.get(0).getString("status"), "waitlisted") || Objects.equals(results.get(0).getString("status"), "selected")) {
+                        isAttending.set(true);
+                    }
                 }
+
+                retrieveEventDetails(event, isAttending.get());
             });
-            retrieveEventDetails(event, isAttending.get());
         });
 
     }
@@ -127,28 +143,64 @@ public class qr_scanner extends AppCompatActivity {
     private void retrieveEventDetails(String event, boolean isAssociated) {
 
         db.getEvent(event, results -> {
-            Intent intent;
-            if (isAssociated){
-                intent = new Intent(this, EntrantEventDescriptionActivity.class);
-            }else {
-                intent = new Intent(this, EntrantJoinEventActivity.class);
-            }
-            Bundle bundle = new Bundle();
-            results.put("eventID", event);
-            bundle.putSerializable("event", results);
-            intent.putExtras(bundle);
-            if (results.containsKey("location")) {
-                GeoPoint geoPoint = (GeoPoint) results.get("location");
-                if (geoPoint != null) {
-                    HashMap<String, Double> locationMap = new HashMap<>();
-                    locationMap.put("latitude", geoPoint.getLatitude());
-                    locationMap.put("longitude", geoPoint.getLongitude());
-                    results.put("location", locationMap);  // Replace GeoPoint with HashMap
-                }
-            }
+            if (!isAssociated){
+                //Check to see if the event hasn't met the waitlist capacity
+                FirebaseFirestore datab = FirebaseFirestore.getInstance();
+                datab.collection("events").document(event).get().addOnSuccessListener(eventData->{
+                    Long eventWaitlistCapacity;
+                    if(eventData.contains("waitlistCapacity")){
+                        eventWaitlistCapacity = eventData.getLong("waitlistCapacity");
+                    }else{
+                        eventWaitlistCapacity = null;
+                    }
+                    datab.collection("participants").whereEqualTo("event", event).whereEqualTo("status", "waitlisted").get().addOnSuccessListener(task ->{
+                        List allWaitlistedUsers = task.getDocuments();
+                        if(eventWaitlistCapacity == null || allWaitlistedUsers.size()+1 <= eventWaitlistCapacity){
+                            Intent intent = new Intent(this, EntrantJoinEventActivity.class);
+                            launchActivity(event, intent, results);
 
-            startActivity(intent);
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Cannot join, max waitlist capacity", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    });
+                });
+
+
+            }else{
+                Intent intent = new Intent(this, EntrantEventDescriptionActivity.class);
+                Event eventObject = new Event(event);
+                eventObject.setEventName((String)results.get("name"));
+                eventObject.setEventID(event);
+                eventObject.setPoster((String)results.get("poster"));
+                eventObject.setEventDescription((String)results.get("description"));
+                Timestamp eventDate = (Timestamp) results.get("dateAndTime");
+                eventObject.setEventCloseDate(eventDate.toDate());
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("EVENT", eventObject);
+                intent.putExtras(bundle);
+
+                startActivity(intent);
+            }
         });
+    }
+
+    private void launchActivity(String event, Intent intent, HashMap<String, Object> results){
+        Bundle bundle = new Bundle();
+        results.put("eventID", event);
+        bundle.putSerializable("event", results);
+        intent.putExtras(bundle);
+        if (results.containsKey("location")) {
+            GeoPoint geoPoint = (GeoPoint) results.get("location");
+            if (geoPoint != null) {
+                HashMap<String, Double> locationMap = new HashMap<>();
+                locationMap.put("latitude", geoPoint.getLatitude());
+                locationMap.put("longitude", geoPoint.getLongitude());
+                results.put("location", locationMap);  // Replace GeoPoint with HashMap
+            }
+        }
+
+        startActivity(intent);
     }
 
     /**

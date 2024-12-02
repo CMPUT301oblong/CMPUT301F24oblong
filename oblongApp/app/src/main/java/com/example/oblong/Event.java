@@ -25,17 +25,9 @@ public class Event implements Serializable {
     private String eventDescription;
     private Date eventCloseDate;
     private Long eventCapacity;
+    private Long eventWaitlistCapacity;
     private String poster;
     private String attendingStatus;
-
-
-    /*public Event(String eventID, String eventName, String eventDescription, Date eventCloseDate, Long eventCapacity ) {
-        this.eventID = eventID;
-        this.eventName = eventName;
-        this.eventDescription = eventDescription;
-        this.eventCloseDate = eventCloseDate;
-        this.eventCapacity = eventCapacity;
-    }*/
 
     /**
      * The {@code Event} method retrieves an event data from Firebase
@@ -48,36 +40,32 @@ public class Event implements Serializable {
 
         eventDoc.get().addOnCompleteListener(task -> {
             DocumentSnapshot data = task.getResult();
-            this.eventCapacity = (Long) data.getLong("capacity");
-            Log.d("event cap", Long.toString(this.eventCapacity));
+            try {
+                this.eventCapacity = (Long) data.getLong("capacity");
 
-            this.eventName = (String) data.getString("name");
-            Log.d("event name", this.eventName);
+                this.eventName = (String) data.getString("name");
 
-            Timestamp timestamp = (Timestamp) data.getTimestamp("dateAndTime");
-            Date date = timestamp.toDate();
-            this.eventCloseDate = date;
 
-            //this.eventCloseDate =  newEvent.get("dateAndTime").toDate();
-            this.eventDescription = (String) data.get("description");
+                if (data.contains("waitlistCapacity")) {
+                    this.eventWaitlistCapacity = data.getLong("waitlistCapacity");
+                } else {
+                    this.eventWaitlistCapacity = null;
+                }
 
-            setPoster(data.getString("poster"));
+                Timestamp timestamp = (Timestamp) data.getTimestamp("dateAndTime");
+                Date date = timestamp.toDate();
+                this.eventCloseDate = date;
 
-            this.eventID = eventID;
+                //this.eventCloseDate =  newEvent.get("dateAndTime").toDate();
+                this.eventDescription = (String) data.get("description");
+
+                setPoster(data.getString("poster"));
+
+                this.eventID = eventID;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         });
-
-
-
-        /*db.getEvent(eventID,data -> {
-            if(data!=null) {
-                Log.d("event name", (String) data.get("name"));
-                setEventInformation(data);
-            }
-            else{
-                Log.d("event", "event not found");
-            }
-        });*/
-
     }
 
 

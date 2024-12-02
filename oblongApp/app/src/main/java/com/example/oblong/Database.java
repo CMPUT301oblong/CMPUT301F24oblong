@@ -17,10 +17,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.installations.FirebaseInstallations;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * {@code Database} This class handles sending and fetching data from the Firebase
@@ -328,24 +330,20 @@ public class Database {
      * @param event
      * @param text
      * @param title
+     * @param target
+     * @param targetList
      */
     public void addNotification(String id, String event, String text, String title, String target,
-                                String targetList){
-        HashMap<String, String> notification = new HashMap<>();
+                                String[] targetList){
+        HashMap<String, Object> notification = new HashMap<>();
         // create a new notification and store the id
         notification.put("event", event);
         notification.put("text", text);
         notification.put("title", title);
         notification.put("target", target);
-        notification.put("target list", targetList);
-        if(id == null){
-            notifications.add(notification).addOnSuccessListener(aVoid -> Log.d("database", "Notification added successfully"))
-                    .addOnFailureListener(e -> Log.w("database", "Error adding notification", e));
-        }else{
-            notifications.document(id).set(notification).addOnSuccessListener(aVoid -> Log.d("database", "Notification added successfully"))
-                    .addOnFailureListener(e -> Log.w("database", "Error adding notification", e));
-        }
-
+        notification.put("target list", Arrays.asList(targetList));
+        notifications.document(id).set(notification).addOnSuccessListener(aVoid -> Log.d("database", "Notification added successfully"))
+                .addOnFailureListener(e -> Log.w("database", "Error adding notification", e));
     }
 
     /**
@@ -413,8 +411,9 @@ public class Database {
      * @param description
      * @param location
      * @param poster
+     * @param qrID
      */
-    public void addEvent(String id, String capacity, String dateAndTime, String description, GeoPoint location, String poster){
+    public void addEvent(String id, String capacity, String dateAndTime, String description, GeoPoint location, String poster, String qrID){
         HashMap<String, Object> event = new HashMap<>();
         // create a new event and store at the id
         event.put("capacity", capacity);
@@ -422,6 +421,7 @@ public class Database {
         event.put("description", description);
         event.put("location", location);
         event.put("poster", poster);
+        event.put("qrID", qrID);
         events.document(id).set(event).addOnSuccessListener(aVoid -> Log.d("database", "User added successfully"))
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
@@ -514,4 +514,14 @@ public class Database {
             }
         });
     }
+
+    public void deleteQR(Context context, Event event){
+        String newUUID = UUID.randomUUID().toString();
+        // Update the event document with the new qrID
+        db.collection("events").document(event.getEventID())
+                .update("qrID", newUUID)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "qrID updated successfully to: " + newUUID))
+                .addOnFailureListener(e -> Log.e("Firestore", "Failed to update qrID", e));
+    }
 }
+

@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,7 @@ public class OrganizerNotificationTest {
     public void testAddNotification() throws InterruptedException {
         String id = "ONTtestnotification";
         db.addNotification(id, "OrganizerNotificationTestEvent", "Organizer Notification Test event",
-                "ONT test", "waitlisted", "OrganizerNotificationTestEntrant1");
+                "ONT test", "waitlisted", new String[]{"OrganizerNotificationTestEntrant1"});
         TimeUnit.SECONDS.sleep(5);
         db.getNotification(id, notif -> {
             assertEquals("ONT test", notif.get("title"));
@@ -170,9 +171,9 @@ public class OrganizerNotificationTest {
     //test sending notification to waitlisted entrants
     @Test
     public void testSendNotificationWaitlisted() throws InterruptedException {
-        String id = "ONTTestNotificationWaitlisted";
+        String id = "ONTTestNotificationWaitlisted2";
         db.addNotification(id, "OrganizerNotificationTestEvent", "Organizer Notification Test event",
-                "ONT test", "waitlisted", "");
+                "ONT test", "waitlisted", new String[]{});
         TimeUnit.SECONDS.sleep(5);
         fdb.collection("participants").whereEqualTo("event", "OrganizerNotificationTestEvent")
                 .whereEqualTo("status", "waitlisted").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -182,7 +183,7 @@ public class OrganizerNotificationTest {
                         for(QueryDocumentSnapshot doc: value){
                             if(doc.get("entrant") != null){
                                 Map<String, Object> data = new HashMap<>();
-                                data.put("target list", doc.get("entrant")+", ");
+                                data.put("target list", Arrays.asList(new String[]{(String)doc.get("entrant")}));
                                 fdb.collection("notifications").document(id)
                                         .set(data, SetOptions.merge());
                             }
@@ -191,7 +192,7 @@ public class OrganizerNotificationTest {
                 });
         TimeUnit.SECONDS.sleep(3);
         db.getNotification(id, n -> {
-            assertEquals("OrganizerNotificationTestEntrant1, ", n.get("target list"));
+            assertEquals(Arrays.asList("OrganizerNotificationTestEntrant1"), n.get("target list"));
         });
         TimeUnit.SECONDS.sleep(3);
     }
@@ -199,9 +200,9 @@ public class OrganizerNotificationTest {
     //test sending notification to selected entrants
     @Test
     public void testSendNotificationSelected() throws InterruptedException {
-        String id = "ONTTestNotificationSelected";
+        String id = "ONTTestNotificationSelected2";
         db.addNotification(id, "OrganizerNotificationTestEvent", "Organizer Notification Test event",
-                "ONT test", "selected", "");
+                "ONT test", "selected", new String[]{});
         TimeUnit.SECONDS.sleep(5);
         fdb.collection("participants").whereEqualTo("event", "OrganizerNotificationTestEvent")
                 .whereEqualTo("status", "selected").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -211,7 +212,7 @@ public class OrganizerNotificationTest {
                         for(QueryDocumentSnapshot doc: value){
                             if(doc.get("entrant") != null){
                                 Map<String, Object> data = new HashMap<>();
-                                data.put("target list", doc.get("entrant")+", ");
+                                data.put("target list", Arrays.asList(new String[]{(String)doc.get("entrant")}));
                                 fdb.collection("notifications").document(id)
                                         .set(data, SetOptions.merge());
                             }
@@ -220,7 +221,7 @@ public class OrganizerNotificationTest {
                 });
         TimeUnit.SECONDS.sleep(5);
         db.getNotification(id, n -> {
-            assertEquals("OrganizerNotificationTestEntrant2, ", n.get("target list"));
+            assertEquals(Arrays.asList("OrganizerNotificationTestEntrant2"), n.get("target list"));
         });
         TimeUnit.SECONDS.sleep(3);
     }
@@ -228,9 +229,9 @@ public class OrganizerNotificationTest {
     //tests sending notifications to cancelled entrants
     @Test
     public void testSendNotificationCancelled() throws InterruptedException {
-        String id = "ONTTestNotificationCancelled";
+        String id = "ONTTestNotificationCancelled2";
         db.addNotification(id, "OrganizerNotificationTestEvent", "Organizer Notification Test event",
-                "ONT test", "cancelled", "");
+                "ONT test", "cancelled", new String[]{});
         TimeUnit.SECONDS.sleep(5);
         fdb.collection("participants").whereEqualTo("event", "OrganizerNotificationTestEvent")
                 .whereEqualTo("status", "cancelled").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -240,7 +241,7 @@ public class OrganizerNotificationTest {
                         for(QueryDocumentSnapshot doc: value){
                             if(doc.get("entrant") != null){
                                 Map<String, Object> data = new HashMap<>();
-                                data.put("target list", doc.get("entrant")+", ");
+                                data.put("target list", Arrays.asList(new String[]{(String)doc.get("entrant")}));
                                 fdb.collection("notifications").document(id)
                                         .set(data, SetOptions.merge());
                             }
@@ -249,7 +250,7 @@ public class OrganizerNotificationTest {
                 });
         TimeUnit.SECONDS.sleep(3);
         db.getNotification(id, n -> {
-            assertEquals("OrganizerNotificationTestEntrant4, ", n.get("target list"));
+            assertEquals(Arrays.asList("OrganizerNotificationTestEntrant4"), n.get("target list"));
         });
         TimeUnit.SECONDS.sleep(3);
     }
@@ -257,9 +258,9 @@ public class OrganizerNotificationTest {
     //tests sending notifications to accepted entrants
     @Test
     public void testSendNotificationAccepted() throws InterruptedException {
-        String id = "ONTTestNotificationAccepted";
+        String id = "ONTTestNotificationAccepted2";
         db.addNotification(id, "OrganizerNotificationTestEvent", "Organizer Notification Test event",
-                "ONT test", "accepted", "");
+                "ONT test", "accepted", new String[] {});
         TimeUnit.SECONDS.sleep(5);
         fdb.collection("participants").whereEqualTo("event", "OrganizerNotificationTestEvent")
                 .whereEqualTo("status", "accepted").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -269,7 +270,7 @@ public class OrganizerNotificationTest {
                         for(QueryDocumentSnapshot doc: value){
                             if(doc.get("entrant") != null){
                                 Map<String, Object> data = new HashMap<>();
-                                data.put("target list", doc.get("entrant")+", ");
+                                data.put("target list", Arrays.asList(new String[]{(String) doc.get("entrant")}));
                                 fdb.collection("notifications").document(id)
                                         .set(data, SetOptions.merge());
                             }
@@ -278,7 +279,7 @@ public class OrganizerNotificationTest {
                 });
         TimeUnit.SECONDS.sleep(3);
         db.getNotification(id, n -> {
-            assertEquals("OrganizerNotificationTestEntrant3, ", n.get("target list") );
+            assertEquals(Arrays.asList("OrganizerNotificationTestEntrant3"), n.get("target list") );
         });
         TimeUnit.SECONDS.sleep(3);
     }

@@ -96,24 +96,42 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
         ImageView deleteProfileButton = findViewById(R.id.delete_profile_button);
         MaterialSwitch notificationCheckbox = findViewById(R.id.entrant_profile_edit_notification_checkbox);
 
-        // Deterministically generates a profile picture
+        // Sets Profile Picture
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Uri imageUri = result.getData().getData();
-                        try {
-                            // Convert URI to bitmap
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                        if (imageUri != null) {
+                            try {
+                                // Convert URI to Bitmap
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 
-                            // Update ImageView and set flags
-                            profilePic.setImageBitmap(bitmap);
-                            selectedProfilePicBitmap = bitmap;
-                            isProfilePicChanged = true;
+                                // Get the real path to the image
+                                String imagePath = imageUtils.getRealPathFromURI(this, imageUri);
 
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            Toast.makeText(this, "Error loading image", Toast.LENGTH_SHORT).show();
+                                // Fix orientation using `handleImageRotation`
+                                Bitmap rotatedBitmap = imageUtils.handleImageRotation(imagePath, bitmap);
+
+                                // Crop the image into a circular shape using `circularCrop`
+                                Bitmap croppedBitmap = imageUtils.circularCrop(rotatedBitmap);
+
+                                // Check id the image is too large
+                                if (imageUtils.isImageTooLarge(croppedBitmap)){
+                                    Toast.makeText(this, "Image is too large", Toast.LENGTH_LONG).show();
+                                    return;
+                                } else {
+                                    profilePic.setImageBitmap(croppedBitmap);
+                                    selectedProfilePicBitmap = croppedBitmap;
+                                    isProfilePicChanged = true;
+                                }
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Toast.makeText(this, "Error loading image", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(this, "Invalid image selection", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
