@@ -89,12 +89,11 @@ public class inputValidator {
      * The {@code validateCreateNotification} method validates 
      * @param label
      * @param content
-     * @param targets
      * @return
      */
-    public boolean validateCreateNotification(String label, String content, String targets){
+    public boolean validateCreateNotification(String label, String content){
         if(label.isEmpty() || content.isEmpty()){
-            Toast.makeText(context, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Please fill in label and body fields", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
