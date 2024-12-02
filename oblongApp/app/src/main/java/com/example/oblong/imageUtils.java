@@ -27,6 +27,8 @@ import java.io.IOException;
  */
 public class imageUtils {
 
+    private static final long MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
+
     /**
      * Converts a Bitmap image to a Base64-encoded string.
      *
@@ -380,6 +382,24 @@ public class imageUtils {
             return path;
         }
         return null;
+    }
+
+    /**
+     * Checks if the Bitmap is too large based on its memory size.
+     *
+     * @param bitmap The Bitmap to check.
+     * @return True if the Bitmap is too large, false otherwise.
+     */
+    public static boolean isImageTooLarge(Bitmap bitmap) {
+        if (bitmap != null) {
+            // Get the size of the bitmap in bytes
+            int byteCount = bitmap.getByteCount();
+            if (byteCount > MAX_IMAGE_SIZE) {
+                Log.e("imageUtils", "Image is too large: " + byteCount + " bytes");
+                return true; // Bitmap is too large
+            }
+        }
+        return false; // Bitmap is not too large
     }
 }
 

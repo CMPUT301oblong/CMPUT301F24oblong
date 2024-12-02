@@ -1,5 +1,8 @@
 package com.example.oblong.organizer;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -94,11 +97,15 @@ public class organizer_profile_edit extends AppCompatActivity {
                         try {
                             // Convert URI to bitmap
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-
-                            // Update ImageView and set flags
-                            profilePic.setImageBitmap(bitmap);
-                            selectedProfilePicBitmap = bitmap;
-                            isProfilePicChanged = true;
+                            if (imageUtils.isImageTooLarge(bitmap)){
+                                Toast.makeText(this, "Image is too large", Toast.LENGTH_LONG).show();
+                                bitmap = null;;
+                            } else {
+                                // Update ImageView and set flags
+                                profilePic.setImageBitmap(bitmap);
+                                selectedProfilePicBitmap = bitmap;
+                                isProfilePicChanged = true;
+                            }
 
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -188,6 +195,8 @@ public class organizer_profile_edit extends AppCompatActivity {
         });
 
     }
+
+
 
     /**
      * Opens the device's image picker to select a new profile picture.

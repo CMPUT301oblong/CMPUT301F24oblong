@@ -116,10 +116,15 @@ public class EntrantProfileEditActivity extends AppCompatActivity {
                                 // Crop the image into a circular shape using `circularCrop`
                                 Bitmap croppedBitmap = imageUtils.circularCrop(rotatedBitmap);
 
-
-                                profilePic.setImageBitmap(croppedBitmap);
-                                selectedProfilePicBitmap = croppedBitmap;
-                                isProfilePicChanged = true;
+                                // Check id the image is too large
+                                if (imageUtils.isImageTooLarge(croppedBitmap)){
+                                    Toast.makeText(this, "Image is too large", Toast.LENGTH_LONG).show();
+                                    return;
+                                } else {
+                                    profilePic.setImageBitmap(croppedBitmap);
+                                    selectedProfilePicBitmap = croppedBitmap;
+                                    isProfilePicChanged = true;
+                                }
 
                             } catch (IOException e) {
                                 e.printStackTrace();
