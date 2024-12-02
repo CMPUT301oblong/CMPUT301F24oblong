@@ -3,12 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -76,6 +78,15 @@
             android:exported="true" />
         <activity
             android:name=".organizer.EventWaitingList"
+            android:exported="true" />
+        <activity
+            android:name=".organizer.organizer_map"
+            android:exported="true" />
+        <activity
+            android:name=".CustomCaptureActivity"
+            android:exported="true" />
+        <activity
+            android:name=".organizer.EventViewCancelled"
             android:exported="true" />
         <activity
             android:name=".organizer.EventViewAttendees"

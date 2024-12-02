@@ -1,14 +1,11 @@
 package com.example.oblong.organizer;
 
-import static androidx.core.content.ContentProviderCompat.requireContext;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,11 +21,10 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.oblong.Database;
 import com.example.oblong.Event;
 import com.example.oblong.R;
-import com.example.oblong.entrant.EntrantEventDescriptionActivity;
-import com.example.oblong.entrant.EntrantProfileEditActivity;
 import com.example.oblong.imageUtils;
 import com.example.oblong.qr_generator;
-import com.example.oblong.Database;
+
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -37,7 +33,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class organizer_view_event_screen extends AppCompatActivity {
@@ -52,8 +50,10 @@ public class organizer_view_event_screen extends AppCompatActivity {
     private Button notificationButton;
     private Button waitlistButton;
     private Button attendeesButton;
+    private Button cancelledButton;
     private Button drawButton;
     private Button cancelButton;
+    private Button mapButon;
     private ImageView uploadPosterButton;
     private String eventId;
     private String qrID;
@@ -77,7 +77,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
         uploadPosterButton = findViewById(R.id.activity_organizer_view_event_event_description_upload_icon);
         eventDescriptionDisplay = findViewById(R.id.activity_organizer_view_event_event_description_text);
         maxCapacityDisplay = findViewById(R.id.activity_organizer_view_event_event_description_max_capacity);
-        backButton = findViewById(R.id.imageView2);
+        backButton = findViewById(R.id.backArrow);
         qrCode = findViewById(R.id.activity_organizer_view_event_event_description_qr_code_display);
         poster = findViewById(R.id.activity_organizer_viewevent_event_description_poster);
         notificationButton = findViewById(R.id.activity_organizer_view_event_event_description_setup_notification_button);
@@ -85,6 +85,8 @@ public class organizer_view_event_screen extends AppCompatActivity {
         attendeesButton = findViewById(R.id.activity_organizer_view_event_event_description_view_attendees_button);
         drawButton = findViewById(R.id.draw_button);
         cancelButton = findViewById(R.id.cancel_entrants_button);
+        mapButon = findViewById(R.id.view_map);
+        cancelledButton = findViewById(R.id.view_cancelled);
 
 
         Intent intent = getIntent();
@@ -130,6 +132,24 @@ public class organizer_view_event_screen extends AppCompatActivity {
             startActivity(intentAttendees);
         });
 
+        cancelledButton.setOnClickListener(v -> {
+            Intent intentAttendees = new Intent(organizer_view_event_screen.this, EventViewCancelled.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("EVENT", event);
+            intentAttendees.putExtras(bundle);
+
+            startActivity(intentAttendees);
+        });
+
+        mapButon.setOnClickListener(v -> {
+            Intent intentMap = new Intent(organizer_view_event_screen.this, organizer_map.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("EVENT", event);
+            intentMap.putExtras(bundle);
+
+            startActivity(intentMap);
+        });
+
         drawButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,16 +189,50 @@ public class organizer_view_event_screen extends AppCompatActivity {
                 Collections.shuffle(entrantPool);
                 selectedParticipants = entrantPool.subList(0, event.getEventCapacity());
             }
+
+            //create selected notification
+            String newNotifIDSelected = fdb.collection("notifications").document().getId();
+            String label = event.getEventName()+": Congratulations! You've been selected!";
+            String content = "Congratulations on being selected to attend our event! Please accept your invitation " +
+                    "by visiting the \"Upcoming Events\" tab and clicking \"Accept Invitation\" for our event";
+            String[] notifSelected = selectedParticipants.toArray(new String[0]);
+
+            //create not selected notification
+            String newNotifIDNotSelected = fdb.collection("notifications").document().getId();
+            String label2 = event.getEventName()+": Sorry! You weren't selected!";
+            String content2 = "Unfortunately, you were not selected to attend our event. But don't fret! " +
+                    "You may have a chance to be selected if someone declines their invitation!";
+            Set<String> selectedSet = new HashSet<String>(selectedParticipants);
+            Set<String> notSelectedSet = new HashSet<>(entrantPool);
+            notSelectedSet.removeAll(selectedSet);
+            String[] notSelectedParticipants = notSelectedSet.toArray(new String[0]);
+
+            //add the notifications to the database
+            db.addNotification(newNotifIDSelected, eventId, content, label, "Selected", notifSelected);
+            db.addNotification(newNotifIDNotSelected, eventId, content2, label2, "Not Selected", notSelectedParticipants);
+
             HashMap<String, Object> updates = new HashMap<>();
             updates.put("status", "selected");
+
+            HashMap<String, Object> entrantUpdate = new HashMap<>();
+            entrantUpdate.put("notificationsList", FieldValue.arrayUnion(newNotifIDSelected));
             for(int i = 0; i < selectedParticipants.size(); i++) {
                 // set each participant's status as selected
                 db.updateDocument("participants", selectedParticipants.get(i)+eventId, updates, v->{});
+
+                //add selected notification id to selectedParticipants (entrants) notificationsList
+                db.updateDocument("entrants", selectedParticipants.get(i), entrantUpdate, v->{});
+            }
+            //add not selected notification id to notSelectedParticipants (entrants) notificationsList
+            entrantUpdate.put("notificationsList", FieldValue.arrayUnion(newNotifIDNotSelected));
+            for (String notSelectedParticipant : notSelectedParticipants) {
+                db.updateDocument("entrants", notSelectedParticipant, entrantUpdate, v -> {});
             }
         });
 
     }
     private void cancelEntrants(String eventId) {
+        List<String> cancelledList = new ArrayList<>();
 
         // query for participants from specific event with either "selected" or "waitlisted" status
         fdb.collection("participants").whereEqualTo("event", eventId).whereIn("status", Arrays.asList( "selected", "waitlisted")).get().addOnCompleteListener(task -> {
@@ -188,7 +242,25 @@ public class organizer_view_event_screen extends AppCompatActivity {
 
                     // Update the status to "cancelled"
                     fdb.collection("participants").document(documentId).update("status", "cancelled");
+
+                    //add participant's entrant id to cancelledList for notification
+                    cancelledList.add((String) document.get("entrant"));
                 }
+            }
+
+            //create cancelled notification (no longer invited to attend event)
+            String notifCancelledID = fdb.collection("notifications").document().getId();
+            String label = event.getEventName()+": Sorry! You aren't attending!";
+            String content = "Unfortunately, you will not be attending our event. Thank you for signing up. " +
+                    "We encourage you to sign up for our future events!";
+            String[] notifCancelled = cancelledList.toArray(new String[0]);
+            db.addNotification(notifCancelledID, eventId, content, label, "cancelled", notifCancelled);
+
+            //add cancelled notification to cancelled entrants' notificationsList
+            HashMap<String, Object> entrantUpdate = new HashMap<>();
+            entrantUpdate.put("notificationsList", FieldValue.arrayUnion(notifCancelledID));
+            for(String cancelledParticipant : cancelledList){
+                db.updateDocument("entrants", cancelledParticipant, entrantUpdate, v -> {});
             }
         });
     }

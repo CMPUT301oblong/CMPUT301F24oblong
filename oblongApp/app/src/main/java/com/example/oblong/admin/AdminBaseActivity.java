@@ -30,7 +30,8 @@ public class AdminBaseActivity extends AppCompatActivity {
                 selectedFragment = new AdminEventBrowserFragment();
             } else if (itemId == R.id.admin_all_images_button) {
                 // TODO: setup image list
-//                        selectedFragment = new admin_image_list();
+//                       selectedFragment = new admin_image_list();
+                selectedFragment = new AdminImageBrowserFragment();
             }
 
             // Replace the current fragment with the selected one

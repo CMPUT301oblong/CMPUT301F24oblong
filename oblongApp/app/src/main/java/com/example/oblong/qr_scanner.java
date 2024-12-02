@@ -59,12 +59,12 @@ public class qr_scanner extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.qr_scanner_entrant);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.qr_title_text), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        setContentView(R.layout.custom_capture_layout);
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.qr_title_text), (v, insets) -> {
+//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+//            return insets;
+//        });
 
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
@@ -82,6 +82,7 @@ public class qr_scanner extends AppCompatActivity {
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
         integrator.setOrientationLocked(false);
         integrator.setPrompt("Scan a QR code");
+        integrator.setCaptureActivity(CustomCaptureActivity.class); // use custom layout
         integrator.initiateScan();
     }
 
@@ -98,6 +99,8 @@ public class qr_scanner extends AppCompatActivity {
         if (result != null) {
             if (result.getContents() == null) {
                 Toast.makeText(this, "Scan cancelled", Toast.LENGTH_LONG).show();
+                this.onBackPressed();
+
             } else {
                 // Retrieve the eventID from Firestore via the qrID stored in the qr code before calling handleScannedData
                 retrieveEventID(result.getContents(), eventID -> handleScannedData(eventID));
