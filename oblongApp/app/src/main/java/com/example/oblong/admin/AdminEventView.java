@@ -20,6 +20,8 @@ import com.example.oblong.Database;
 import com.example.oblong.Event;
 import com.example.oblong.R;
 import com.example.oblong.imageUtils;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 /**
  * Activity class for displaying a list of events.
@@ -65,13 +67,30 @@ public class AdminEventView extends AppCompatActivity {
             dialog.show();
         });
 
-        // implement delete event facility stuff here
-        deleteEventFacilityButton.setOnClickListener(v -> {
-            AlertDialog dialog = createDialog();
-            dialog.show();
-        });
 
+
+        deleteEventFacilityButton.setOnClickListener(v -> {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            // sync up current event ID with event ID from created to match the facility that created it
+            db.collection("created").whereEqualTo("event", current_event.getEventID()).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        // fetch facility ID
+                        String facilityID = document.getString("facility");
+                        if (facilityID != null) {
+                            // delete facility ID in facilities that matches the current event ID in created
+                            db.collection("facilities").document(facilityID).delete();
+                        } else {
+                            Log.d("AdminEventView", "Facility is null");
+                        }
+                    }
+                } else {
+                    Log.d("AdminEventView", "Couldn't fetch facility");
+                }
+            });
+        });
     }
+
 
     // Delete Event Dialog
     private AlertDialog createDialog() {
