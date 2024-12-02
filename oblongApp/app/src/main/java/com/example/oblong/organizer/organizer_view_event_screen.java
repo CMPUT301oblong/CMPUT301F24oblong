@@ -51,6 +51,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
     private Button attendeesButton;
     private Button drawButton;
     private Button cancelButton;
+    private Button mapButon;
     private ImageView uploadPosterButton;
     private String eventId;
     private final Database db = new Database();
@@ -81,6 +82,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
         attendeesButton = findViewById(R.id.activity_organizer_view_event_event_description_view_attendees_button);
         drawButton = findViewById(R.id.draw_button);
         cancelButton = findViewById(R.id.cancel_entrants_button);
+        mapButon = findViewById(R.id.view_map);
 
 
         Intent intent = getIntent();
@@ -124,6 +126,15 @@ public class organizer_view_event_screen extends AppCompatActivity {
             intentAttendees.putExtras(bundle);
 
             startActivity(intentAttendees);
+        });
+
+        mapButon.setOnClickListener(v -> {
+            Intent intentMap = new Intent(organizer_view_event_screen.this, organizer_map.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("EVENT", event);
+            intentMap.putExtras(bundle);
+
+            startActivity(intentMap);
         });
 
         drawButton.setOnClickListener(new View.OnClickListener() {
