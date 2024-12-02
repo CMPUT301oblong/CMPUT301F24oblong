@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class organizer_create_event_fragment extends Fragment {
 
@@ -47,7 +48,7 @@ public class organizer_create_event_fragment extends Fragment {
     private Button createEventButton;
     private Button cancelButton;
     private Switch locationSwitch;
-
+    private String qrID;
     private Bitmap imageBitmap = null;
 
 
@@ -107,6 +108,10 @@ public class organizer_create_event_fragment extends Fragment {
                     }
                 }
 
+                // Generate random QR ID
+                qrID = UUID.randomUUID().toString();
+
+
 
 
                 //When we click this we want to take all this info and put it into database
@@ -125,6 +130,7 @@ public class organizer_create_event_fragment extends Fragment {
                 event.put("drawDate", FieldValue.serverTimestamp());
                 event.put("location", new GeoPoint(0,0));
                 event.put("name", eventName);
+                event.put("qrID", qrID);
 
                 if (locationSwitch.isChecked()){
                     event.put("locationRequired", "1");
@@ -142,7 +148,7 @@ public class organizer_create_event_fragment extends Fragment {
 
                 db.collection("events").add(event).addOnSuccessListener(documentReference -> {
                     String eventID = documentReference.getId();
-                    Bitmap qrBitmap = qr_gen.generateQRCode(eventID);
+                    Bitmap qrBitmap = qr_gen.generateQRCode(qrID);
                     String qrBase64 = imageUtils.bitmapToBase64(qrBitmap);
 
                     db.collection("events").document(eventID).update("QR",qrBase64);
@@ -208,6 +214,13 @@ public class organizer_create_event_fragment extends Fragment {
 
                         // Fix orientation using `handleImageRotation`
                         Bitmap rotatedBitmap = imageUtils.handleImageRotation(imagePath, bitmap);
+                        if (imageUtils.isImageTooLarge(rotatedBitmap)){
+                            Toast.makeText(requireContext(), "Image is too large", Toast.LENGTH_LONG).show();
+                            imageBitmap = null;;
+                        } else {
+                            imageBitmap = rotatedBitmap;
+                        }
+
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
