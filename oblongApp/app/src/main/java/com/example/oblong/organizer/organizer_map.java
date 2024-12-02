@@ -29,6 +29,12 @@ import org.osmdroid.views.overlay.Marker;
 import java.util.HashMap;
 
 //https://sanaebadi97.medium.com/learn-how-to-work-with-osm-map-in-android-app-ac42f933cbd3
+
+/**
+ * The {@code organizer_map} class represents an activity that displays an OSM (OpenStreetMap) map for an organizer.
+ * It allows the organizer to view and add markers for entrants of an event based on their geographic locations.
+ * This activity interacts with the database to fetch participant locations and updates the map accordingly.
+ */
 public class organizer_map extends AppCompatActivity {
 
     private MapView map;
@@ -43,6 +49,12 @@ public class organizer_map extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_CODE = 1;
 
+    /**
+     * Called when the activity is created. Sets up the OSM map, initializes the map controller,
+     * and adds markers for the entrants of an event.
+     *
+     * @param savedInstanceBundle The saved instance state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceBundle){
         Context ctx = getApplicationContext();
@@ -88,7 +100,10 @@ public class organizer_map extends AppCompatActivity {
         map.invalidate(); // Refresh the map
     }
 
-
+    /**
+     * Retrieves the participants of an event from the database, fetches their geographic locations,
+     * and places markers on the map for each entrant.
+     */
     private void addEntrants(){
         Bundle bundle = getIntent().getExtras();
         event = (Event) bundle.get("EVENT");

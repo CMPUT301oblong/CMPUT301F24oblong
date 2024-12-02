@@ -12,6 +12,10 @@ import com.example.oblong.R;
  */
 public class organizer_view_entrant_profile extends AppCompatActivity {
 
+    /**
+     * Initializes the activity, sets up the user interface to view the entrants profile.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

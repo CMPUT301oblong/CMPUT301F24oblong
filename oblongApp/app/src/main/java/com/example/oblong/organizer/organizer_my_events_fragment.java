@@ -43,12 +43,14 @@ public class organizer_my_events_fragment extends Fragment {
     private CollectionReference createdRef;
     private String user_id;
 
+
     /**
      * Inflates the fragment's layout.
      *
      * @param inflater The LayoutInflater object used to inflate views.
      * @param container The parent view that the fragment's UI should be attached to.
      * @param savedInstanceState Bundle containing the fragment's previously saved state, if any.
+
      * @return The View for the fragment's UI.
      */
     @Nullable
@@ -73,7 +75,7 @@ public class organizer_my_events_fragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // TODO: Initialize Relevant Firebase Firestore and collections
+
         db = FirebaseFirestore.getInstance();
         organizersRef = db.collection("organizers");
         createdRef = db.collection("created");
@@ -97,7 +99,6 @@ public class organizer_my_events_fragment extends Fragment {
 
 
     }
-
     /**
      * Fetches the organizer's events from Firestore.
      *
@@ -108,7 +109,7 @@ public class organizer_my_events_fragment extends Fragment {
      * and the adapter is notified.</p>
      */
     private void fetchEvents(String user_id) {
-        // TODO: Fetch events the organizer has created
+
         organizersRef.whereEqualTo("user", user_id)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots ->{
@@ -147,7 +148,6 @@ public class organizer_my_events_fragment extends Fragment {
 
         });
     }
-
     /**
      * Called when the fragment is visible to the user and actively running.
      *
