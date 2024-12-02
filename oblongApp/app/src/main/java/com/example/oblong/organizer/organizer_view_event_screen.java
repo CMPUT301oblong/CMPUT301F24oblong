@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -56,6 +57,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
     private Button mapButon;
     private ImageView uploadPosterButton;
     private String eventId;
+    private String qrID;
     private final Database db = new Database();
     private FirebaseFirestore fdb;
 
@@ -271,9 +273,10 @@ public class organizer_view_event_screen extends AppCompatActivity {
         eventDescriptionDisplay.setText(event.getEventDescription());
         maxCapacityDisplay.setText(Long.toString(event.getEventCapacity()));
         poster.setImageBitmap(imageUtils.base64ToBitmap(event.getPoster()));
+        qrID = event.getQrID();
         qr_generator qr = new qr_generator();
         eventId = event.getEventID();
-        Bitmap code = qr.generateQRCode(eventId);
+        Bitmap code = qr.generateQRCode(qrID);
 
         // https://stackoverflow.com/questions/30027242/set-bitmap-to-imageview
         qrCode.setImageBitmap(code);
@@ -300,7 +303,20 @@ public class organizer_view_event_screen extends AppCompatActivity {
 
                     try {
                         Bitmap imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageUri);
+
+
+                        String imagePath = imageUtils.getRealPathFromURI(this, imageUri);
+
+                        // Fix orientation using `handleImageRotation`
+                        Bitmap rotatedBitmap = imageUtils.handleImageRotation(imagePath, imageBitmap);
+                        if (imageUtils.isImageTooLarge(rotatedBitmap)){
+                            Toast.makeText(requireContext(), "Image is too large", Toast.LENGTH_LONG).show();
+
+                        } else {
+                            imageBitmap = rotatedBitmap;
+                        }
                         String imageBase64 = imageUtils.bitmapToBase64(imageBitmap);
+
                         event.setPoster(imageBase64);
 
                         //Update database
