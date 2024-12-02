@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * {@code Database} This class handles sending and fetching data from the Firebase
@@ -413,8 +414,9 @@ public class Database {
      * @param description
      * @param location
      * @param poster
+     * @param qrID
      */
-    public void addEvent(String id, String capacity, String dateAndTime, String description, GeoPoint location, String poster){
+    public void addEvent(String id, String capacity, String dateAndTime, String description, GeoPoint location, String poster, String qrID){
         HashMap<String, Object> event = new HashMap<>();
         // create a new event and store at the id
         event.put("capacity", capacity);
@@ -422,6 +424,7 @@ public class Database {
         event.put("description", description);
         event.put("location", location);
         event.put("poster", poster);
+        event.put("qrID", qrID);
         events.document(id).set(event).addOnSuccessListener(aVoid -> Log.d("database", "User added successfully"))
                 .addOnFailureListener(e -> Log.w("database", "Error adding user", e));
     }
@@ -514,4 +517,14 @@ public class Database {
             }
         });
     }
+
+    public void deleteQR(Context context, Event event){
+        String newUUID = UUID.randomUUID().toString();
+        // Update the event document with the new qrID
+        db.collection("events").document(event.getEventID())
+                .update("qrID", newUUID)
+                .addOnSuccessListener(aVoid -> Log.d("Firestore", "qrID updated successfully to: " + newUUID))
+                .addOnFailureListener(e -> Log.e("Firestore", "Failed to update qrID", e));
+    }
 }
+
