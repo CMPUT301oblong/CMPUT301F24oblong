@@ -30,6 +30,12 @@ import com.example.oblong.imageUtils;
 import java.util.HashMap;
 import java.util.UUID;
 
+/**
+ * Activity class for displaying admin profile data.
+ *
+ * <p>This class retrieves admin profile information, using Firebase to fetch relevant data.
+ * It then populates views with this information for display.</p>
+ */
 public class AdminProfileActivity extends Fragment {
 
     private String user_id;
