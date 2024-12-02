@@ -44,6 +44,8 @@
             android:exported="false" />
         <activity android:name=".entrant.EntrantUpcomingEventsFragment"
             android:exported="false"/>
+        <activity android:name=".entrant.EntrantEventDetails"
+            android:exported="true" />
         <activity
             android:name=".organizer.organizer_create_notification_activity"
             android:exported="false" />

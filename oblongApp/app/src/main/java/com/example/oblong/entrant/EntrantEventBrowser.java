@@ -178,6 +178,7 @@ public class EntrantEventBrowser extends Fragment {
      * collection and adds it to the list of events to be displayed.</p>
      */
     private void updateEventList(QuerySnapshot queryDocumentSnapshots) {
+        // FIXME: Bug where you get duplicates for some reason
         Set<String> eventIds = new HashSet<>();
         myEventsDataList.clear(); // Clear the list before adding events that match criteria
         allEventsDataList.clear();
@@ -194,6 +195,7 @@ public class EntrantEventBrowser extends Fragment {
                             event.setEventName(eventDocumentSnapshot.getString("name"));
                             event.setEventCloseDate(eventDocumentSnapshot.getDate("dateAndTime"));
                             event.setPoster(eventDocumentSnapshot.getString("poster"));
+                            event.setStatus(status);
                             myEventsDataList.add(event);
                             myEventsAdapter.notifyDataSetChanged();
                         }
@@ -247,7 +249,7 @@ public class EntrantEventBrowser extends Fragment {
             itemView.setOnClickListener(v -> {
                 // Handle click event, e.g., navigate to event details
                 if(event.getStatus().contains("waitlisted")) {
-                    Intent intent = new Intent(getContext(), EntrantEventDescriptionActivity.class);
+                    Intent intent = new Intent(getContext(), EntrantEventDetails.class);
 
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("EVENT", event);
@@ -258,8 +260,7 @@ public class EntrantEventBrowser extends Fragment {
                     Log.d("button", String.format("%s button clicked", event.getEventName()));
                 }
                 else if(event.getStatus().contains("selected")) {
-
-                    Intent intent = new Intent(getContext(), EntrantEventAcceptDescriptionActivity.class);
+                    Intent intent = new Intent(getContext(), EntrantEventDetails.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("EVENT", event);
                     intent.putExtras(bundle);

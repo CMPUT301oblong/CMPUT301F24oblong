@@ -141,6 +141,7 @@ public class EntrantMyEventsFragment extends AppCompatActivity {
                         event.setEventName(eventDocumentSnapshot.getString("name"));
                         event.setEventCloseDate(eventDocumentSnapshot.getDate("dateAndTime"));
                         event.setPoster(eventDocumentSnapshot.getString("poster"));
+                        event.setStatus(status);
                         eventsDataList.add(event);
                         adapter.notifyDataSetChanged();
                     }

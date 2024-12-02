@@ -35,7 +35,7 @@ public class EntrantUpcomingEventsFragment extends AppCompatActivity {
 
     private ListView eventList;
     private ArrayList<Event> eventsDataList;
-    private EntrantAllEventsArrayAdapter adapter;
+    private EntrantVerticalEventsArrayAdapter adapter;
     private FirebaseFirestore db;
     private CollectionReference participantsRef;
     private CollectionReference eventsRef;
@@ -52,7 +52,7 @@ public class EntrantUpcomingEventsFragment extends AppCompatActivity {
 
         eventList = findViewById(R.id.activity_entrant_all_events_list);
         eventsDataList = new ArrayList<>();
-        adapter = new EntrantAllEventsArrayAdapter(EntrantUpcomingEventsFragment.this, eventsDataList);
+        adapter = new EntrantVerticalEventsArrayAdapter(EntrantUpcomingEventsFragment.this, eventsDataList);
         eventList.setAdapter(adapter);
 
         ImageButton back_button = findViewById(R.id.backButton);
@@ -135,7 +135,7 @@ public class EntrantUpcomingEventsFragment extends AppCompatActivity {
                 eventsRef.document(eventId).get().addOnSuccessListener(eventDocumentSnapshot -> {
                     if (eventDocumentSnapshot.exists()) {
                         Event event = new Event(eventDocumentSnapshot.getId());
-                        event.setEventName(eventDocumentSnapshot.getString("name"));
+                        event.setEventName("("+status+") " + eventDocumentSnapshot.getString("name"));
                         event.setEventCloseDate(eventDocumentSnapshot.getDate("dateAndTime"));
                         event.setPoster(eventDocumentSnapshot.getString("poster"));
                         event.setStatus(status);

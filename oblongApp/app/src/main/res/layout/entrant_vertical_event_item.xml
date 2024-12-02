@@ -88,10 +88,6 @@
                 android:textSize="16dp" />
         </LinearLayout>
 
-        <!--Relative Layout allows for button to be layered on top of on another, and only the
-        relevant button is shown using android:visibility="gone" to hide the unused one-->
-
-
     </LinearLayout>
 
 

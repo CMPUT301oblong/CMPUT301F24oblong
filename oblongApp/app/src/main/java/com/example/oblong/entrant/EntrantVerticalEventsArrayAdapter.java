@@ -80,7 +80,7 @@ public class EntrantVerticalEventsArrayAdapter extends ArrayAdapter<Event> {
             // Handle the button click event
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, EntrantEventDescriptionActivity.class);
+                Intent intent = new Intent(context, EntrantEventDetails.class);
 
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("EVENT", event);
