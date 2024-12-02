@@ -1,6 +1,9 @@
 package com.example.oblong.entrant;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,14 +13,19 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.oblong.Database;
 import com.example.oblong.Event;
 import com.example.oblong.R;
 import com.example.oblong.imageUtils;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -29,9 +37,14 @@ import java.util.HashMap;
 
 public class EntrantEventDetails extends AppCompatActivity {
 
+    private FusedLocationProviderClient fusedLocationClient;
+    GeoPoint entrantLocation = new GeoPoint(0,0);
+    String event_id;
+
     private ImageButton backButton;
     private Button cancelButton;
     private Button proceedButton;
+    private Database db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +118,7 @@ public class EntrantEventDetails extends AppCompatActivity {
 
         // FIXME: SOMETHING IN HERE IS BROKEN
 
-        Database db = new Database();
+        db = new Database();
         FirebaseFirestore fdb = FirebaseFirestore.getInstance();
 
 
@@ -128,7 +141,8 @@ public class EntrantEventDetails extends AppCompatActivity {
         date.setText(event.getEventCloseLong());
         time.setText(event.getEventCloseTime());
 
-        String event_id = event.getEventID();
+        event_id = event.getEventID();
+        Log.d("event_details", event_id);
 
         // Set click listeners
         proceedButton = findViewById(R.id.proceed_button);
@@ -152,16 +166,42 @@ public class EntrantEventDetails extends AppCompatActivity {
             cancelButton.setText("REJECT INVITE");
         }
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        boolean locationRequired;
+
+        //TODO: Make a thing that checks if location is required
+//        if (event.get("locationRequired") != null && event.get("locationRequired").equals("1")){
+//            locationRequired = true;
+//            Toast.makeText(this, "Location permissions are required to join this event", Toast.LENGTH_SHORT).show();
+//        } else {
+            locationRequired = false;
+//        }
+
         proceedButton.setOnClickListener(v -> {
             // If NA, then Join Event
             if(status.equals("NA")) {
-                Log.d("button", "NA button clicked");
+                Log.d("event_details", "NA button clicked");
                 // Handle join event
-                // TODO: Add join event logic here, and make changes in QR scanner to redirect to this page
-            }
+                if(locationRequired) {
+                    getPermissionAndJoin();
+                }else{
+                    // get current user (asynchronous)
+                    db.getCurrentUser(userId -> {
+                        String participantId = userId + event_id;
 
+                        // Add user as a participant
+                        db.addParticipant(participantId, userId, event_id, entrantLocation, "waitlisted");
+                        Log.d("event_details", String.format("Passed in %s, %s, %s, %s, %s", participantId, userId, event_id, entrantLocation, "waitlisted"));
+
+                        Log.d("button", "User Joined event after button clicked");
+                        startActivity(new Intent(this, EntrantBaseActivity.class));
+//                        finish();
+                    });
+                }
+            }
             // If Attending, then Leave Event
-            if(status.equals("attending")) {
+            else if(status.equals("attending")) {
                 Log.d("button", "attending button clicked");
                 Database.getCurrentUser(new Database.OnDataReceivedListener<String>() {
                     /**
@@ -275,5 +315,85 @@ public class EntrantEventDetails extends AppCompatActivity {
             }
             finish();
         });
+    }
+
+    private void getPermissionAndJoin() {
+        // request permissions every time
+
+        Log.d("event_details", "getPermissionAndJoin called");
+
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
+                1001);
+
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                // Logic to handle location object
+                                double lat = location.getLatitude();
+                                double lng = location.getLongitude();
+                                entrantLocation = new GeoPoint(lat, lng);
+
+                                // get current user (asynchronous)
+                                db.getCurrentUser(userId -> {
+                                    String participantId = userId + event_id;
+                                    String status = "waitlisted";
+
+                                    // Add user as a participant
+                                    db.addParticipant(participantId, userId, event_id, entrantLocation, status);
+                                    startActivity(new Intent(EntrantEventDetails.this, EntrantBaseActivity.class));
+                                });
+                            }
+                        }
+                    });
+        }
+    }
+
+    // Handle permission result
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // FIXME: This isn't ever called for some reason
+        Log.d("event_details", "onRequestPermissionsResult called");
+
+        if (requestCode == 1001) {
+            if (grantResults.length > 0 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                // Permissions granted, proceed to get location
+                fusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                if (location != null) {
+                                    // Logic to handle location object
+                                    double lat = location.getLatitude();
+                                    double lng = location.getLongitude();
+                                    entrantLocation = new GeoPoint(lat, lng);
+
+                                    // get current user (asynchronous)
+                                    db.getCurrentUser(userId -> {
+                                        String participantId = userId + event_id;
+                                        String status = "waitlisted";
+
+                                        // Add user as a participant
+                                        db.addParticipant(participantId, userId, event_id, entrantLocation, status);
+                                        startActivity(new Intent(EntrantEventDetails.this, EntrantBaseActivity.class));
+                                    });
+                                }
+                            }
+                        });
+            } else {
+                // Permissions denied, inform the user
+                Toast.makeText(this, "Enable location permissions in settings to join event", Toast.LENGTH_SHORT).show();
+
+            }
+        }
     }
 }

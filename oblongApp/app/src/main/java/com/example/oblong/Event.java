@@ -28,6 +28,7 @@ public class Event implements Serializable {
     private Long eventWaitlistCapacity;
     private String poster;
     private String attendingStatus;
+    private boolean locationRequired;
 
     /**
      * The {@code Event} method retrieves an event data from Firebase
