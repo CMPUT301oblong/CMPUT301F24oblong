@@ -36,49 +36,6 @@ import java.util.concurrent.TimeUnit;
 @LargeTest
 public class OrganizerNavigationTest {
 
-//    @BeforeClass
-//    public static void setUp() throws InterruptedException {
-//        // Use ActivityScenario to launch RoleSelector on the main thread
-//        ActivityScenario.launch(RoleSelector.class).onActivity(activity -> {
-//            // Delete user if they exist in the database
-//            FirebaseFirestore db = FirebaseFirestore.getInstance();
-//            Database.getCurrentUser(userId -> {
-//                if (userId != null) {
-//                    db.collection("users").document(userId).get().addOnSuccessListener(documentSnapshot -> {
-//                        Log.d("Instrumented test", "you are here now");
-//                        if (documentSnapshot.exists()) {
-//                            Log.d("Instrumented test", "it exists");
-//
-//                            // Create a user object from the document
-//                            User user = new User(
-//                                    documentSnapshot.getId(),
-//                                    documentSnapshot.getString("name"),
-//                                    documentSnapshot.getString("phone"),
-//                                    documentSnapshot.getString("email"),
-//                                    documentSnapshot.getString("profilePicture"),
-//                                    documentSnapshot.getString("type")
-//                            );
-//                            // Delete the user
-//                            Database ourdb = new Database();
-//                            ourdb.deleteUser(getContext(), user);
-//
-//
-//                        }
-//                        // Create new profile
-//                        activity.addUser("test", "test@gmail.com", "1111111111");
-//
-//                        // Create facility profile
-//                        EntrantProfileScreenFragment fragment = new EntrantProfileScreenFragment();
-//                        fragment.addFacility("random facility name", "randomfacilityname@gmail.com", "1111111111");
-//                    });
-//                }
-//            });
-//        });
-//
-//        // Allow time for Firebase operations to finish
-//        TimeUnit.SECONDS.sleep(5);
-//    }
-
     @Rule
     public ActivityScenarioRule<organizer_base_activity> activityRule = new ActivityScenarioRule<>(organizer_base_activity.class);
 
@@ -91,7 +48,7 @@ public class OrganizerNavigationTest {
         // Click on my events
         onView(withId(R.id.myEvents)).perform(click());
         // Check if the organizer_my_events_fragment is launched
-        onView(withId(R.id.my_events_banner)).check(matches(isDisplayed()));
+        onView(withId(R.id.interestedEvents)).check(matches(isDisplayed()));
     }
 
     @Test
