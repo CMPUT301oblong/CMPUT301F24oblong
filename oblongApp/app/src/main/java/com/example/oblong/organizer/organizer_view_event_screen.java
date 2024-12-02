@@ -178,22 +178,24 @@ public class organizer_view_event_screen extends AppCompatActivity {
                 selectedParticipants = entrantPool.subList(0, event.getEventCapacity());
             }
 
-            //create selected and not selected notifications
+            //create selected notification
             String newNotifIDSelected = fdb.collection("notifications").document().getId();
             String label = event.getEventName()+": Congratulations! You've been selected!";
-            String content = "Congratulations on being invited to attend our event! Please accept your invitation " +
+            String content = "Congratulations on being selected to attend our event! Please accept your invitation " +
                     "by visiting the \"Upcoming Events\" tab and clicking \"Accept Invitation\" for our event";
             String[] notifSelected = selectedParticipants.toArray(new String[0]);
 
+            //create not selected notification
             String newNotifIDNotSelected = fdb.collection("notifications").document().getId();
-            String label2 = event.getEventName()+": Sorry! You weren't invited!";
-            String content2 = "Unfortunately, you were not selected to participate in out event. But don't fret! " +
+            String label2 = event.getEventName()+": Sorry! You weren't selected!";
+            String content2 = "Unfortunately, you were not selected to attend our event. But don't fret! " +
                     "You may have a chance to be selected if someone declines their invitation!";
             Set<String> selectedSet = new HashSet<String>(selectedParticipants);
             Set<String> notSelectedSet = new HashSet<>(entrantPool);
             notSelectedSet.removeAll(selectedSet);
             String[] notSelectedParticipants = notSelectedSet.toArray(new String[0]);
 
+            //add the notifications to the database
             db.addNotification(newNotifIDSelected, eventId, content, label, "Selected", notifSelected);
             db.addNotification(newNotifIDNotSelected, eventId, content2, label2, "Not Selected", notSelectedParticipants);
 
@@ -234,15 +236,15 @@ public class organizer_view_event_screen extends AppCompatActivity {
                 }
             }
 
-            //create notification of cancelled (no longer invited to attend event)
+            //create cancelled notification (no longer invited to attend event)
             String notifCancelledID = fdb.collection("notifications").document().getId();
-            String label = event.getEventName()+": Sorry! You weren't invited!";
-            String content = "Unfortunately, you are no longer invited attend our event. Thank you for signing up. " +
-                    "We hope to invite you to future events!";
+            String label = event.getEventName()+": Sorry! You aren't attending!";
+            String content = "Unfortunately, you will not be attending our event. Thank you for signing up. " +
+                    "We encourage you to sign up for our future events!";
             String[] notifCancelled = cancelledList.toArray(new String[0]);
             db.addNotification(notifCancelledID, eventId, content, label, "cancelled", notifCancelled);
 
-            //add cancelled notification to cancelled entrants notificationsList
+            //add cancelled notification to cancelled entrants' notificationsList
             HashMap<String, Object> entrantUpdate = new HashMap<>();
             entrantUpdate.put("notificationsList", FieldValue.arrayUnion(notifCancelledID));
             for(String cancelledParticipant : cancelledList){

@@ -111,12 +111,6 @@ public class Notification {
     public String getNotifID(){ return notifID; }
 
     /**
-     * The {@code setNotifID} method sets the notifID of the notification
-     * @param notifID
-     */
-    public void setNotifID(String notifID) { this.notifID = notifID; }
-
-    /**
      * The {@code getEventID} method returns the eventID of the notification
      * @return
      */
@@ -127,4 +121,20 @@ public class Notification {
      * @param eventID
      */
     public void setEventID(String eventID){ this.eventID = eventID; }
+
+    /**
+     * The {@code getTargetList} method gets the targetList of the notification
+     * @return
+     */
+    public ArrayList<String> getTargetList() {
+        return targetList;
+    }
+
+    /**
+     * The {@code getTargetList} method sets the targetList of the notification
+     * @param targetList
+     */
+    public void setTargetList(ArrayList<String> targetList) {
+        this.targetList = targetList;
+    }
 }
