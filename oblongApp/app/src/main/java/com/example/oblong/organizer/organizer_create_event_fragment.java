@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -206,24 +207,29 @@ public class organizer_create_event_fragment extends Fragment {
         if (resultCode == RESULT_OK) {
             if (requestCode == 200) {
                 Uri imageUri = data.getData();
-                if (null != imageUri) {
-
+                if (imageUri != null) {
                     try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageUri);
-                        // Get the real path to the image
-                        String imagePath = imageUtils.getRealPathFromURI(requireContext(), imageUri);
+                        ContentResolver contentResolver = requireContext().getContentResolver();
+                        InputStream inputStream = contentResolver.openInputStream(imageUri);
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
-                        // Fix orientation using `handleImageRotation`
-                        Bitmap rotatedBitmap = imageUtils.handleImageRotation(imagePath, bitmap);
-                        if (imageUtils.isImageTooLarge(rotatedBitmap)){
+                        // Handle image rotation if needed
+                        // (You might need to adjust this based on your imageUtils implementation)
+                        // Bitmap rotatedBitmap = imageUtils.handleImageRotation(imageUri, bitmap);
+
+                        if (imageUtils.isImageTooLarge(bitmap)) {
                             Toast.makeText(requireContext(), "Image is too large", Toast.LENGTH_LONG).show();
-                            imageBitmap = null;;
+                            imageBitmap = null;
                         } else {
-                            imageBitmap = rotatedBitmap;
+                            imageBitmap = bitmap;
                         }
 
+                        if (inputStream != null) {
+                            inputStream.close();
+                        }
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        Log.e("organizer_create_event_fragment", "Error loading image", e);
+                        Toast.makeText(requireContext(), "Error loading image", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

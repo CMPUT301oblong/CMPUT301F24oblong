@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -77,6 +78,9 @@ public class organizer_my_events_fragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         organizersRef = db.collection("organizers");
         createdRef = db.collection("created");
+
+        TextView title = view.findViewById(R.id.interestedEvents);
+        title.setText("PUBLISHED EVENTS");
 
         eventList = view.findViewById(R.id.my_events_list); // Corrected line
        eventsDataList = new ArrayList<>();
