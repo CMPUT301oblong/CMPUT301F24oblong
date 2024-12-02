@@ -61,12 +61,12 @@ public class qr_scanner extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.qr_scanner_entrant);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.qr_title_text), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        setContentView(R.layout.custom_capture_layout);
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.qr_title_text), (v, insets) -> {
+//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+//            return insets;
+//        });
 
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
@@ -84,6 +84,7 @@ public class qr_scanner extends AppCompatActivity {
         integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
         integrator.setOrientationLocked(false);
         integrator.setPrompt("Scan a QR code");
+        integrator.setCaptureActivity(CustomCaptureActivity.class); // use custom layout
         integrator.initiateScan();
     }
 
@@ -100,8 +101,11 @@ public class qr_scanner extends AppCompatActivity {
         if (result != null) {
             if (result.getContents() == null) {
                 Toast.makeText(this, "Scan cancelled", Toast.LENGTH_LONG).show();
+                this.onBackPressed();
+
             } else {
-                handleScannedData(result.getContents());
+                // Retrieve the eventID from Firestore via the qrID stored in the qr code before calling handleScannedData
+                retrieveEventID(result.getContents(), eventID -> handleScannedData(eventID));
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -134,6 +138,32 @@ public class qr_scanner extends AppCompatActivity {
         });
 
     }
+
+    private void retrieveEventID(String qrID, OnEventIDRetrievedListener listener) {
+        FirebaseFirestore datab = FirebaseFirestore.getInstance();
+        datab.collection("events")
+                .whereEqualTo("qrID", qrID) // Search by qrID
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        String eventID = querySnapshot.getDocuments().get(0).getId(); // Get the document name
+                        listener.onEventIDRetrieved(eventID); // Pass the eventID to the listener
+                    } else {
+                        Toast.makeText(this, "Event not found for QR ID", Toast.LENGTH_SHORT).show();
+                        finish(); // End the activity if the event is not found
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Database", "Error retrieving event by QR ID", e);
+                    Toast.makeText(this, "Error retrieving event details", Toast.LENGTH_SHORT).show();
+                    finish(); // End the activity if an error occurs
+                });
+    }
+    public interface OnEventIDRetrievedListener {
+        void onEventIDRetrieved(String eventID);
+    }
+
+
 
     /**
      * Retrieves event details from Firestore based on the event's unique ID.

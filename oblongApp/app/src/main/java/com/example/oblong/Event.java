@@ -28,7 +28,16 @@ public class Event implements Serializable {
     private Long eventWaitlistCapacity;
     private String poster;
     private String attendingStatus;
-    private boolean locationRequired;
+    private String qrID;
+
+
+    /*public Event(String eventID, String eventName, String eventDescription, Date eventCloseDate, Long eventCapacity ) {
+        this.eventID = eventID;
+        this.eventName = eventName;
+        this.eventDescription = eventDescription;
+        this.eventCloseDate = eventCloseDate;
+        this.eventCapacity = eventCapacity;
+    }*/
 
     /**
      * The {@code Event} method retrieves an event data from Firebase
@@ -41,32 +50,44 @@ public class Event implements Serializable {
 
         eventDoc.get().addOnCompleteListener(task -> {
             DocumentSnapshot data = task.getResult();
-            try {
-                this.eventCapacity = (Long) data.getLong("capacity");
+            this.eventCapacity = (Long) data.getLong("capacity");
+            Log.d("event cap", Long.toString(this.eventCapacity));
 
-                this.eventName = (String) data.getString("name");
+            this.eventName = (String) data.getString("name");
+            Log.d("event name", this.eventName);
 
-
-                if (data.contains("waitlistCapacity")) {
-                    this.eventWaitlistCapacity = data.getLong("waitlistCapacity");
-                } else {
-                    this.eventWaitlistCapacity = null;
-                }
-
-                Timestamp timestamp = (Timestamp) data.getTimestamp("dateAndTime");
-                Date date = timestamp.toDate();
-                this.eventCloseDate = date;
-
-                //this.eventCloseDate =  newEvent.get("dateAndTime").toDate();
-                this.eventDescription = (String) data.get("description");
-
-                setPoster(data.getString("poster"));
-
-                this.eventID = eventID;
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            if(data.contains("waitlistCapacity")){
+                this.eventWaitlistCapacity = data.getLong("waitlistCapacity");
+            }else {
+                this.eventWaitlistCapacity = null;
             }
+
+            Timestamp timestamp = (Timestamp) data.getTimestamp("dateAndTime");
+            Date date = timestamp.toDate();
+            this.eventCloseDate = date;
+
+            //this.eventCloseDate =  newEvent.get("dateAndTime").toDate();
+            this.eventDescription = (String) data.get("description");
+
+            setPoster(data.getString("poster"));
+
+            this.eventID = eventID;
+
+            this.qrID = data.getString("qrID");
         });
+
+
+
+        /*db.getEvent(eventID,data -> {
+            if(data!=null) {
+                Log.d("event name", (String) data.get("name"));
+                setEventInformation(data);
+            }
+            else{
+                Log.d("event", "event not found");
+            }
+        });*/
+
     }
 
 
@@ -235,5 +256,13 @@ public class Event implements Serializable {
 
     public String getStatus() {
         return attendingStatus;
+    }
+
+    public String setQrID(String qrID){
+        return this.qrID = qrID;
+    }
+
+    public String getQrID() {
+        return qrID;
     }
 }
