@@ -29,9 +29,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-/** This class is implemented to create a custom layout for the camera
- * <a href="https://github.com/journeyapps/zxing-android-embedded/blob/master/sample/src/main/java/example/zxing/ContinuousCaptureActivity.java">...</a>
- * **/
+/**
+ * Custom activity for capturing barcodes and QR codes using the ZXing library.
+ *
+ * <p>This activity provides a custom layout for barcode scanning and supports continuous
+ * decoding of QR codes and Code 39 barcodes. It also handles sound and vibration feedback
+ * for successful scans.</p>
+ *
+ * <p>Reference: <a href="https://github.com/journeyapps/zxing-android-embedded">ZXing Android Embedded</a></p>
+ */
 public class CustomCaptureActivity extends AppCompatActivity {
     private DecoratedBarcodeView barcodeView;
     private BeepManager beepManager;
@@ -61,6 +67,11 @@ public class CustomCaptureActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Initializes the activity and configures the barcode scanner.
+     *
+     * @param savedInstanceState The previously saved instance state, if any.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +93,7 @@ public class CustomCaptureActivity extends AppCompatActivity {
 
         });
     }
+
 
     @Override
     protected void onResume() {
