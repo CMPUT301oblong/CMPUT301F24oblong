@@ -31,6 +31,7 @@ import java.util.Map;
 
 public class organizer_create_notification_activity extends AppCompatActivity {
     private String eventID;
+    private Event eventData;
     private ArrayList<Map<String, Object>> participantDocs = new ArrayList<Map<String, Object>>();
     private ArrayList<String> participantList = new ArrayList<String>();
     private FirebaseFirestore fdb;
@@ -70,7 +71,7 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         //if successful, adds notification to database, adds notification id to notificationList for entrants
         sendButton.setOnClickListener(view -> {
             Log.d("createNotif", "passed getting enabled");
-            String label = eventID+": "+newLabelText.getText().toString();
+            String label = eventData.getEventName()+": "+newLabelText.getText().toString();
             String content = newContentText.getText().toString();
             String option = notificationTargetSpinner.getItemAtPosition(notificationTargetSpinner
                     .getSelectedItemPosition()).toString();
@@ -119,6 +120,7 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         Event event = (Event) bundle.get("EVENT");
         eventID = event.getEventID();
+        eventData = new Event(eventID);
     }
 
     //gets participants to event from Firebase
