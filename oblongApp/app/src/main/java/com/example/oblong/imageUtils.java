@@ -331,26 +331,32 @@ public class imageUtils {
     public static Bitmap circularCrop(Bitmap bitmap) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
-        int size = Math.min(width, height);
+        int size = Math.min(width, height); // Determine the size of the square to crop
 
+        // Calculate the center crop region
+        int x = (width - size) / 2;
+        int y = (height - size) / 2;
+
+        // Crop the square region from the center of the original bitmap
+        Bitmap squareBitmap = Bitmap.createBitmap(bitmap, x, y, size, size);
+
+        // Create the output bitmap for the circular crop
         Bitmap output = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
 
         final Paint paint = new Paint();
         paint.setAntiAlias(true);
 
-        final Rect rect = new Rect(0, 0, size, size);
-        final RectF rectF = new RectF(rect);
-
-        // Draw circular bitmap
         float radius = size / 2f;
+
+        // Draw a circular shape on the canvas
         canvas.drawARGB(0, 0, 0, 0);
         paint.setColor(Color.BLACK);
         canvas.drawCircle(radius, radius, radius, paint);
 
-        // Apply circular mask
+        // Apply the circular mask
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rectF, paint);
+        canvas.drawBitmap(squareBitmap, 0, 0, paint);
 
         return output;
     }
