@@ -1,11 +1,26 @@
 package com.example.oblong;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.media.ExifInterface;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 /**
  * Utility class for encoding Bitmaps to Base64 strings and decoding Base64 strings back to Bitmaps.
  * for storage in Firebase since Base64 gets stored as a string
@@ -276,6 +291,89 @@ public class imageUtils {
         bitmap.setPixels(pix, 0, w, 0, 0, w, h);
 
         return (bitmap);
+    }
+
+    // Handles rotations when long images are sometimes placed in the wrong orientation
+    public static Bitmap handleImageRotation(String filePath, Bitmap bitmap) {
+        try {
+            ExifInterface exif = new ExifInterface(filePath);
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+
+            Matrix matrix = new Matrix();
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    matrix.postRotate(90);
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    matrix.postRotate(180);
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    matrix.postRotate(270);
+                    break;
+                default:
+                    return bitmap; // No rotation needed
+            }
+
+            return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap; // Return original bitmap if rotation fails
+    }
+
+    /**
+     * Applies a circular crop to the provided Bitmap.
+     *
+     * @param bitmap The Bitmap to be cropped into a circular shape.
+     * @return A circularly cropped Bitmap.
+     */
+    public static Bitmap circularCrop(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int size = Math.min(width, height);
+
+        Bitmap output = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final Paint paint = new Paint();
+        paint.setAntiAlias(true);
+
+        final Rect rect = new Rect(0, 0, size, size);
+        final RectF rectF = new RectF(rect);
+
+        // Draw circular bitmap
+        float radius = size / 2f;
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(Color.BLACK);
+        canvas.drawCircle(radius, radius, radius, paint);
+
+        // Apply circular mask
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rectF, paint);
+
+        return output;
+    }
+
+
+    /**
+     * Get the real file path from a URI.
+     *
+     * @param context The context.
+     * @param uri     The URI to query.
+     * @return The file path as a string, or null if not found.
+     */
+    public static String getRealPathFromURI(Context context, Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            String path = cursor.getString(columnIndex);
+            cursor.close();
+            return path;
+        }
+        return null;
     }
 }
 

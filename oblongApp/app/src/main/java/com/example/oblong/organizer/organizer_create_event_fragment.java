@@ -202,7 +202,12 @@ public class organizer_create_event_fragment extends Fragment {
                 if (null != imageUri) {
 
                     try {
-                        imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageUri);
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(requireContext().getContentResolver(), imageUri);
+                        // Get the real path to the image
+                        String imagePath = imageUtils.getRealPathFromURI(requireContext(), imageUri);
+
+                        // Fix orientation using `handleImageRotation`
+                        Bitmap rotatedBitmap = imageUtils.handleImageRotation(imagePath, bitmap);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
