@@ -35,6 +35,7 @@ import com.example.oblong.R;
 import com.example.oblong.organizer.AddNewFacilityDialog;
 import com.example.oblong.organizer.organizer_base_activity;
 import com.example.oblong.imageUtils;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -203,6 +204,9 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
                                 int id = n.hashCode();
                                 notificationManager.notify(id, builder.build());
                             });
+                            HashMap<String, Object> entrantUpdate = new HashMap<>();
+                            entrantUpdate.put("notificationsList", FieldValue.arrayRemove(n));
+                            db.updateDocument("entrants", user_id, entrantUpdate, v -> {});
                         }
                     }
                 });
