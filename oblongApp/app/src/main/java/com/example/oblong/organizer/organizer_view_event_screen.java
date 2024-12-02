@@ -1,14 +1,11 @@
 package com.example.oblong.organizer;
 
-import static androidx.core.content.ContentProviderCompat.requireContext;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,11 +21,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.oblong.Database;
 import com.example.oblong.Event;
 import com.example.oblong.R;
-import com.example.oblong.entrant.EntrantEventDescriptionActivity;
-import com.example.oblong.entrant.EntrantProfileEditActivity;
 import com.example.oblong.imageUtils;
 import com.example.oblong.qr_generator;
-import com.example.oblong.Database;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -77,7 +71,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
         uploadPosterButton = findViewById(R.id.activity_organizer_view_event_event_description_upload_icon);
         eventDescriptionDisplay = findViewById(R.id.activity_organizer_view_event_event_description_text);
         maxCapacityDisplay = findViewById(R.id.activity_organizer_view_event_event_description_max_capacity);
-        backButton = findViewById(R.id.imageView2);
+        backButton = findViewById(R.id.backArrow);
         qrCode = findViewById(R.id.activity_organizer_view_event_event_description_qr_code_display);
         poster = findViewById(R.id.activity_organizer_viewevent_event_description_poster);
         notificationButton = findViewById(R.id.activity_organizer_view_event_event_description_setup_notification_button);
