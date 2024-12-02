@@ -116,6 +116,5 @@ public class NotificationUnitTest {
         db.addNotification("NotificationUnitTest", "NotificationUnitTestEvent", "NotificationUnitTestContent",
                 "NotificationUnitTestTitle", "NotificationUnitTestTarget",
                 Arrays.asList("NotificationUnitTestEntrant").toArray(new String[0]));
-
     }
 }
