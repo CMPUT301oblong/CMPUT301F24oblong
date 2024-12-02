@@ -188,7 +188,9 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
                                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                                         .setSmallIcon(R.mipmap.ic_launcher_round)
                                         .setContentTitle(title)
-                                        .setContentText(content)
+                                        //.setContentText(content)
+                                        .setStyle(new NotificationCompat.BigTextStyle()
+                                                .bigText(content))
                                         .setPriority(NotificationCompat.PRIORITY_MAX)
                                         .setAutoCancel(true);
 

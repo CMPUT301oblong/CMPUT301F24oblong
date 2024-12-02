@@ -70,7 +70,7 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         //if successful, adds notification to database, adds notification id to notificationList for entrants
         sendButton.setOnClickListener(view -> {
             Log.d("createNotif", "passed getting enabled");
-            String label = newLabelText.getText().toString();
+            String label = eventID+": "+newLabelText.getText().toString();
             String content = newContentText.getText().toString();
             String option = notificationTargetSpinner.getItemAtPosition(notificationTargetSpinner
                     .getSelectedItemPosition()).toString();
@@ -96,7 +96,7 @@ public class organizer_create_notification_activity extends AppCompatActivity {
                         break;
                 }
                 //participants contains names of participants with status from dropdown (aka target)
-                String[] participants = participantList.toArray(new String[participantList.size()]);
+                String[] participants = participantList.toArray(new String[0]);
                 String newNotifID = notifications.document().getId();
 
                 //add notification to database
