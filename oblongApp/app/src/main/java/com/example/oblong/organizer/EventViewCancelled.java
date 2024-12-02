@@ -25,6 +25,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Activity for viewing cancelled participants of an event in the organizer's section.
+ *
+ * <p>This activity displays a list of attendees whose participation status is either
+ * "cancelled" or "canceled" for a specific event. It retrieves event and participant
+ * information from Firestore and allows the organizer to view details and close the activity.</p>
+ *
+ * <p>The layout includes a list of attendees, the event's name, and a cancel button to exit
+ * the screen.</p>
+ */
 public class EventViewCancelled extends AppCompatActivity{
     private String eventID;
     private TextView eventName;
@@ -37,6 +47,11 @@ public class EventViewCancelled extends AppCompatActivity{
     private String combined_name;
     private Database myDb;
 
+    /**
+     * Initializes the activity, setting up the UI and retrieving data.
+     *
+     * @param savedInstanceState A {@link Bundle} containing the activity's previously saved state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +89,13 @@ public class EventViewCancelled extends AppCompatActivity{
             }
         });
     }
+    /**
+     * Fetches the list of attendees from Firestore whose participation status is "cancelled" or "canceled".
+     *
+     * <p>This method queries the "participants" collection in Firestore, filters by the event ID
+     * and status, and retrieves details of each attendee, including their name and status. The
+     * fetched data is then added to the list of attendees and displayed in the ListView.</p>
+     */
     private void fetchAttendees() {
         // check participants are a part of event and their status is selected or accepted
         db.collection("participants").whereEqualTo("event", eventID).whereIn("status", Arrays.asList("cancelled", "canceled")).get().addOnCompleteListener(task -> {

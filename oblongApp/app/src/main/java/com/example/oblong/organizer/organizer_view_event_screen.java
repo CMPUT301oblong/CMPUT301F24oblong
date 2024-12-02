@@ -190,7 +190,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
         });
 
     }
-
+  
     /**
      * {@code chooseParticipants} is called in {@link #onCreate(Bundle)}
      * fetches data from the Firebase for the participant's data and their entrant data
@@ -267,6 +267,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
      * <p>This method selects all participants whose status is "waitlisted" or "selected" and updates their
      * status to "cancelled". A notification is created and added to the database, and a String Array of the
      * cancelled entrants is created. The participants' entrant documents are updated with the notification id</p>
+
      */
     private void cancelEntrants(String eventId) {
         List<String> cancelledList = new ArrayList<>();
@@ -326,6 +327,9 @@ public class organizer_view_event_screen extends AppCompatActivity {
         qrCode.setImageBitmap(code);
     }
 
+    /**
+     * Prompts the organizer to select an image file to upload as the event's poster.
+     */
     private void askForImage(){
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -336,6 +340,14 @@ public class organizer_view_event_screen extends AppCompatActivity {
 
     }
 
+    /**
+     * Handles the result of activities launched from this activity, such as selecting an image for the poster.
+     * Updates the event's poster in the database and displays it in the UI.
+     *
+     * @param requestCode The request code identifying the launched activity.
+     * @param resultCode  The result code returned by the launched activity.
+     * @param data        The intent containing result data from the launched activity.
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -378,6 +390,12 @@ public class organizer_view_event_screen extends AppCompatActivity {
         }
     }
 
+    /**
+     * Provides the base context for the activity.
+     * Used internally for resolving context-related tasks.
+     *
+     * @return The base context of the activity.
+     */
     private Context requireContext() {
         return getBaseContext();
     }
