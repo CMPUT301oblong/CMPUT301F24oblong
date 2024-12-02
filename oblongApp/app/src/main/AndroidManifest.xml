@@ -82,6 +82,9 @@
             android:name=".organizer.organizer_map"
             android:exported="true" />
         <activity
+            android:name=".organizer.EventViewCancelled"
+            android:exported="true" />
+        <activity
             android:name=".organizer.EventViewAttendees"
             android:exported="true" />
         <activity
