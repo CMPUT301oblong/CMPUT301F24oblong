@@ -34,6 +34,7 @@ public class AttendeesArrayAdapter extends BaseAdapter{
         return attendees.get(position);
     }
 
+
     @Override
     public long getItemId(int position) {
         return position;

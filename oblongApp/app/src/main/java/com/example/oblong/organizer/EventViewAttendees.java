@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.oblong.Database;
 import com.example.oblong.Event;
 import com.example.oblong.R;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -34,6 +35,7 @@ public class EventViewAttendees extends AppCompatActivity{
     private AttendeesArrayAdapter attendeesAdapter;
     private String event_name;
     private String combined_name;
+    private Database myDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class EventViewAttendees extends AppCompatActivity{
 
 
         db = FirebaseFirestore.getInstance();
-
+        myDb = new Database();
 
         Bundle bundle = getIntent().getExtras();
         Event event = (Event) bundle.get("EVENT");
@@ -77,16 +79,27 @@ public class EventViewAttendees extends AppCompatActivity{
         db.collection("participants").whereEqualTo("event", eventID).whereIn("status", Arrays.asList("selected", "attending")).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
-                    String entrantName = document.getString("entrant");
+                    String entrantId = document.getString("entrant");
                     String status = document.getString("status");
-                    if (entrantName != null && status != null) {
-                        Map<String, String> attendee = new HashMap<>();
-                        attendee.put("name", entrantName);
-                        attendee.put("status", status);
-                        attendees.add(attendee);
-                    }
+
+                    
+                    myDb.getUser(entrantId, participantResult->{
+                        if (participantResult != null) {
+                            String entrantName = (String) participantResult.get("name");
+                            if (entrantName != null && status != null) {
+                                Map<String, String> attendee = new HashMap<>();
+                                attendee.put("name", entrantName);
+                                attendee.put("status", status);
+                                attendees.add(attendee);
+                                attendeesAdapter.notifyDataSetChanged();
+
+                            }
+                        }else{
+                            Log.d("a", "AWFAWFAWFAWFAWFA: USER does NOT EXIST");
+                        }
+                    });
+
                 }
-                attendeesAdapter.notifyDataSetChanged();
             } else {
                 Log.d("EventViewAttendees", "Couldn't fetch attendees");
             }

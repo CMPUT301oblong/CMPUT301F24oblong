@@ -3,10 +3,13 @@ package com.example.oblong.organizer;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -49,6 +52,8 @@ public class organizer_map extends AppCompatActivity {
         setContentView(R.layout.map_organizer);
         db = new Database();
 
+        ImageView backArrow = findViewById(R.id.backArrow);
+
         map = findViewById(R.id.osmmap);
         map.setTileSource(TileSourceFactory.MAPNIK);
         map.setBuiltInZoomControls(false);
@@ -61,6 +66,11 @@ public class organizer_map extends AppCompatActivity {
 
         // add entrants to the map
         addEntrants();
+
+
+        backArrow.setOnClickListener(view ->{
+            this.onBackPressed();
+        });
     }
 
     /**
