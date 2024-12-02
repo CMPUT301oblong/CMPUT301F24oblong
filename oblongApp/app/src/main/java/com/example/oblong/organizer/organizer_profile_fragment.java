@@ -26,6 +26,13 @@ import com.example.oblong.entrant.EntrantBaseActivity;
 import com.example.oblong.entrant.EntrantProfileEditActivity;
 import com.example.oblong.imageUtils;
 
+/**
+ * Fragment class for displaying organizer profile data.
+ *
+ * <p>This fragment retrieves user profile information and facility information,
+ * using Firebase to fetch relevant data. It then populates views with this information
+ * for display.</p>
+ */
 public class organizer_profile_fragment extends Fragment {
 
     private String user_id;
@@ -50,6 +57,20 @@ public class organizer_profile_fragment extends Fragment {
                 }
             });
 
+    /**
+     * This is called to have the fragment instantiate its user interface view.
+     * Fills in the layout and initializes the UI elements.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return The View for the fragment's UI
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -93,7 +114,11 @@ public class organizer_profile_fragment extends Fragment {
         return view;
     }
 
-
+    /**
+     * {@code fetchUserProfileData} is called in {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
+     * fetches data from the Firebase for the user's profile data
+     * fetches data from the Firebase for the facility's data
+     */
     private void fetchUserProfileData() {
         Database.getCurrentUser(userId -> {
             if (userId != null) {
