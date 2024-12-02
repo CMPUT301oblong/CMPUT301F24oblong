@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_weight="0"
+            android:background="#00FFFFFF"
+            app:srcCompat="@drawable/new_back_arrow" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:paddingStart="20dp"
+            android:paddingRight="20dp"
+            android:text="Event Details"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:clipToPadding="true">
+
+        <!--    Bottom Sheet -->
+        <ImageView
+            android:id="@+id/eventDetailsPoster"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="top"
+            android:scaleType="centerCrop"
+            android:src="@drawable/arrow_back" />
+
+
+        <LinearLayout
+            android:id="@+id/bottomSheet"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/event_card_background"
+            android:backgroundTint="@color/background"
+            android:clipToOutline="true"
+            android:orientation="vertical"
+            android:padding="15dp"
+            app:behavior_peekHeight="500dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+            <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top" />
+
+            <!--    <com.google.android.material.bottomsheet.BottomSheetDragHandleView-->
+            <!--        android:layout_width="match_parent"-->
+            <!--        android:layout_height="wrap_content"/>-->
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/entrant_event_list_item_event_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="Event Title lorem ipsum"
+                        android:textColor="@color/white"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="13dp"
+                        android:orientation="horizontal"
+                        android:paddingStart="11dp"
+                        android:paddingEnd="11dp">
+
+                        <ImageView
+                            android:id="@+id/entrant_event_list_item_calender"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="Calender Image for design purposes"
+                            app:srcCompat="@drawable/calendar_nav_icon"
+                            app:tint="#676FFF" />
+
+                        <TextView
+                            android:id="@+id/drawDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="19dp"
+                            android:text="dd mont year"
+                            android:textColor="#8B8B8B"
+                            android:textSize="16dp" />
+
+                        <ImageView
+                            android:id="@+id/entrant_event_list_item_clock"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="Calender Image for design purposes"
+                            app:srcCompat="@drawable/clock"
+                            app:tint="#676FFF" />
+
+                        <TextView
+                            android:id="@+id/drawTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="6dp"
+                            android:text="X:XX pm"
+                            android:textColor="#8B8B8B"
+                            android:textSize="16dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Event Description"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/eventDescription"
+                android:layout_width="match_parent"
+                android:layout_height="500dp"
+                android:layout_margin="10dp"
+                android:ellipsize="end"
+                android:text="Event Description"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+
+        <!-- Floating buttons -->
+        <LinearLayout
+            android:id="@+id/floating_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="30dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="16dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancel_button"
+                android:layout_width="44dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="12dp"
+                android:drawablePadding="0dp"
+                android:gravity="center"
+                android:textColor="@color/background"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/accent"
+                app:icon="@drawable/close_x"
+                app:iconGravity="textEnd"
+                app:iconPadding="0dp"
+                app:iconTint="@color/background" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/proceed_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center|left"
+                android:text="JOIN NOW"
+                android:textColor="@color/background"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/accent"
+                app:icon="@drawable/baseline_arrow_right_24"
+                app:iconGravity="textEnd"
+                app:iconTint="@color/background" />
+
+        </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</LinearLayout>

@@ -166,6 +166,29 @@ public class Event implements Serializable {
         DateFormat closeDateFormat = new SimpleDateFormat(datePattern);
         return closeDateFormat.format(this.eventCloseDate);
     }
+    public String getEventCloseLong() {
+        String datePattern = "dd MMM yyyy";
+        DateFormat closeDateFormat = new SimpleDateFormat(datePattern);
+        return closeDateFormat.format(this.eventCloseDate);
+    }
+
+    public String getEventCloseMon() {
+        String datePattern = "MMM";
+        DateFormat closeDateFormat = new SimpleDateFormat(datePattern);
+        return closeDateFormat.format(this.eventCloseDate);
+    }
+
+    public String getEventCloseDay() {
+        String datePattern = "dd";
+        DateFormat closeDateFormat = new SimpleDateFormat(datePattern);
+        return closeDateFormat.format(this.eventCloseDate);
+    }
+
+    public String getEventCloseTime() {
+        String timePattern = "HH:mm";
+        DateFormat closeTimeFormat = new SimpleDateFormat(timePattern);
+        return closeTimeFormat.format(this.eventCloseDate);
+    }
 
     /**
      * The {@code setEventCloseDate} method sets the event close date
