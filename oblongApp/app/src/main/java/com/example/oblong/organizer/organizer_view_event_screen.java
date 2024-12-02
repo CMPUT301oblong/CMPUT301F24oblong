@@ -50,6 +50,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
     private Button notificationButton;
     private Button waitlistButton;
     private Button attendeesButton;
+    private Button cancelledButton;
     private Button drawButton;
     private Button cancelButton;
     private Button mapButon;
@@ -84,6 +85,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
         drawButton = findViewById(R.id.draw_button);
         cancelButton = findViewById(R.id.cancel_entrants_button);
         mapButon = findViewById(R.id.view_map);
+        cancelledButton = findViewById(R.id.view_cancelled);
 
 
         Intent intent = getIntent();
@@ -122,6 +124,15 @@ public class organizer_view_event_screen extends AppCompatActivity {
 
         attendeesButton.setOnClickListener(v -> {
             Intent intentAttendees = new Intent(organizer_view_event_screen.this, EventViewAttendees.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("EVENT", event);
+            intentAttendees.putExtras(bundle);
+
+            startActivity(intentAttendees);
+        });
+
+        cancelledButton.setOnClickListener(v -> {
+            Intent intentAttendees = new Intent(organizer_view_event_screen.this, EventViewCancelled.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("EVENT", event);
             intentAttendees.putExtras(bundle);

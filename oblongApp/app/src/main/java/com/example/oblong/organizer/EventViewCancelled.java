@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EventViewAttendees extends AppCompatActivity{
+public class EventViewCancelled extends AppCompatActivity{
     private String eventID;
     private TextView eventName;
     private FirebaseFirestore db;
@@ -59,10 +59,10 @@ public class EventViewAttendees extends AppCompatActivity{
         if (event != null) {
             eventID = event.getEventID();
             event_name = event.getEventName();
-            combined_name = event_name + " Attendees";
+            combined_name = event_name + " Cancelled";
             eventName.setText(combined_name);
         } else {
-            Log.d("EventViewAttendees", "Event object is null");
+            Log.d("EventViewCancelled", "Event object is null");
         }
 
         fetchAttendees();
@@ -76,7 +76,7 @@ public class EventViewAttendees extends AppCompatActivity{
     }
     private void fetchAttendees() {
         // check participants are a part of event and their status is selected or accepted
-        db.collection("participants").whereEqualTo("event", eventID).whereIn("status", Arrays.asList("selected", "attending")).get().addOnCompleteListener(task -> {
+        db.collection("participants").whereEqualTo("event", eventID).whereIn("status", Arrays.asList("cancelled", "canceled")).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     String entrantId = document.getString("entrant");

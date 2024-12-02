@@ -213,7 +213,7 @@
                     <LinearLayout
                         android:id="@+id/activity_organizer_view_event_event_description_button_layout_1"
                         android:layout_width="match_parent"
-                        android:layout_height="54dp"
+                        android:layout_height="49dp"
                         android:layout_marginHorizontal="20dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
@@ -231,7 +231,7 @@
 
                         <View
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="36dp"
                             android:layout_weight="1" />
 
 
@@ -248,7 +248,7 @@
                     <LinearLayout
                         android:id="@+id/activity_organizer_view_event_event_description_button_layout_2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginHorizontal="20dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
@@ -275,6 +275,37 @@
                             android:layout_gravity="end"
                             android:text="View Waitlist"
                             android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/spacer2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="20dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+
+                        <Button
+                            android:id="@+id/view_cancelled"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:text="View Cancelled"
+                            android:textSize="14sp" />
+
+
+                        <View
+                            android:id="@+id/view"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
