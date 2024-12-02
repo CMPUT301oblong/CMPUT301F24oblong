@@ -50,7 +50,7 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
      *
      * <p>In this method, the activity's layout is set, and window insets are applied to ensure
      * that the content is displayed edge-to-edge. It also retrieves event data from the intent's
-     * extras and populates the UI with this data. The join and cancel buttons are set up to
+     * extras and populates the UI with this data. The join and cancel buttons are set up too
      * perform respective actions when clicked.</p>
      *
      * @param savedInstanceState The saved instance state containing the activity's previously
@@ -88,12 +88,13 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
         Timestamp fireDate = (Timestamp) event.get("dateAndTime");
         String img = (String) event.get("poster");
 
-        if (event.get("locationRequired") != null && event.get("locationRequired").equals("1")){
-            locationRequired = true;
-            Toast.makeText(this, "Location permissions are required to join this event", Toast.LENGTH_SHORT).show();
-        } else {
-            locationRequired = false;
-        }
+        //TODO: check if location is required
+//        if (event.get("locationRequired") != null && event.get("locationRequired").equals("1")){
+//            locationRequired = true;
+//            Toast.makeText(this, "Location permissions are required to join this event", Toast.LENGTH_SHORT).show();
+//        } else {
+        locationRequired = false;
+//        }
 
         date.setText(fireDate.toDate().toString());
         if(Objects.equals(img, "image")){
@@ -106,6 +107,15 @@ public class EntrantJoinEventActivity extends AppCompatActivity {
         // cancel button listener
         cancelButton.setOnClickListener(v -> {
             startActivity(new Intent(EntrantJoinEventActivity.this, EntrantBaseActivity.class));
+            // get current user (asynchronous)
+            db.getCurrentUser(userId -> {
+                String participantId = userId + event_id;
+                String status = "cancelled";
+
+                // Add user as a participant
+                db.addParticipant(participantId, userId, event_id, entrantLocation, status);
+                startActivity(new Intent(EntrantJoinEventActivity.this, EntrantBaseActivity.class));
+            });
         });
 
         // join button listener

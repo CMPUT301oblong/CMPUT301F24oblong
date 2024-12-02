@@ -56,7 +56,7 @@ public class AddNewFacilityDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.fragment_new_user, null);
-        TextView title = view.findViewById(R.id.textView8);
+        TextView title = view.findViewById(R.id.dialogTitle);
         EditText name = view.findViewById(R.id.editTextText);
         EditText email = view.findViewById(R.id.editTextTextEmailAddress);
         EditText phone = view.findViewById(R.id.editTextPhone);

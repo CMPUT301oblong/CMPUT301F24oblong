@@ -5,10 +5,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.oblong.Database;
@@ -32,55 +34,34 @@ import java.util.Set;
  * using Firebase to fetch relevant data. It then populates a list view
  * with these events for display.</p>
  */
-public class EntrantMyEventsFragment extends Fragment {
+public class EntrantMyEventsFragment extends AppCompatActivity {
 
     private ListView eventList;
     private ArrayList<Event> eventsDataList;
-    private EntrantMyEventsArrayAdapter adapter;
+    private EntrantVerticalEventsArrayAdapter adapter;
     private FirebaseFirestore db;
     private CollectionReference participantsRef;
     private CollectionReference eventsRef;
     private String user_id;
     private ListenerRegistration participantListener;
 
-    /**
-     * Inflates the fragment's layout.
-     *
-     * @param inflater The LayoutInflater object used to inflate views.
-     * @param container The parent view that the fragment's UI should be attached to.
-     * @param savedInstanceState Bundle containing the fragment's previously saved state, if any.
-     * @return The View for the fragment's UI.
-     */
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_my_events, container, false);
-    }
-
-
-    /**
-     * Called immediately after {@link #onCreateView} has returned.
-     *
-     * <p>This method initializes Firebase Firestore references and sets up
-     * the ListView adapter for displaying events. It also retrieves the current user's ID
-     * and starts fetching the user's participating events using a snapshot listener.</p>
-     *
-     * @param view The View returned by {@link #onCreateView}.
-     * @param savedInstanceState The saved instance state bundle.
-     */
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_my_events);
 
         db = FirebaseFirestore.getInstance();
         participantsRef = db.collection("participants");
         eventsRef = db.collection("events");
 
-        eventList = view.findViewById(R.id.my_events_list);
+        eventList = findViewById(R.id.my_events_list);
         eventsDataList = new ArrayList<>();
-        adapter = new EntrantMyEventsArrayAdapter(getContext(), eventsDataList);
+        adapter = new EntrantVerticalEventsArrayAdapter(this, eventsDataList);
         eventList.setAdapter(adapter);
+
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> {
+            finish();
+        });
 
         Database.getCurrentUser(user_id -> {
             if (user_id != null) {
@@ -99,8 +80,8 @@ public class EntrantMyEventsFragment extends Fragment {
    * participant updates when the fragment's view is destroyed.</p>
    */
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         if (participantListener != null) {
             participantListener.remove();
         }
@@ -160,6 +141,7 @@ public class EntrantMyEventsFragment extends Fragment {
                         event.setEventName(eventDocumentSnapshot.getString("name"));
                         event.setEventCloseDate(eventDocumentSnapshot.getDate("dateAndTime"));
                         event.setPoster(eventDocumentSnapshot.getString("poster"));
+                        event.setStatus(status);
                         eventsDataList.add(event);
                         adapter.notifyDataSetChanged();
                     }

@@ -10,8 +10,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.oblong.R;
 import com.example.oblong.qr_scanner;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 /**
@@ -41,17 +39,21 @@ public class EntrantBaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ChipNavigationBar bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setMenuResource(R.menu.new_entrant_nav_menu);
 
         // Set up listener for navigation bar
         bottomNavigationView.setOnItemSelectedListener(id -> {
             Fragment selectedFragment = null;
 
             // TODO: Change MYevents and allevents to the same fragment eventually
-            if (id == R.id.MyEvents) {
-                selectedFragment = new EntrantMyEventsFragment();
-            } else if (id == R.id.AllEvents) {
-                selectedFragment = new EntrantUpcomingEventsFragment();
+            if (id == R.id.EventBrowser) {
+//                selectedFragment = new EntrantMyEventsFragment();
+                selectedFragment = new EntrantEventBrowser();
             } else if (id == R.id.Camera) {
+                // Set item selected to null
+                bottomNavigationView.setItemSelected(R.id.Camera, false);
+//                bottomNavigationView.setItemSelected(R.id.Profile, true);
+//                selectedFragment = new EntrantProfileScreenFragment();
                 startActivity(new Intent(this, qr_scanner.class));
                 return; // Avoid replacing fragment after starting activity
             } else if (id == R.id.Profile) {
@@ -75,26 +77,4 @@ public class EntrantBaseActivity extends AppCompatActivity {
         }
     }
 
-    private final NavigationBarView.OnItemSelectedListener navListener =
-            (BottomNavigationView.OnNavigationItemSelectedListener) item -> {
-                Fragment selectedFragment = null;
-
-                int itemId = item.getItemId();
-                if (itemId == R.id.myEvents) {
-                    selectedFragment = new EntrantMyEventsFragment();
-                } else if (itemId == R.id.allEvents) {
-                    selectedFragment = new EntrantUpcomingEventsFragment();
-                } else if (itemId == R.id.camera) {
-                    startActivity(new Intent(this, qr_scanner.class));
-                } else if (itemId == R.id.profile) {
-                    selectedFragment = new EntrantProfileScreenFragment();
-                }
-
-                // Replace the current fragment with the selected one
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, selectedFragment)
-                        .commit();
-
-                return true;
-            };
 }

@@ -150,6 +150,7 @@ public class organizer_create_event_fragment extends Fragment {
 
 
 
+
                 //When we click this we want to take all this info and put it into database
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 

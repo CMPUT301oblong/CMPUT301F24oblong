@@ -26,17 +26,26 @@ import com.example.oblong.entrant.EntrantBaseActivity;
 import com.example.oblong.entrant.EntrantProfileEditActivity;
 import com.example.oblong.imageUtils;
 
+/**
+ * Fragment class for displaying organizer profile data.
+ *
+ * <p>This fragment retrieves user profile information and facility information,
+ * using Firebase to fetch relevant data. It then populates views with this information
+ * for display.</p>
+ */
 public class organizer_profile_fragment extends Fragment {
 
     private String user_id;
 
     private TextView name;
-    private TextView email;
-    private TextView phone;
+    private TextView type;
+    private Button email;
+    private Button phone;
     private TextView facility_name;
-    private TextView facility_email;
-    private TextView facility_phoneno;
+    private Button facility_email;
+    private Button facility_phoneno;
     private ImageView profilePic;
+    private ImageView profilePicBackground;
     ImageButton editProfileButton;
     ImageButton editFacilityButton;
     Button entrantViewButton;
@@ -50,6 +59,20 @@ public class organizer_profile_fragment extends Fragment {
                 }
             });
 
+    /**
+     * This is called to have the fragment instantiate its user interface view.
+     * Fills in the layout and initializes the UI elements.
+     *
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return The View for the fragment's UI
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -58,12 +81,14 @@ public class organizer_profile_fragment extends Fragment {
 
         // Initialize UI elements using the `view` object
         name = view.findViewById(R.id.profile_name);
+        type = view.findViewById(R.id.profile_type);
         email = view.findViewById(R.id.profile_email);
         phone = view.findViewById(R.id.profile_phoneno);
         facility_name = view.findViewById(R.id.facility_name);
         facility_email = view.findViewById(R.id.facility_email);
         facility_phoneno = view.findViewById(R.id.facility_phoneno);
         profilePic = view.findViewById(R.id.imageView);
+        profilePicBackground = view.findViewById(R.id.profile_picture_background);
         editProfileButton = view.findViewById(R.id.profile_edit_button);
         editFacilityButton = view.findViewById(R.id.facility_edit_button);
         entrantViewButton = view.findViewById(R.id.delete_user_button);
@@ -93,7 +118,11 @@ public class organizer_profile_fragment extends Fragment {
         return view;
     }
 
-
+    /**
+     * {@code fetchUserProfileData} is called in {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
+     * fetches data from the Firebase for the user's profile data
+     * fetches data from the Firebase for the facility's data
+     */
     private void fetchUserProfileData() {
         Database.getCurrentUser(userId -> {
             if (userId != null) {
@@ -107,6 +136,8 @@ public class organizer_profile_fragment extends Fragment {
                             Bitmap profileBitmap = imageUtils.base64ToBitmap((String) user.get("profilePhoto"));
                             if (profileBitmap != null) {
                                 profilePic.setImageBitmap(profileBitmap);
+                                profilePicBackground.setImageBitmap(imageUtils.fastblur(profileBitmap, 0.1f, 10));
+                                type.setText(user.get("type").toString().toUpperCase());
                                 name.setText((CharSequence) user.get("name"));
                                 email.setText((CharSequence) user.get("email"));
                                 phone.setText((CharSequence) (user.get("phone") == null ? "No Phone # Provided" : user.get("phone")));

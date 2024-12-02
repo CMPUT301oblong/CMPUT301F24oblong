@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.oblong.entrant.EntrantBaseActivity;
 import com.example.oblong.entrant.EntrantEventDescriptionActivity;
+import com.example.oblong.entrant.EntrantEventDetails;
 import com.example.oblong.entrant.EntrantJoinEventActivity;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -45,6 +46,7 @@ public class qr_scanner extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_CAMERA = 1;
     private static final Database db = new Database();
+    String status;
 
 
 
@@ -102,7 +104,8 @@ public class qr_scanner extends AppCompatActivity {
                 this.onBackPressed();
 
             } else {
-                handleScannedData(result.getContents());
+                // Retrieve the eventID from Firestore via the qrID stored in the qr code before calling handleScannedData
+                retrieveEventID(result.getContents(), eventID -> handleScannedData(eventID));
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -125,6 +128,7 @@ public class qr_scanner extends AppCompatActivity {
                 List<DocumentSnapshot> results = task.getDocuments();
                 if (!results.isEmpty()) {
                     if (Objects.equals(results.get(0).getString("status"), "attending") || Objects.equals(results.get(0).getString("status"), "waitlisted") || Objects.equals(results.get(0).getString("status"), "selected")) {
+                        status = results.get(0).getString("status");
                         isAttending.set(true);
                     }
                 }
@@ -134,6 +138,32 @@ public class qr_scanner extends AppCompatActivity {
         });
 
     }
+
+    private void retrieveEventID(String qrID, OnEventIDRetrievedListener listener) {
+        FirebaseFirestore datab = FirebaseFirestore.getInstance();
+        datab.collection("events")
+                .whereEqualTo("qrID", qrID) // Search by qrID
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        String eventID = querySnapshot.getDocuments().get(0).getId(); // Get the document name
+                        listener.onEventIDRetrieved(eventID); // Pass the eventID to the listener
+                    } else {
+                        Toast.makeText(this, "Event not found for QR ID", Toast.LENGTH_SHORT).show();
+                        finish(); // End the activity if the event is not found
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Database", "Error retrieving event by QR ID", e);
+                    Toast.makeText(this, "Error retrieving event details", Toast.LENGTH_SHORT).show();
+                    finish(); // End the activity if an error occurs
+                });
+    }
+    public interface OnEventIDRetrievedListener {
+        void onEventIDRetrieved(String eventID);
+    }
+
+
 
     /**
      * Retrieves event details from Firestore based on the event's unique ID.
@@ -165,7 +195,8 @@ public class qr_scanner extends AppCompatActivity {
                         List allWaitlistedUsers = task.getDocuments();
                         if((eventWaitlistCapacity == null || allWaitlistedUsers.size()+1 <= eventWaitlistCapacity) && (currentDate.compareTo(eventTimestamp.toDate()) < 0)){
                             Intent intent = new Intent(this, EntrantJoinEventActivity.class);
-                            launchActivity(event, intent, results);
+                            Log.d("qr_Scanner_event_id", event);
+                            launchActivity(event, intent, results, eventData);
 
                         }else{
                             if(currentDate.compareTo(eventTimestamp.toDate()) > 0){
@@ -180,7 +211,7 @@ public class qr_scanner extends AppCompatActivity {
 
 
             }else{
-                Intent intent = new Intent(this, EntrantEventDescriptionActivity.class);
+                Intent intent = new Intent(this, EntrantEventDetails.class);
                 Event eventObject = new Event(event);
                 eventObject.setEventName((String)results.get("name"));
                 eventObject.setEventID(event);
@@ -188,6 +219,7 @@ public class qr_scanner extends AppCompatActivity {
                 eventObject.setEventDescription((String)results.get("description"));
                 Timestamp eventDate = (Timestamp) results.get("dateAndTime");
                 eventObject.setEventCloseDate(eventDate.toDate());
+                eventObject.setStatus(status);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("EVENT", eventObject);
                 intent.putExtras(bundle);
@@ -197,9 +229,19 @@ public class qr_scanner extends AppCompatActivity {
         });
     }
 
-    private void launchActivity(String event, Intent intent, HashMap<String, Object> results){
+    private void launchActivity(String event, Intent intent, HashMap<String, Object> results, DocumentSnapshot eventData){
+        Event eventObject = new Event(eventData.getId());
+        eventObject.setEventName(eventData.getString("name"));
+        eventObject.setEventCloseDate(eventData.getDate("dateAndTime"));
+        eventObject.setPoster(eventData.getString("poster"));
+        eventObject.setEventID(event);
+        eventObject.setEventDescription(eventData.getString("description"));
+        eventObject.setStatus("NA");
+
+
         Bundle bundle = new Bundle();
         results.put("eventID", event);
+        bundle.putSerializable("EVENT", eventObject);
         bundle.putSerializable("event", results);
         intent.putExtras(bundle);
         if (results.containsKey("location")) {
