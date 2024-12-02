@@ -157,6 +157,7 @@ public class EntrantEventDetails extends AppCompatActivity {
             if(status.equals("NA")) {
                 Log.d("button", "NA button clicked");
                 // Handle join event
+                // TODO: Add join event logic here, and make changes in QR scanner to redirect to this page
             }
 
             // If Attending, then Leave Event
