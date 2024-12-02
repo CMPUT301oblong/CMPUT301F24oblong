@@ -40,6 +40,10 @@
         <activity
             android:name=".organizer.organizer_view_event_screen"
             android:exported="false" />
+        <activity android:name=".entrant.EntrantMyEventsFragment"
+            android:exported="false" />
+        <activity android:name=".entrant.EntrantUpcomingEventsFragment"
+            android:exported="false"/>
         <activity
             android:name=".organizer.organizer_create_notification_activity"
             android:exported="false" />

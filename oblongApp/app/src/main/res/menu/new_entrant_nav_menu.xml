@@ -2,14 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/MyEvents"
+    <item android:id="@+id/EventBrowser"
         android:icon="@drawable/calendar_nav_icon"
-        android:title="My Events"
-        app:cnb_iconColor="@color/white"
-        app:cnb_backgroundColor="@color/accent"/>
-    <item android:id="@+id/AllEvents"
-        android:icon="@drawable/calendar_nav_icon"
-        android:title="All Events"
+        android:title="Events"
         app:cnb_iconColor="@color/white"
         app:cnb_backgroundColor="@color/accent"/>
     <item android:id="@+id/Camera"

@@ -5,10 +5,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.oblong.Database;
@@ -29,7 +31,7 @@ import java.util.Set;
  * {@code EntrantUpcomingEventsFragment} This class handles the upcoming events screen for the entrant
  * which displays all the upcoming events for the current user.
  */
-public class EntrantUpcomingEventsFragment extends Fragment {
+public class EntrantUpcomingEventsFragment extends AppCompatActivity {
 
     private ListView eventList;
     private ArrayList<Event> eventsDataList;
@@ -40,44 +42,24 @@ public class EntrantUpcomingEventsFragment extends Fragment {
     private String user_id;
     private ListenerRegistration participantListener;
 
-    /**
-     * {@code onCreateView} is called to have the fragment instantiate its user interface view.
-     * @param inflater The LayoutInflater object that can be used to inflate
-     * any views in the fragment,
-     * @param container If non-null, this is the parent view that the fragment's
-     * UI should be attached to.  The fragment should not add the view itself,
-     * but this can be used to generate the LayoutParams of the view.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
-     *
-     * @return inflater turns the layout inta a view
-     */
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_entrant_event_list, container, false);
-    }
-
-    /**
-     * {@code onViewCreated} is called after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
-     * Calls events that the user is a part of from Firebase.
-     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
-     */
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_entrant_event_list);
 
         db = FirebaseFirestore.getInstance();
         participantsRef = db.collection("participants");
         eventsRef = db.collection("events");
 
-        eventList = view.findViewById(R.id.activity_entrant_all_events_list);
+        eventList = findViewById(R.id.activity_entrant_all_events_list);
         eventsDataList = new ArrayList<>();
-        adapter = new EntrantAllEventsArrayAdapter(getContext(), eventsDataList);
+        adapter = new EntrantAllEventsArrayAdapter(EntrantUpcomingEventsFragment.this, eventsDataList);
         eventList.setAdapter(adapter);
+
+        ImageButton back_button = findViewById(R.id.backButton);
+
+        back_button.setOnClickListener(v -> {
+            finish();
+        });
 
         Database.getCurrentUser(user_id -> {
             if (user_id != null) {
@@ -89,6 +71,7 @@ public class EntrantUpcomingEventsFragment extends Fragment {
         });
     }
 
+
   /**
    * Cleans up resources when the view is destroyed.
    *
@@ -96,8 +79,8 @@ public class EntrantUpcomingEventsFragment extends Fragment {
    * participant updates when the fragment's view is destroyed.</p>
    */
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         if (participantListener != null) {
             participantListener.remove();
         }

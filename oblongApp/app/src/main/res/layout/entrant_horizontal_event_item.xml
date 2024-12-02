@@ -2,6 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="200dp"
     android:layout_height="160dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
     android:background="@drawable/event_card_background"
     android:backgroundTint="#d9d9d9"
     android:clipToOutline="true">
