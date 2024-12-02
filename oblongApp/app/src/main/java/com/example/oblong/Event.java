@@ -2,18 +2,17 @@ package com.example.oblong;
 
 import android.util.Log;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Document;
 
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -121,6 +120,22 @@ public class Event implements Serializable {
                 int selectedUser = rand.nextInt(amountOfWaitlisted);
                 String documentID = allWaitlisted.get(selectedUser).getId();
                 db.collection("participants").document(documentID).update("status", "selected");
+
+                //get new selected entrant 
+                String entrant = (String) db.collection("participants").document(documentID).get().getResult().get("entrant");
+
+                //create selected notification
+                Database tempD = new Database();
+                String newNotifIDSelected = db.collection("notifications").document().getId();
+                String label = this.eventName+": Congratulations! You've been selected!";
+                String content = "Congratulations on being selected to attend our event! Please accept your invitation " +
+                        "by visiting your \"Events\" tab and viewing the details for our event.";
+                tempD.addNotification(newNotifIDSelected, this.eventID, content, label, "Selected", Arrays.asList(entrant).toArray(new String[0]));
+
+                //add selected notification to entrant notificationsList
+                HashMap<String, Object> entrantUpdate = new HashMap<>();
+                entrantUpdate.put("notificationsList", FieldValue.arrayUnion(newNotifIDSelected));
+                tempD.updateDocument("entrants", entrant, entrantUpdate, v -> {});
             }
         });
     }

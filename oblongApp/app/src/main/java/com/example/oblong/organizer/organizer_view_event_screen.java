@@ -222,7 +222,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
             String newNotifIDSelected = fdb.collection("notifications").document().getId();
             String label = event.getEventName()+": Congratulations! You've been selected!";
             String content = "Congratulations on being selected to attend our event! Please accept your invitation " +
-                    "by visiting your \"Upcoming Events\" tab and clicking \"Accept Invitation\" for our event";
+                    "by visiting your \"Events\" tab and viewing the details for our event.";
             String[] notifSelected = selectedParticipants.toArray(new String[0]);
 
             //create not selected notification

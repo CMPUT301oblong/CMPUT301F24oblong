@@ -65,7 +65,7 @@ public class DatabaseUnitTests {
         CountDownLatch latch = new CountDownLatch(1);
 
         // Add event to the database (asynchronous operation)
-        db.addEvent(id, capacity, dateAndTime, description, location, poster);
+        db.addEvent(id, capacity, dateAndTime, description, location, poster ,"0123456789");
 
         // Retrieve event from the database (asynchronous operation)
         db.getEvent(id, event -> {
