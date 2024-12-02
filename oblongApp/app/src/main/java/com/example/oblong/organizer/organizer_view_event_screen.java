@@ -56,6 +56,7 @@ public class organizer_view_event_screen extends AppCompatActivity {
     private Button cancelButton;
     private ImageView uploadPosterButton;
     private String eventId;
+    private String qrID;
     private final Database db = new Database();
     private FirebaseFirestore fdb;
 
@@ -199,9 +200,10 @@ public class organizer_view_event_screen extends AppCompatActivity {
         eventDescriptionDisplay.setText(event.getEventDescription());
         maxCapacityDisplay.setText(Long.toString(event.getEventCapacity()));
         poster.setImageBitmap(imageUtils.base64ToBitmap(event.getPoster()));
+        qrID = event.getQrID();
         qr_generator qr = new qr_generator();
         eventId = event.getEventID();
-        Bitmap code = qr.generateQRCode(eventId);
+        Bitmap code = qr.generateQRCode(qrID);
 
         // https://stackoverflow.com/questions/30027242/set-bitmap-to-imageview
         qrCode.setImageBitmap(code);

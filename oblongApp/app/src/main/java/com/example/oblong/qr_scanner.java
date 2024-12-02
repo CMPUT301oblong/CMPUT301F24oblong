@@ -99,7 +99,8 @@ public class qr_scanner extends AppCompatActivity {
             if (result.getContents() == null) {
                 Toast.makeText(this, "Scan cancelled", Toast.LENGTH_LONG).show();
             } else {
-                handleScannedData(result.getContents());
+                // Retrieve the eventID from Firestore via the qrID stored in the qr code before calling handleScannedData
+                retrieveEventID(result.getContents(), eventID -> handleScannedData(eventID));
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -131,6 +132,32 @@ public class qr_scanner extends AppCompatActivity {
         });
 
     }
+
+    private void retrieveEventID(String qrID, OnEventIDRetrievedListener listener) {
+        FirebaseFirestore datab = FirebaseFirestore.getInstance();
+        datab.collection("events")
+                .whereEqualTo("qrID", qrID) // Search by qrID
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        String eventID = querySnapshot.getDocuments().get(0).getId(); // Get the document name
+                        listener.onEventIDRetrieved(eventID); // Pass the eventID to the listener
+                    } else {
+                        Toast.makeText(this, "Event not found for QR ID", Toast.LENGTH_SHORT).show();
+                        finish(); // End the activity if the event is not found
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Database", "Error retrieving event by QR ID", e);
+                    Toast.makeText(this, "Error retrieving event details", Toast.LENGTH_SHORT).show();
+                    finish(); // End the activity if an error occurs
+                });
+    }
+    public interface OnEventIDRetrievedListener {
+        void onEventIDRetrieved(String eventID);
+    }
+
+
 
     /**
      * Retrieves event details from Firestore based on the event's unique ID.

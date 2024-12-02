@@ -6,10 +6,6 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Document;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -28,6 +24,7 @@ public class Event implements Serializable {
     private Long eventWaitlistCapacity;
     private String poster;
     private String attendingStatus;
+    private String qrID;
 
 
     /*public Event(String eventID, String eventName, String eventDescription, Date eventCloseDate, Long eventCapacity ) {
@@ -71,6 +68,8 @@ public class Event implements Serializable {
             setPoster(data.getString("poster"));
 
             this.eventID = eventID;
+
+            this.qrID = data.getString("qrID");
         });
 
 
@@ -230,5 +229,13 @@ public class Event implements Serializable {
 
     public String getStatus() {
         return attendingStatus;
+    }
+
+    public String setQrID(String qrID){
+        return this.qrID = qrID;
+    }
+
+    public String getQrID() {
+        return qrID;
     }
 }
