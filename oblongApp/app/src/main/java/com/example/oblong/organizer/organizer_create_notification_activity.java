@@ -1,9 +1,7 @@
 package com.example.oblong.organizer;
 
-import static android.app.PendingIntent.getActivity;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -21,19 +19,22 @@ import com.example.oblong.R;
 import com.example.oblong.inputValidator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class organizer_create_notification_activity extends AppCompatActivity {
     private String eventID;
-    //private HashMap<String, Object> notif = new HashMap<>();
     private ArrayList<Map<String, Object>> participantDocs = new ArrayList<Map<String, Object>>();
     private ArrayList<String> participantList = new ArrayList<String>();
     private FirebaseFirestore fdb;
+    private CollectionReference notifications = FirebaseFirestore.getInstance().collection("notifications");
     private Database db = new Database();
 
     @Override
@@ -53,7 +54,7 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         Button sendButton = findViewById(R.id.organizer_send_notification_button);
         fdb = FirebaseFirestore.getInstance();
 
-        //Get eventID and participants to event
+        //Get eventID, participants to event with notifications enabled
         getEventID();
         getParticipants();
 
@@ -66,15 +67,16 @@ public class organizer_create_notification_activity extends AppCompatActivity {
         });
 
         //Clicking send button validates text inputs
-        //if successful, adds notification to database
+        //if successful, adds notification to database, adds notification id to notificationList for entrants
         sendButton.setOnClickListener(view -> {
-            String label = newLabelText.getText().toString();
+            Log.d("createNotif", "passed getting enabled");
+            String label = eventID+": "+newLabelText.getText().toString();
             String content = newContentText.getText().toString();
             String option = notificationTargetSpinner.getItemAtPosition(notificationTargetSpinner
                     .getSelectedItemPosition()).toString();
             String target = null;
             inputValidator validator = new inputValidator(this);
-            if(validator.validateCreateNotification(label, content, option)){
+            if(validator.validateCreateNotification(label, content)){
                 switch (option){
                     case "Waitlisted Entrants":
                         target = "waitlisted";
@@ -93,10 +95,22 @@ public class organizer_create_notification_activity extends AppCompatActivity {
                         setParticipantList(target);
                         break;
                 }
-                String participants = TextUtils.join(", ", participantList);
-                db.addNotification(null, eventID, content, label, target, participants);
+                //participants contains names of participants with status from dropdown (aka target)
+                String[] participants = participantList.toArray(new String[0]);
+                String newNotifID = notifications.document().getId();
+
+                //add notification to database
+                db.addNotification(newNotifID, eventID, content, label, target, participants);
+
+                //add notification id to each entrant notificationList
+                for(String entrant: participantList){
+                    fdb.collection("entrants").document(entrant)
+                            .update("notificationsList", FieldValue.arrayUnion(newNotifID))
+                            .addOnSuccessListener(a -> Log.d("participantUpdate", "updated notificationsList"))
+                            .addOnFailureListener(a -> Log.d("participantUpdate", "failed to update notificationsList"));
+                }
+                finish();
             }
-            finish();
         });
     }
 
@@ -110,29 +124,34 @@ public class organizer_create_notification_activity extends AppCompatActivity {
     //gets participants to event from Firebase
     private void getParticipants(){
         fdb.collection("participants").whereEqualTo("event", eventID).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for(QueryDocumentSnapshot doc : task.getResult()){
-                                participantDocs.add(doc.getData());
-                            }
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()){
+                        for(QueryDocumentSnapshot doc : task.getResult()){
+                            //check if participant has notifications enabled
+                            db.getEntrant((String) doc.get("entrant"), entrant -> {
+                                if ((Boolean) entrant.get("notificationsEnabled")){
+                                    Map<String, Object> d = new HashMap<>();
+                                    d.put("entrant", doc.get("entrant"));
+                                    d.put("status", doc.get("status"));
+                                    participantDocs.add(d);
+                                }
+                            });
                         }
                     }
-                });
+                }
+        });
     }
 
-    //adds participants with status: "target" to participantList
+    //adds participant names with status: "target" to participantList
     private void setParticipantList(String target){
         for (Map<String, Object> participant : participantDocs){
             String name = (String) participant.get("entrant");
             String status = (String) participant.get("status");
-            Log.d("checkStatus", "status is: "+status);
-            Log.d("checkName", "name is: "+name);
             if (status.compareTo(target)==0){
                 participantList.add(name);
             }
         }
     }
-
 }
