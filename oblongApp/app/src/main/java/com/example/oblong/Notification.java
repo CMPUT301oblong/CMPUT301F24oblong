@@ -3,10 +3,9 @@ package com.example.oblong;
 
 import android.util.Log;
 
-import com.google.firebase.Timestamp;
-
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * The {@code Notification} class handles the notifications that the organizer sends to users
@@ -16,30 +15,25 @@ import java.util.HashMap;
 public class Notification {
     private String label;
     private String content;
-    private String targets;
+    private String target;
+    private ArrayList<String> targetList;
     private String eventID;
-
-    /*
-    public Notification(String label, String content, String targets) {
-        this.label = label;
-        this.content = content;
-        this.targets = targets;
-    }*/
+    private String notifID;
 
     /**
-     * The {@code Notification} method retrieves notification data belonging to an eventID
-     * @param eventID
+     * The {@code Notification} method retrieves notification data belonging to an notifID
+     * @param notifID
      */
-    public Notification(String eventID){
-        this.eventID = eventID;
+    public Notification(String notifID){
+        this.notifID = notifID;
         Database db = new Database();
-        db.getNotification(eventID, data -> {
+        db.getNotification(notifID, data -> {
             if(data!=null) {
                 Log.d("notif label", (String) data.get("title"));
                 setNotifInformation(data);
             }
             else{
-                Log.d("event", "event not found");
+                Log.d("notification", "notification not found");
             }
         });
     }
@@ -50,14 +44,20 @@ public class Notification {
      * @param data
      */
     private void setNotifInformation(HashMap<String, Object> data){
+        this.eventID = (String) data.get("event");
+        Log.d("notif event", this.eventID);
+
         this.label = (String) data.get("title");
         Log.d("notif title", this.label);
 
         this.content = (String) data.get("text");
         Log.d("notif content", this.content);
 
-        this.targets = (String) data.get("targets");
-        Log.d("notif targets", this.targets);
+        this.target = (String) data.get("target");
+        Log.d("notif target", this.target);
+
+        this.targetList = new ArrayList<String>((List<String>) data.get("target list"));
+        Log.d("notif target list", String.valueOf(this.targetList));
     }
 
     /**
@@ -93,16 +93,28 @@ public class Notification {
     }
 
     /**
-     * The {@code getTargets} method returns the targets of the notification
+     * The {@code getTarget} method returns the target of the notification
      * @return
      */
-    public String getTargets() { return targets; }
+    public String getTarget() { return target; }
 
     /**
-     * The {@code setTargets} method sets the targets of the notification
-     * @param targets
+     * The {@code setTarget} method sets the target of the notification
+     * @param target
      */
-    public void setTargets(String targets){ this.targets = targets; }
+    public void setTarget(String target){ this.target = target; }
+
+    /**
+     * The {@code getNotifID} method returns the notifID of the notification
+     * @return
+     */
+    public String getNotifID(){ return notifID; }
+
+    /**
+     * The {@code setNotifID} method sets the notifID of the notification
+     * @param notifID
+     */
+    public void setNotifID(String notifID) { this.notifID = notifID; }
 
     /**
      * The {@code getEventID} method returns the eventID of the notification
@@ -114,5 +126,5 @@ public class Notification {
      * The {@code setEventID} method sets the eventID of the notification
      * @param eventID
      */
-    public void setEventID(String eventID) { this.eventID = eventID; }
+    public void setEventID(String eventID){ this.eventID = eventID; }
 }

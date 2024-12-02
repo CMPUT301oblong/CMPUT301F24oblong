@@ -1,9 +1,17 @@
 package com.example.oblong.entrant;
 
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.NOTIFICATION_SERVICE;
+import static android.icu.number.NumberRangeFormatter.with;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +27,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.oblong.Database;
@@ -26,9 +35,10 @@ import com.example.oblong.R;
 import com.example.oblong.organizer.AddNewFacilityDialog;
 import com.example.oblong.organizer.organizer_base_activity;
 import com.example.oblong.imageUtils;
-import com.google.android.material.button.MaterialButton;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class EntrantProfileScreenFragment extends Fragment implements AddNewFacilityDialog.AddFacilityDialogListener {
@@ -44,7 +54,8 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
     Button addFacilityButton;
     private Database db = new Database();
     boolean isOrganizer;
-
+    private static final String CHANNEL_ID = "oblong_channel_id2";
+    private Context context;
 
     private final ActivityResultLauncher<Intent> editProfileLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -83,6 +94,17 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
         editProfileButton = view.findViewById(R.id.entrant_profile_edit_button);
         addFacilityButton = view.findViewById(R.id.entrant_profile_create_facility);
 
+        context = getContext();
+
+        //build Android System notification channel if API >= 26
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            CharSequence name = "oblong_channel";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            notificationManager.createNotificationChannel(channel);
+        }
+
         fetchUserProfileData();
 
         addFacilityButton.setOnClickListener(v -> {
@@ -108,10 +130,10 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
         return view;
     }
 
-
     /**
      * {@code onViewCreated} is called after {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}
      * fetches data from the Firebase for the users profile data
+     * fetches data from the Firebase to build notifications
      */
     private void fetchUserProfileData() {
         db.getCurrentUser(userId -> {
@@ -153,13 +175,45 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
                         isOrganizer = false;
                     }
                 });
+                //this code retrieves and builds android notifications for all of the notifications
+                //sent to this entrant
+                db.getEntrant(user_id, entrant -> {
+                    List<String> notifications = (List<String>) entrant.get("notificationsList");
+                    if(notifications != null && !notifications.isEmpty()){
+                        for (String n: notifications){
+                            db.getNotification(n, notif -> {
+                                String title = (String) notif.get("title");
+                                String content = (String) notif.get("text");
+                                NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+                                NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                                        .setSmallIcon(R.mipmap.ic_launcher_round)
+                                        .setContentTitle(title)
+                                        //.setContentText(content)
+                                        .setStyle(new NotificationCompat.BigTextStyle()
+                                                .bigText(content))
+                                        .setPriority(NotificationCompat.PRIORITY_MAX)
+                                        .setAutoCancel(true);
 
+                                //don't set channel id if API < 26
+                                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
+                                    builder.setChannelId(null);
+                                }
+                                //create unique id for notification to prevent android from overwriting
+                                //notification in system
+                                int id = n.hashCode();
+                                notificationManager.notify(id, builder.build());
+                            });
+                        }
+                    }
+                });
             }
         });
     }
 
+
+
     /**
-     * {@code addFacility} is called when the user clicks the th button to become an organizer.
+     * {@code addFacility} is called when the user clicks the  button to become an organizer.
      * It grants the user the role of Organizer, and adds the facility to the database before
      * opening the Organizer base activity.
      *
@@ -196,5 +250,4 @@ public class EntrantProfileScreenFragment extends Fragment implements AddNewFaci
                 }
         );
     }
-
 }
