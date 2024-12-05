@@ -109,7 +109,7 @@ public class organizer_create_notification_activity extends AppCompatActivity {
                         target = "cancelled";
                         setParticipantList(target);
                         break;
-                    case "Accepted Entrants":
+                    case "Attending Entrants":
                         target = "attending";
                         setParticipantList(target);
                         break;
